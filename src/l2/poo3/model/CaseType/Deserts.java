@@ -5,9 +5,9 @@ import l2.poo3.model.Enum.Resources;
 
 public class Deserts extends CaseModel {
 
-    private final Resources produce = Resources.NULL;
+    private final Resources produce = Resources.DESERTS;
 
     public Deserts() {
-        super(Resources.NULL);
+        super(Resources.DESERTS, true);
     }
 }
