@@ -26,9 +26,9 @@ public class TerminalView {
     public void affichePlateaux(){
 
         if(plateaux != null){
-            System.out.println("+-----+---------+-----+---------+-----+---------+-----+---------+-----+---------+");
+            System.out.println(buildLine());
             afficheNumberLigne();
-            System.out.println("+-----+---------+-----+---------+-----+---------+-----+---------+-----+---------+");
+            System.out.println(buildLine());
             for(int y = 0; y < plateaux.getPlateaux().length; y++){
                 if(y % 2 == 0){
                     System.out.print("|     | ");
@@ -82,17 +82,21 @@ public class TerminalView {
                         }
                     }
                 }
-                System.out.println("\n+-----+---------+-----+---------+-----+---------+-----+---------+-----+---------+");
+                System.out.println("\n" + buildLine());
             }
         }
     }
 
-    private void buildString(){
-        String t = "";
-        for(int i = 0; i < 41; i++){
-            t += "-";
+    private String buildLine(){
+        String t = "+";
+        int length = plateaux.getLength_x();
+        if(length % 2 != 0){
+            length++;
         }
-        System.out.println(t);
+        for(int i = 0; i < length/2; i++){
+            t += "-----+---------+";
+        }
+        return t;
     }
 
     private String fixString(String text, int caseLength){
@@ -112,7 +116,7 @@ public class TerminalView {
     private void afficheNumberLigne(){
         if(plateaux != null){
             System.out.print("| y\\x ");
-            for(int x = 1; x <= plateaux.getPlateaux().length; x++){
+            for(int x = 1; x <= plateaux.getLength_x(); x++){
                 if(x % 2 != 0) {
                     System.out.print("| " + fixString(String.valueOf(x), 8));
                 }else{
