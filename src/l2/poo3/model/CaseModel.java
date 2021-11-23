@@ -6,14 +6,11 @@ import java.util.Random;
 
 public abstract class CaseModel {
 
-    private final Resources nature;
-    private final String name;
+    private Resources nature;
+
+    private String name;
     private final int number;
     private boolean thief;
-
-    public String getName() {
-        return name;
-    }
 
     protected CaseModel(Resources nature, boolean thief) {
         this.nature = nature;
@@ -28,6 +25,12 @@ public abstract class CaseModel {
         number = -1;
     }
 
+    public CaseModel(Resources nature, String name, int number) {
+        this.nature = nature;
+        this.name = name;
+        this.number = number;
+    }
+
     public CaseModel(Resources nature) {
         this(nature, false);
     }
@@ -36,8 +39,20 @@ public abstract class CaseModel {
         return nature;
     }
 
+    public void setNature(Resources nature) {
+        this.nature = nature;
+    }
+
     public final int getNumber() {
         return number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public final boolean thiefPresent() {

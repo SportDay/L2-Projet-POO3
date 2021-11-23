@@ -18,9 +18,9 @@ public class PlateauxModel {
     }
 
     public PlateauxModel(int x, int y){
-        length_x = 2*x-1;
-        length_y = 2*y-1;
-        plateaux = new CaseModel[2*y-1][2*x-1];
+        length_x = 2*x+3;
+        length_y = 2*y+3;
+        plateaux = new CaseModel[length_y][length_x];
         construirePlateaux();
     }
 
@@ -28,42 +28,76 @@ public class PlateauxModel {
         return plateaux;
     }
 
+    public void initCorner(){
+        if(plateaux != null){
+            plateaux[1][1] = new Vide();
+            plateaux[1][length_x-2] = new Vide();
+            plateaux[length_y-2][1] = new Vide();
+            plateaux[length_y-2][length_x-2] = new Vide();
+        }
+    }
+
+
     public void construirePlateaux(){
         boolean setThief = false;
+        initCorner();
         for(int y = 0; y < plateaux.length; y++){
-            if(y % 2 != 0){
+            if(y == 0 || y == length_y-1){
                 for (int x = 0; x < plateaux[y].length; x++) {
-                    if(x % 2 == 0) {
-                        plateaux[y][x] = new Route();
-                    }else {
-                        plateaux[y][x] = new Batiment();
+                    if (plateaux[y][x] == null) {
+                        plateaux[y][x] = new Vide();
+                    }
+                }
+            }else if(y % 2 != 0){
+                for (int x = 0; x < plateaux[y].length; x++) {
+                    if(plateaux[y][x] == null) {
+                        if (x % 2 == 0 && x != 0 && x != length_x-1) {
+                            plateaux[y][x] = new Route();
+                        } else if(x != 0 && x != length_x-1) {
+                            plateaux[y][x] = new Batiment();
+                        }else{
+                            plateaux[y][x] = new Vide();
+                        }
                     }
                 }
             }else {
                 for (int x = 0; x < plateaux[y].length; x++) {
-                    if (x % 2 != 0) {
-                        plateaux[y][x] = new Route();
-                    } else if (y >= (length_y)/2  && x >= (length_x)/2 && !setThief) {
-                        plateaux[y][x] = new Deserts();
-                        setThief = true;
-                    } else {
-                        int randomCase = new Random().nextInt(5);
-                        switch (randomCase) {
-                            case 0:
-                                plateaux[y][x] = new Forests();
-                                break;
-                            case 1:
-                                plateaux[y][x] = new Hills();
-                                break;
-                            case 2:
-                                plateaux[y][x] = new Mountain();
-                                break;
-                            case 3:
-                                plateaux[y][x] = new Pastures();
-                                break;
-                            case 4:
-                                plateaux[y][x] = new Wheat();
-                                break;
+                    if (plateaux[y][x] == null) {
+                        if(x == 0 || x == length_x-1){
+                            plateaux[y][x] = new Vide();
+                        }else if (x % 2 != 0 ) {
+                            plateaux[y][x] = new Route();
+                        } else if (y >= (length_y) / 2 && x >= (length_x) / 2 && !setThief) {
+                            plateaux[y][x] = new Deserts();
+
+                            plateaux[y][0] = new Port();
+                            plateaux[y][length_x-1] = new Port();
+
+                            plateaux[0][x] = new Port();
+                            plateaux[length_y-1][x] = new Port();
+
+                            setThief = true;
+                        } else if(x != 0 && x != length_x-1){
+                            int randomCase = new Random().nextInt(5);
+                            switch (randomCase) {
+                                case 0:
+                                    plateaux[y][x] = new Forests();
+                                    break;
+                                case 1:
+                                    plateaux[y][x] = new Hills();
+                                    break;
+                                case 2:
+                                    plateaux[y][x] = new Mountain();
+                                    break;
+                                case 3:
+                                    plateaux[y][x] = new Pastures();
+                                    break;
+                                case 4:
+                                    plateaux[y][x] = new Wheat();
+                                    break;
+                            }
+                        }else{
+                            plateaux[y][x] = new Vide();
                         }
                     }
                 }
