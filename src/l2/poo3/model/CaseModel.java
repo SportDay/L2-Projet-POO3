@@ -12,6 +12,9 @@ public abstract class CaseModel {
     private final int number;
     private boolean thief;
 
+    private PlayerModel player;
+
+
     protected CaseModel(Resources nature, boolean thief) {
         this.nature = nature;
         this.number = new Random(System.nanoTime()*System.currentTimeMillis()).nextInt(11) + 2;
@@ -35,6 +38,13 @@ public abstract class CaseModel {
         this(nature, false);
     }
 
+    public PlayerModel getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerModel player) {
+        this.player = player;
+    }
     public final Resources getNature() {
         return nature;
     }

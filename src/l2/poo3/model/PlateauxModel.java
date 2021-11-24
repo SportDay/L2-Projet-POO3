@@ -17,7 +17,21 @@ public class PlateauxModel {
         return length_y;
     }
 
-    public PlateauxModel(int x, int y){
+    public PlateauxModel(){}
+
+    public void initPlateaux(int x, int y){
+        if(y > 11){
+            y = 11;
+        }
+        if(x > 3446){
+            x = 3446;
+        }
+        if(y < 1){
+            y = 4;
+        }
+        if(x < 1){
+            x = 4;
+        }
         length_x = 2*x+3;
         length_y = 2*y+3;
         plateaux = new CaseModel[length_y][length_x];

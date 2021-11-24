@@ -8,18 +8,12 @@ import java.util.Map;
 
 public abstract class PlayerModel {
 
-    private final boolean ai;
     private final Pcolor color;
     private final Map<Resources, Integer> resources = new HashMap<>();
 
-    protected PlayerModel(Pcolor color, boolean ai) {
-        this.ai = ai;
+    protected PlayerModel(Pcolor color) {
         this.color = color;
         initResources();
-    }
-
-    protected PlayerModel(Pcolor color) {
-        this(color, false);
     }
 
     private void initResources(){
@@ -32,10 +26,6 @@ public abstract class PlayerModel {
 
     public Map<Resources, Integer> getResources() {
         return resources;
-    }
-
-    public final boolean isAi() {
-        return ai;
     }
 
     public final Pcolor getColor() {

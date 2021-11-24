@@ -4,7 +4,7 @@ import l2.poo3.model.Enum.Pcolor;
 import l2.poo3.model.PlayerModel;
 
 public class Player extends PlayerModel {
-    protected Player(Pcolor color) {
+    public Player(Pcolor color) {
         super(color);
     }
 }
