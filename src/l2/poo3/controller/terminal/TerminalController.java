@@ -23,42 +23,15 @@ public class TerminalController {
         this.view = view;
         view.setController(this);
         showTitle();
-        initAll();
+        //initAll();
     }
 
     private void initAll(){
-        int number_player = 0;
-        while (true) {
-            System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
-            String input = sc.next();
-            try {
-                number_player = Integer.parseInt(input);
-                if(number_player == 3 || number_player == 4) {
-                    break;
-                }else{
-                    System.out.println("Le chiffre " + number_player + " est incorrect.");
-                }
-            } catch (NumberFormatException ne) {
-                System.out.println("Merci d'indiquer un chiffre");
-            }
-        }
+        int number_player = askInteger("nbrPlayer");
+
         players = new PlayerModel[number_player];
-        boolean ia = false;
         for (int i = 0; i < players.length; i++){
-            while (true) {
-                System.out.print("Veuillez indiquer si le jouer " + (i+1) + " est un ordinateur (oui ou non): ");
-                String rep = sc.next();
-                if(rep.contains("oui") || rep.contains("non")){
-                    if(rep.contains("oui")){
-                        ia = true;
-                    }else {
-                        ia = false;
-                    }
-                    break;
-                }else {
-                    System.out.println("Reponse incorrecte!");
-                }
-            }
+            boolean ia = askYesNo("aiPlayer",i);
             switch (i){
                 case 0: if(ia){
                             players[i] = new Ai(Pcolor.RED);
@@ -86,29 +59,61 @@ public class TerminalController {
                         break;
             }
         }
-        int x = -1;
-        int y = -1;
+        int x = askInteger("x");
+        int y = askInteger("y");
+        plateaux.initPlateaux(x,y);
+    }
+
+    private int askInteger(String type){
+        int to_return = -1;
         while (true) {
-            if(x == -1) {
-                System.out.print("Veuillez indiquer la longeur du tableau: ");
-            }else {
+            if(type.contains("nbrPlayer")) {
+                System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
+            }else if(type.contains("x")){
+                System.out.print("Veuillez indiquer la longueur du tableau: ");
+            }else if(type.contains("y")){
                 System.out.print("Veuillez indiquer la largeur du tableau: ");
             }
             String input = sc.next();
             try {
-                if(x == -1) {
-                    x = Integer.parseInt(input);
-                }else{
-                    y = Integer.parseInt(input);
+                to_return = Integer.parseInt(input);
+                if(type.contains("nbrPlayer")) {
+                    if (to_return == 3 || to_return == 4) {
+                       return to_return;
+                    }
+                }else if(type.contains("x")){
+                    if(to_return != -1){
+                        return to_return;
+                    }
+                }else if(type.contains("y")){
+                    if(to_return != -1){
+                        return to_return;
+                    }
                 }
-                if(x != -1 && y != -1) {
-                    break;
-                }
-            } catch (NumberFormatException ne) {
+                System.out.println("Le chiffre " + to_return + " est incorrect.");
+            } catch (NumberFormatException e) {
                 System.out.println("Merci d'indiquer un chiffre");
             }
         }
-        plateaux.initPlateaux(x,y);
+    }
+
+    private boolean askYesNo(String type, int i){
+        boolean ia = false;
+        while (true) {
+            if(type.contains("aiPlayer")) {
+                System.out.print("Veuillez indiquer si le jouer " + (i + 1) + " est un ordinateur (oui ou non): ");
+            }
+            String rep = sc.next().toLowerCase();
+            if(rep.contains("oui") || rep.contains("non")){
+                if(rep.contains("oui")){
+                    return true;
+                }else {
+                    return false;
+                }
+            }else {
+                System.out.println("Reponse incorrecte!");
+            }
+        }
     }
 
     private void showTitle(){
@@ -169,8 +174,15 @@ public class TerminalController {
                 System.out.println("C'est n'est pas une route ni un batiment");
                 return false;
             }
-            if((cases.getPlayer() == null || cases.getPlayer() ==  players[quiJoue])){
-                return true;
+            if(cases instanceof Route){
+                if(((Route) cases).getPlayer() == null){
+                    return true;
+                }
+            }
+            if(cases instanceof Batiment){
+                if(((Batiment) cases).getPlayer() == null){
+                    return true;
+                }
             }
         }
         return false;

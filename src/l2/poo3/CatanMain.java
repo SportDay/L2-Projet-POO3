@@ -12,6 +12,8 @@ public class CatanMain {
         PlateauxModel platModel = new PlateauxModel();
         TerminalView terView = new TerminalView();
 
+        platModel.initPlateaux(5,5);
+
         TerminalController terController = new TerminalController(platModel, terView);
         terController.start();
 
