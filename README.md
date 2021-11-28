@@ -13,7 +13,7 @@
   * [ ] Choisir le mode d'affichage terminale ou gui
 * Création du plateau
 * L’utilisateur doit pouvoir:
-  * [ ] Construire des routes, villes, cités
+  * [x] Construire des routes, villes, cités
   * [ ] Acheter, stocker, utiliser les cartes spéciales de développement
   * [ ] Consulter ses ressources
   * [ ] Echanger des ressources via les ports
