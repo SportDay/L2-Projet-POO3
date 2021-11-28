@@ -38,14 +38,14 @@ public class TerminalView {
                                 if (x % 2 == 0) {
                                     if(plateaux.getPlateaux()[y][x] instanceof Port){
                                         if(plateaux.getPlateaux()[y][x].getNature() == null){
-                                            System.out.print(fixString("", 8) + "| ");
+                                            System.out.print(fixString("", 9) + "| ");
                                         }else {
-                                            System.out.print(fixString(plateaux.getPlateaux()[y][x].getNature() + "", 8) + "| ");
+                                            System.out.print(fixString(plateaux.getPlateaux()[y][x].getNature() + "", 9) + "| ");
                                         }
                                     }else if(plateaux.getPlateaux()[y][x].getNumber() < 0) {
-                                        System.out.print(fixString("", 8) + "| ");
+                                        System.out.print(fixString("", 9) + "| ");
                                     }else {
-                                        System.out.print(fixString(plateaux.getPlateaux()[y][x].getNumber() + "", 8) + "| ");
+                                        System.out.print(fixString(plateaux.getPlateaux()[y][x].getNumber() + "", 9) + "| ");
                                     }
                                 } else {
                                     System.out.print(fixString(plateaux.getPlateaux()[y][x].getName(), 4) + "| ");
@@ -56,14 +56,14 @@ public class TerminalView {
                         for (int x = 0; x < plateaux.getPlateaux()[y].length; x++) {
                             if (plateaux.getPlateaux()[y][x] != null) {
                                 if (plateaux.getPlateaux()[y][x] instanceof Port) {
-                                    System.out.print(fixString(((Port) plateaux.getPlateaux()[y][x]).getPrix(), 8) + "| ");
+                                    System.out.print(fixString(((Port) plateaux.getPlateaux()[y][x]).getPrix(), 9) + "| ");
                                 } else if (x % 2 == 0) {
                                     if(plateaux.getPlateaux()[y][x] instanceof Port){
-                                        System.out.print(fixString(((Port) plateaux.getPlateaux()[y][x]).getPrix(),  8) + "| ");
+                                        System.out.print(fixString(((Port) plateaux.getPlateaux()[y][x]).getPrix(),  9) + "| ");
                                     }else if (plateaux.getPlateaux()[y][x].thiefPresent()) {
-                                        System.out.print(fixString("Voleur", 8) + "| ");
+                                        System.out.print(fixString("Voleur", 9) + "| ");
                                     } else {
-                                        System.out.print(fixString("", 8) + "| ");
+                                        System.out.print(fixString("", 9) + "| ");
                                     }
                                 } else {
                                     System.out.print(fixString("", 4) + "| ");
@@ -84,7 +84,7 @@ public class TerminalView {
         for(int x = 0; x < plateaux.getPlateaux()[y].length; x++){
             if(plateaux.getPlateaux()[y][x] != null) {
                 if(x % 2 == 0) {
-                    System.out.print(fixString(plateaux.getPlateaux()[y][x].getName(), 8) + "| ");
+                    System.out.print(fixString(plateaux.getPlateaux()[y][x].getName(), 9) + "| ");
                 }else {
                     if(plateaux.getPlateaux()[y][x] instanceof Route){
                         System.out.print(fixString("", 4) + "| ");
@@ -101,7 +101,7 @@ public class TerminalView {
             System.out.print("| y\\x ");
             for(int x = 1; x <= plateaux.getLength_x(); x++){
                 if(x % 2 != 0) {
-                    System.out.print("| " + fixString(String.valueOf(x), 8));
+                    System.out.print("| " + fixString(String.valueOf(x), 9));
                 }else{
                     System.out.print("| " + fixString(String.valueOf(x), 4));
 
@@ -118,7 +118,7 @@ public class TerminalView {
             length++;
         }
         for(int i = 0; i < (length/2); i++){
-            t += "-----+---------+";
+            t += "-----+----------+";
         }
 
         return t;

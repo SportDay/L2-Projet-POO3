@@ -1,5 +1,6 @@
 package l2.poo3.model;
 
+import l2.poo3.model.Enum.Case;
 import l2.poo3.model.Enum.Resources;
 
 import java.util.Random;
@@ -7,16 +8,18 @@ import java.util.Random;
 public abstract class CaseModel {
 
     private Resources nature;
+    private Case type;
 
     private String name;
     private final int number;
     private boolean thief;
 
-    protected CaseModel(Resources nature, boolean thief) {
+    protected CaseModel(Case type, Resources nature, boolean thief) {
         this.nature = nature;
         this.number = new Random(System.nanoTime()*System.currentTimeMillis()).nextInt(11) + 2;
         this.thief = thief;
-        this.name = nature.toString().charAt(0) + nature.toString().substring(1).toLowerCase();
+        this.name = type.toString().charAt(0) + type.toString().substring(1).toLowerCase();
+        this.type = type;
     }
 
     protected CaseModel(String name) {
@@ -31,8 +34,8 @@ public abstract class CaseModel {
         this.number = number;
     }
 
-    public CaseModel(Resources nature) {
-        this(nature, false);
+    public CaseModel(Case type, Resources nature) {
+        this(type, nature, false);
     }
 
     public final Resources getNature() {
