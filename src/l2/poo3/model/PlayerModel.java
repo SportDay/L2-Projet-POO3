@@ -11,17 +11,20 @@ public abstract class PlayerModel {
     private final Pcolor color;
     private final Map<Resources, Integer> resources = new HashMap<>();
 
+    private int pointDeVic = 0;
+
+
     protected PlayerModel(Pcolor color) {
         this.color = color;
         initResources();
     }
 
     private void initResources(){
-        resources.put(Resources.BOIS, 0);
-        resources.put(Resources.BLE, 0);
-        resources.put(Resources.ARGILE, 0);
+        resources.put(Resources.BOIS, 4);
+        resources.put(Resources.BLE, 2);
+        resources.put(Resources.ARGILE, 4);
         resources.put(Resources.MINERAI, 0);
-        resources.put(Resources.MOUTON, 0);
+        resources.put(Resources.MOUTON, 2);
     }
 
     public Map<Resources, Integer> getResources() {
@@ -30,6 +33,14 @@ public abstract class PlayerModel {
 
     public final Pcolor getColor() {
         return color;
+    }
+
+    public void setPointDeVic(int pointDeVic) {
+        this.pointDeVic = pointDeVic;
+    }
+
+    public int getPointDeVic() {
+        return pointDeVic;
     }
 
     public final boolean updateResources(Resources res, int value){

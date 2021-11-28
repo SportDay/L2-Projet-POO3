@@ -3,6 +3,7 @@ package l2.poo3.controller.terminal;
 import l2.poo3.model.CaseModel;
 import l2.poo3.model.CaseType.*;
 import l2.poo3.model.Enum.Pcolor;
+import l2.poo3.model.Enum.Resources;
 import l2.poo3.model.PlateauxModel;
 import l2.poo3.model.PlayerModel;
 import l2.poo3.model.PlayerType.Ai;
@@ -10,6 +11,8 @@ import l2.poo3.model.PlayerType.Player;
 import l2.poo3.view.terminal.TerminalView;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TerminalController {
     private PlayerModel[] players;
@@ -23,7 +26,7 @@ public class TerminalController {
         this.view = view;
         view.setController(this);
         showTitle();
-        //initAll();
+        initAll();
     }
 
     private void initAll(){
@@ -59,8 +62,8 @@ public class TerminalController {
                         break;
             }
         }
-        int x = askInteger("x");
-        int y = askInteger("y");
+        int x = askInteger("xTab");
+        int y = askInteger("yTab");
         plateaux.initPlateaux(x,y);
     }
 
@@ -69,10 +72,12 @@ public class TerminalController {
         while (true) {
             if(type.contains("nbrPlayer")) {
                 System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
-            }else if(type.contains("x")){
+            }else if(type.contains("xTab")){
                 System.out.print("Veuillez indiquer la longueur du tableau: ");
-            }else if(type.contains("y")){
+            }else if(type.contains("yTab")){
                 System.out.print("Veuillez indiquer la largeur du tableau: ");
+            }else if(type.contains("xBuild")){
+                System.out.print("Veuillez indiquer la cordonne x: ");
             }
             String input = sc.next();
             try {
@@ -81,11 +86,7 @@ public class TerminalController {
                     if (to_return == 3 || to_return == 4) {
                        return to_return;
                     }
-                }else if(type.contains("x")){
-                    if(to_return != -1){
-                        return to_return;
-                    }
-                }else if(type.contains("y")){
+                }else {
                     if(to_return != -1){
                         return to_return;
                     }
@@ -134,14 +135,100 @@ public class TerminalController {
     }
 
     public void consulterRessources() {
-        System.out.println(players[quiJoue].getStringResources());
+        if(players != null && players[quiJoue] instanceof Player){
+            ((Player) players[quiJoue]).afficheRessource();
+        }
     }
 
 
-    public void construireBat(String choix, String lieu) {
+    public void construireBat() {
+        String type = askString("cb");
+        int x = askInteger("xBuild")-1;
+        int y = ((int)askString("yBuild").charAt(0)-65);
+        if(verifCase(y, x)){
+            if(plateaux.getPlateaux()[y][x] instanceof Batiment){
+                if(type.contains("col")){
+                    if(players[quiJoue].getResources().get(Resources.BOIS) >= 1 && players[quiJoue].getResources().get(Resources.ARGILE) >= 1 && players[quiJoue].getResources().get(Resources.BLE) >= 1 && players[quiJoue].getResources().get(Resources.MOUTON) >= 1) {
+                        plateaux.getPlateaux()[y][x].setName("C " + players[quiJoue].getColor().toString().charAt(0));
+                        ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(players[quiJoue]);
+                        System.out.println("Vous avez construit une colonie");
+
+                        players[quiJoue].getResources().put(Resources.BOIS, players[quiJoue].getResources().get(Resources.BOIS) - 1);
+                        players[quiJoue].getResources().put(Resources.ARGILE, players[quiJoue].getResources().get(Resources.ARGILE) - 1);
+                        players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 1);
+                        players[quiJoue].getResources().put(Resources.MOUTON, players[quiJoue].getResources().get(Resources.MOUTON) - 1);
+
+                        players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic()+1);
+                    }else{
+                        System.out.println("Vous avez pas asses de ressources");
+                    }
+                }else if(type.contains("vil")){
+                    if(plateaux.getPlateaux()[y][x].getName().contains("C")) {
+                        if (players[quiJoue].getResources().get(Resources.BLE) >= 2 && players[quiJoue].getResources().get(Resources.MINERAI) >= 3) {
+                            plateaux.getPlateaux()[y][x].setName("V " + players[quiJoue].getColor().toString().charAt(0));
+                            ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(players[quiJoue]);
+                            System.out.println("Vous avez construit une ville");
+                            players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 2);
+                            players[quiJoue].getResources().put(Resources.MINERAI, players[quiJoue].getResources().get(Resources.MINERAI) - 3);
+                            players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic()+1);
+                        } else {
+                            System.out.println("Vous avez pas asses de ressources");
+                        }
+                    }else {
+                        System.out.println("Vous devez construire d'abord une collonie");
+                    }
+                }
+            }else {
+                System.out.println("C'est pas un endroit pour construire un batiment");
+            }
+        }
     }
 
-    public void construireRoute(String depart, String arrive) {
+    public void construireRoute() {
+        CaseModel[][] plateaux = this.plateaux.getPlateaux();
+        int x = askInteger("xBuild")-1;
+        int y = ((int)askString("yBuild").charAt(0)-65);
+        System.out.println(1);
+        boolean allowBuild = false;
+        if(verifCase(y, x)){
+
+            if(players[quiJoue].getResources().get(Resources.BOIS) >= 1 && players[quiJoue].getResources().get(Resources.ARGILE) >= 1) {
+
+                    if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y+1][x] instanceof Route && ((Route) plateaux[y + 1][x]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    } else if (y - 1 >= getPlateaux().getLength_y() - 1 && plateaux[y-1][x] instanceof Route && ((Route) plateaux[y - 1][x]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x+1] instanceof Route && ((Route) plateaux[y][x + 1]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    } else if (x - 1 >= getPlateaux().getLength_x() - 1 && plateaux[y][x-1] instanceof Route && ((Route) plateaux[y][x - 1]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    }
+                    if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y+1][x] instanceof Batiment && ((Batiment) plateaux[y + 1][x]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    } else if (y - 1 >= getPlateaux().getLength_y() - 1 && plateaux[y-1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x+1] instanceof Batiment && ((Batiment) plateaux[y][x + 1]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    } else if (x - 1 >= getPlateaux().getLength_x() - 1 && plateaux[y][x-1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() == players[quiJoue]) {
+                        allowBuild = true;
+                    }
+
+
+                if (plateaux[y][x] instanceof Route) {
+                    if (allowBuild) {
+                        plateaux[y][x].setName("R " + players[quiJoue].getColor().toString().charAt(0));
+                        ((Route) plateaux[y][x]).setPlayer(players[quiJoue]);
+                        players[quiJoue].getResources().put(Resources.BOIS, players[quiJoue].getResources().get(Resources.BOIS) -1);
+                        players[quiJoue].getResources().put(Resources.ARGILE, players[quiJoue].getResources().get(Resources.ARGILE) -1);
+                        System.out.println("Vous avez construit une route");
+                    } else {
+                        System.out.println("Vous avez pas le droit de construire une route ici");
+                    }
+                } else {
+                    System.out.println("C'est pas un endroit pour construire une route");
+                }
+            }
+        }
     }
 
     public void acheterCarte() {
@@ -156,6 +243,7 @@ public class TerminalController {
     public void joueurSuivant() {
         quiJoue++;
         if (quiJoue == players.length) quiJoue = 0;
+        view.affichePlateaux();
     }
 
     public boolean verifCase(int y, int x){
@@ -164,7 +252,6 @@ public class TerminalController {
             return false;
         }
         CaseModel cases = plateaux.getPlateaux()[y][x];
-        System.out.println(cases.getName());
         if(cases != null){
             if(cases instanceof Vide){
                 System.out.println("C'est une case vide");
@@ -184,27 +271,94 @@ public class TerminalController {
                     return true;
                 }
             }
+            System.out.println("La case est aucuper");
         }
         return false;
     }
 
     private void askQuestion(){
+
+        System.out.println("\nTour du jouer: " + players[quiJoue].getColor());
+
         System.out.println("Que voulez vous faire?:");
         System.out.println("    - Consulter les ressources (cr): ");
         System.out.println("    - Contruire des batiments (cb): ");
-        System.out.println("    - Contruire une route (cr): ");
+        System.out.println("    - Contruire une route (br): ");
         System.out.println("    - Acheter des cartes (bc): ");
         System.out.println("    - Jouer une carte (pc): ");
+        System.out.println("    - Afficher le plateaux (af): ");
         System.out.println("    - Finir (end): ");
+    }
+
+    private void askDecission(){
+        while (true) {
+            askQuestion();
+            System.out.print("Merci d'indiquer votre choix: ");
+            String rep = sc.next().toLowerCase();
+
+            if (rep.contains("cr")) {
+                consulterRessources();
+                break;
+            }
+            if (rep.contains("cb")) {
+                construireBat();
+                break;
+            }
+            if (rep.contains("br")) {
+                construireRoute();
+                break;
+            }
+            if (rep.contains("pc")) {
+                consulterRessources();
+                break;
+            }
+            if (rep.contains("af")) {
+                view.affichePlateaux();
+                break;
+            }
+            if (rep.contains("end")) {
+                joueurSuivant();
+                view.affichePlateaux();
+                break;
+            }
+            System.out.println("Reponse incorrecte!");
+        }
+    }
+
+    private String askString(String type){
+        while (true) {
+            if(type.contains("cb")){
+                System.out.print("Que voulez-vous construire ? (colonie/ville)");
+            }else if(type.contains("yBuild")){
+                System.out.print("Veuillez indiquer la cordonne y: ");
+            }
+            String rep = sc.next().toLowerCase();
+
+            if(rep.contains("col") || rep.contains("vil")) {
+                return rep;
+            }else if(type.contains("yBuild")){
+                Pattern allLetter = Pattern.compile("[A-z]+");
+                if(allLetter.matcher(rep).find()){
+                    return rep.toUpperCase();
+                }
+            }
+            System.out.println("Reponse incorrecte!");
+
+        }
     }
 
     public void round(){
         Scanner sc = new Scanner(System.in);
-        askQuestion();
-
+        view.affichePlateaux();
         String line;
-        while(sc.hasNextLine()){
-            line = sc.nextLine();
+        while(true){
+            if(players[quiJoue] instanceof Player){
+                askDecission();
+            }else {
+                System.err.println("TOUR de l'ia");
+                joueurSuivant();
+            }
+            /*line = sc.nextLine();
 
             if ("consulter_ress".equals(line)) {
                 consulterRessources();
@@ -214,7 +368,7 @@ public class TerminalController {
                 String choix = sc.nextLine();
                 System.out.println("A quel emplacement ? ligne colonne");
                 String lieu = sc.nextLine();
-                construireBat(choix, lieu);
+                //construireBat(choix, lieu);
 
             } else if ("construire_route".equals(line)) {
                 System.out.println("Point de départ de la route ? ligne colonne");
@@ -236,12 +390,12 @@ public class TerminalController {
                 // J'ai pas encore d'idée pour faire ça
             } else if ("finir".equals(line)) {
                 joueurSuivant();
-            }
+            }*/
         }
     }
 
     public void start(){
-        view.affichePlateaux();
+        round();
     }
 
 }
