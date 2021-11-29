@@ -11,7 +11,6 @@ import l2.poo3.model.PlayerType.Player;
 import l2.poo3.view.terminal.TerminalView;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TerminalController {
@@ -188,7 +187,6 @@ public class TerminalController {
         CaseModel[][] plateaux = this.plateaux.getPlateaux();
         int x = askInteger("xBuild")-1;
         int y = ((int)askString("yBuild").charAt(0)-65);
-        System.out.println(1);
         boolean allowBuild = false;
         if(verifCase(y, x)){
 
@@ -196,20 +194,20 @@ public class TerminalController {
 
                     if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y+1][x] instanceof Route && ((Route) plateaux[y + 1][x]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
-                    } else if (y - 1 >= getPlateaux().getLength_y() - 1 && plateaux[y-1][x] instanceof Route && ((Route) plateaux[y - 1][x]).getPlayer() == players[quiJoue]) {
+                    } else if (y - 1 >= 0 && plateaux[y-1][x] instanceof Route && ((Route) plateaux[y - 1][x]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
                     } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x+1] instanceof Route && ((Route) plateaux[y][x + 1]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
-                    } else if (x - 1 >= getPlateaux().getLength_x() - 1 && plateaux[y][x-1] instanceof Route && ((Route) plateaux[y][x - 1]).getPlayer() == players[quiJoue]) {
+                    } else if (x - 1 >= 0 && plateaux[y][x-1] instanceof Route && ((Route) plateaux[y][x - 1]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
                     }
                     if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y+1][x] instanceof Batiment && ((Batiment) plateaux[y + 1][x]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
-                    } else if (y - 1 >= getPlateaux().getLength_y() - 1 && plateaux[y-1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() == players[quiJoue]) {
+                    } else if (y - 1 >= 0 && plateaux[y-1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
                     } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x+1] instanceof Batiment && ((Batiment) plateaux[y][x + 1]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
-                    } else if (x - 1 >= getPlateaux().getLength_x() - 1 && plateaux[y][x-1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() == players[quiJoue]) {
+                    } else if (x - 1 >= 0 && plateaux[y][x-1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() == players[quiJoue]) {
                         allowBuild = true;
                     }
 
@@ -237,7 +235,43 @@ public class TerminalController {
     public void montrerCartes() {
     }
 
-    public void jouerCarte(String num) {
+    public void jouerCarte() {
+    }
+
+    public void echangerPort() {
+        CaseModel[][] plateaux = this.plateaux.getPlateaux();
+        System.out.println("Veuillez choisir le port que vous voulez utiliser");
+        int x = askInteger("xBuild") - 1;
+        int y = ((int) askString("yBuild").charAt(0) - 65);
+        if(verifCords(y,x)) {
+            boolean allowUse = false;
+            if (plateaux[y][x] instanceof Port) {
+                System.out.println(x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() == players[quiJoue]);
+                System.out.println(x + ":" + y);
+                System.out.println(x+1 + ":" + (y+1));
+                System.out.println(x-1 + ":" + (y-1) + " " + (((Batiment) plateaux[y - 1][x - 1]).getPlayer() == players[quiJoue]));
+                System.out.println(x+1 + ":" + (y-1));
+                System.out.println(x-1 + ":" + (y+1));
+                if (x + 1 <= getPlateaux().getLength_x() - 1 && y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() == players[quiJoue]) {
+                    allowUse = true;
+                    System.out.println(1);
+                } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() == players[quiJoue]) {
+                    allowUse = true;
+                    System.out.println(2);
+                } else if (y - 1 >= 0 && x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() == players[quiJoue]) {
+                    allowUse = true;
+                    System.out.println(3);
+                } else if (y + 1 <= getPlateaux().getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() == players[quiJoue]) {
+                    allowUse = true;
+                    System.out.println(4);
+                }
+                if (allowUse) {
+                    ((Port) plateaux[y][x]).echangerPort((Player) players[quiJoue]);
+                } else {
+                    System.out.println("Vous devez avoir une collonie ou une ville a cote du port");
+                }
+            }
+        }
     }
 
     public void joueurSuivant() {
@@ -247,33 +281,39 @@ public class TerminalController {
     }
 
     public boolean verifCase(int y, int x){
+        if(verifCords(y,x)) {
+            CaseModel cases = plateaux.getPlateaux()[y][x];
+            if (cases != null) {
+                if (cases instanceof Vide) {
+                    System.out.println("C'est une case vide");
+                    return false;
+                }
+                if (!(cases instanceof Route) && !(cases instanceof Batiment)) {
+                    System.out.println("C'est n'est pas une route ni un batiment");
+                    return false;
+                }
+                if (cases instanceof Route) {
+                    if (((Route) cases).getPlayer() == null) {
+                        return true;
+                    }
+                }
+                if (cases instanceof Batiment) {
+                    if (((Batiment) cases).getPlayer() == null) {
+                        return true;
+                    }
+                }
+                System.out.println("La case est aucuper");
+            }
+        }
+        return false;
+    }
+
+    private boolean verifCords(int y, int x){
         if(y < 0 || x < 0 || y > plateaux.getLength_y()-1 || x > plateaux.getLength_x()-1){
             System.out.println("Hors du plateaux, merci de resseyer");
             return false;
         }
-        CaseModel cases = plateaux.getPlateaux()[y][x];
-        if(cases != null){
-            if(cases instanceof Vide){
-                System.out.println("C'est une case vide");
-                return false;
-            }
-            if(!(cases instanceof Route) && !(cases instanceof Batiment)){
-                System.out.println("C'est n'est pas une route ni un batiment");
-                return false;
-            }
-            if(cases instanceof Route){
-                if(((Route) cases).getPlayer() == null){
-                    return true;
-                }
-            }
-            if(cases instanceof Batiment){
-                if(((Batiment) cases).getPlayer() == null){
-                    return true;
-                }
-            }
-            System.out.println("La case est aucuper");
-        }
-        return false;
+        return true;
     }
 
     private void askQuestion(){
@@ -282,11 +322,13 @@ public class TerminalController {
 
         System.out.println("Que voulez vous faire?:");
         System.out.println("    - Consulter les ressources (cr): ");
-        System.out.println("    - Contruire des batiments (cb): ");
-        System.out.println("    - Contruire une route (br): ");
-        System.out.println("    - Acheter des cartes (bc): ");
-        System.out.println("    - Jouer une carte (pc): ");
+        System.out.println("    - Construire des batiments (cb): ");
+        System.out.println("    - Echanger avec le port (ep): ");
         System.out.println("    - Afficher le plateaux (af): ");
+        System.out.println("    - Construire une route (br): ");
+        System.out.println("    - Acheter des cartes (ac): ");
+        System.out.println("    - Montrer des cartes (mc): ");
+        System.out.println("    - Jouer une carte (pc): ");
         System.out.println("    - Finir (end): ");
     }
 
@@ -309,11 +351,23 @@ public class TerminalController {
                 break;
             }
             if (rep.contains("pc")) {
-                consulterRessources();
+                jouerCarte();
                 break;
             }
             if (rep.contains("af")) {
                 view.affichePlateaux();
+                break;
+            }
+            if (rep.contains("ep")) {
+                echangerPort();
+                break;
+            }
+            if (rep.contains("ac")) {
+                acheterCarte();
+                break;
+            }
+            if (rep.contains("mc")) {
+                montrerCartes();
                 break;
             }
             if (rep.contains("end")) {
@@ -328,7 +382,7 @@ public class TerminalController {
     private String askString(String type){
         while (true) {
             if(type.contains("cb")){
-                System.out.print("Que voulez-vous construire ? (colonie/ville)");
+                System.out.print("Que voulez-vous construire ? (colonie/ville) ");
             }else if(type.contains("yBuild")){
                 System.out.print("Veuillez indiquer la cordonne y: ");
             }

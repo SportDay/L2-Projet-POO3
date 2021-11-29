@@ -16,7 +16,7 @@ public class Player extends PlayerModel {
         Map<Resources, Integer> resourcesList = super.getResources();
         if(resourcesList != null){
             System.out.println("\n+------------+---------+---------+---------+---------+---------+");
-            System.out.println("|" + StringUtil.center("Ressources du Joueur " + super.getColor(),62) + "|");
+            System.out.println("|" + StringUtil.center("Ressources du Joueur: " + super.getColor(),62) + "|");
             System.out.println("+------------+---------+---------+---------+---------+---------+");
             System.out.print("| Ressources |");
             for(Map.Entry<Resources, Integer> x : super.getResources().entrySet()){

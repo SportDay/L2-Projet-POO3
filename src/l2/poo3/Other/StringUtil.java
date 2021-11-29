@@ -40,6 +40,14 @@ public class StringUtil {
         return t;
     }
 
+    public static String buildTablePatternV2(String pattern, int repeat){
+        String t = "+";
+        for(int i = 0; i < repeat; i++){
+            t += pattern;
+        }
+        return t;
+    }
+
     public static String buildTableWithFirstLinePattern(String firstLine, String pattern, int repeat){
         String t = firstLine;
         for(int i = 0; i < repeat; i++){
