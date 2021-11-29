@@ -16,5 +16,5 @@
   * [x] Construire des routes, villes, cités
   * [ ] Acheter, stocker, utiliser les cartes spéciales de développement
   * [x] Consulter ses ressources
-  * [ ] Echanger des ressources via les ports
+  * [x] Echanger des ressources via les ports
   * [ ] Gérer le personnage du voleur en cas de 7 aux dés
