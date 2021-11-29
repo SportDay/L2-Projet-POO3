@@ -246,24 +246,14 @@ public class TerminalController {
         if(verifCords(y,x)) {
             boolean allowUse = false;
             if (plateaux[y][x] instanceof Port) {
-                System.out.println(x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() == players[quiJoue]);
-                System.out.println(x + ":" + y);
-                System.out.println(x+1 + ":" + (y+1));
-                System.out.println(x-1 + ":" + (y-1) + " " + (((Batiment) plateaux[y - 1][x - 1]).getPlayer() == players[quiJoue]));
-                System.out.println(x+1 + ":" + (y-1));
-                System.out.println(x-1 + ":" + (y+1));
                 if (x + 1 <= getPlateaux().getLength_x() - 1 && y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() == players[quiJoue]) {
                     allowUse = true;
-                    System.out.println(1);
                 } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() == players[quiJoue]) {
                     allowUse = true;
-                    System.out.println(2);
                 } else if (y - 1 >= 0 && x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() == players[quiJoue]) {
                     allowUse = true;
-                    System.out.println(3);
                 } else if (y + 1 <= getPlateaux().getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() == players[quiJoue]) {
                     allowUse = true;
-                    System.out.println(4);
                 }
                 if (allowUse) {
                     ((Port) plateaux[y][x]).echangerPort((Player) players[quiJoue]);
