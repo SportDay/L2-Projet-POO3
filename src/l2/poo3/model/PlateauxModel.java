@@ -1,6 +1,7 @@
 package l2.poo3.model;
 
 import l2.poo3.model.CaseType.*;
+import l2.poo3.model.Enum.Resources;
 
 import java.util.Random;
 
@@ -105,7 +106,6 @@ public class PlateauxModel {
         }
     }
 
-
     private void buildPort(){
         int xNextPortFirstLine = 2;
         int xNextPortLastLine = 2;
@@ -157,5 +157,55 @@ public class PlateauxModel {
         }
 
 
+    }
+
+    public void generateRessources(int number) {
+        for(int y = 0; y < plateaux.length; y++){
+            if(y % 2 == 0) {
+                for (int x = 0; x < plateaux[y].length; x++) {
+                    if (plateaux[y][x] != null) {
+                        CaseModel cas = plateaux[y][x];
+                        if (x % 2 == 0) {
+                            if(!(cas.getNumber() < 0) && !(cas instanceof Port) && cas.getNature() != null){
+                                Resources res = cas.getNature();
+                                int num = cas.getNumber();
+                                if(num == number){
+                                    System.out.println("GENERATE");
+                                    if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null) {
+                                        PlayerModel player = ((Batiment) plateaux[y + 1][x + 1]).getPlayer();
+                                        if(plateaux[y + 1][x + 1].getName().contains("V")){
+                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                        }else {
+                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                        }
+                                    } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null) {
+                                        PlayerModel player = ((Batiment) plateaux[y - 1][x - 1]).getPlayer();
+                                        if(plateaux[y - 1][x - 1].getName().contains("V")){
+                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                        }else {
+                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                        }
+                                    } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null) {
+                                        PlayerModel player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
+                                        if(plateaux[y - 1][x + 1].getName().contains("V")){
+                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                        }else {
+                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                        }
+                                    } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null) {
+                                        PlayerModel player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
+                                        if(plateaux[y + 1][x - 1].getName().contains("V")){
+                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                        }else {
+                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

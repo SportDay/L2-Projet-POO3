@@ -4,17 +4,9 @@ import java.util.Random;
 
 public class DiceModel {
 
-    private int random;
+    private int result;
 
-    public DiceModel() {
-        random = new Random().nextInt(12-2) + 2;
-    }
-
-    public void throwDice(){
-        random = new Random().nextInt(12-2) + 2;
-    }
-
-    public int getRandom() {
-        return random;
+    public int throwDice(){
+        return new Random().nextInt(11) + 2;
     }
 }

@@ -1,7 +1,9 @@
 package l2.poo3.controller.terminal;
 
+import l2.poo3.Other.StringUtil;
 import l2.poo3.model.CaseModel;
 import l2.poo3.model.CaseType.*;
+import l2.poo3.model.DiceModel;
 import l2.poo3.model.Enum.CartesDev;
 import l2.poo3.model.Enum.Pcolor;
 import l2.poo3.model.Enum.Resources;
@@ -16,10 +18,10 @@ import java.util.regex.Pattern;
 
 public class TerminalController {
     private PlayerModel[] players;
-    private PlateauxModel plateaux;
-    private Scanner sc = new Scanner(System.in);
+    private final PlateauxModel plateaux;
+    private final Scanner sc = new Scanner(System.in);
     private int quiJoue;
-    private TerminalView view;
+    private final TerminalView view;
 
     public TerminalController(PlateauxModel plateaux, TerminalView view){
         this.plateaux = plateaux;
@@ -261,6 +263,7 @@ public class TerminalController {
     }
 
     public void jouerCarte() {
+
     }
 
     public void echangerPort() {
@@ -290,6 +293,7 @@ public class TerminalController {
     }
 
     public void joueurSuivant() {
+        players[quiJoue].setThrowDice(false);
         quiJoue++;
         if (quiJoue == players.length) quiJoue = 0;
         view.affichePlateaux();
@@ -344,8 +348,23 @@ public class TerminalController {
         System.out.println("    - Acheter des cartes (ac): ");
         System.out.println("    - Montrer des cartes (mc): ");
         System.out.println("    - Jouer une carte (pc): ");
+        System.out.println("    - Lander de (ld): ");
         System.out.println("    - Finir (end): ");
     }
+
+    public void thwrodDice(){
+        if(!players[quiJoue].isThrowDice()) {
+            DiceModel dice = new DiceModel();
+            int number = dice.throwDice();
+            System.out.println("lancer de dés\nLe résultat est: " + number);
+            players[quiJoue].setThrowDice(true);
+            plateaux.generateRessources(number);
+        }else {
+            System.out.println("Vous avez deja lancer le des");
+        }
+    }
+
+
 
     private void askDecission(){
         while (true) {
@@ -353,41 +372,51 @@ public class TerminalController {
             System.out.print("Merci d'indiquer votre choix: ");
             String rep = sc.next().toLowerCase();
 
-            if (rep.contains("cr")) {
-                consulterRessources();
+            if(players[quiJoue].isThrowDice()) {
+                if (rep.contains("cr")) {
+                    consulterRessources();
+                    break;
+                }
+                if (rep.contains("cb")) {
+                    construireBat();
+                    break;
+                }
+                if (rep.contains("br")) {
+                    construireRoute();
+                    break;
+                }
+                if (rep.contains("pc")) {
+                    jouerCarte();
+                    break;
+                }
+                if (rep.contains("af")) {
+                    view.affichePlateaux();
+                    break;
+                }
+                if (rep.contains("ep")) {
+                    echangerPort();
+                    break;
+                }
+                if (rep.contains("ac")) {
+                    acheterCarte();
+                    break;
+                }
+                if (rep.contains("mc")) {
+                    montrerCartes();
+                    break;
+                }
+                if (rep.contains("end")) {
+                    joueurSuivant();
+                    view.affichePlateaux();
+                    break;
+                }
+            }else {
+                System.out.println("D'abord il faut lancer les dés (ld)");
                 break;
             }
-            if (rep.contains("cb")) {
-                construireBat();
-                break;
-            }
-            if (rep.contains("br")) {
-                construireRoute();
-                break;
-            }
-            if (rep.contains("pc")) {
-                jouerCarte();
-                break;
-            }
-            if (rep.contains("af")) {
-                view.affichePlateaux();
-                break;
-            }
-            if (rep.contains("ep")) {
-                echangerPort();
-                break;
-            }
-            if (rep.contains("ac")) {
-                acheterCarte();
-                break;
-            }
-            if (rep.contains("mc")) {
-                montrerCartes();
-                break;
-            }
-            if (rep.contains("end")) {
-                joueurSuivant();
-                view.affichePlateaux();
+
+            if (rep.contains("ld")) {
+                thwrodDice();
                 break;
             }
             System.out.println("Reponse incorrecte!");

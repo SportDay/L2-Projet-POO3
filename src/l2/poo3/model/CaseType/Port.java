@@ -6,7 +6,6 @@ import l2.poo3.model.Enum.Resources;
 import l2.poo3.model.PlayerType.Player;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 

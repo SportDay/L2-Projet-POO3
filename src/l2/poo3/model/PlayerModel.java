@@ -13,6 +13,8 @@ public abstract class PlayerModel {
     private final Map<Resources, Integer> resources = new HashMap<>();
     private final Map<CartesDev, Integer> cartesDev = new HashMap<>();
 
+    private boolean throwDice = false;
+
     private int pointDeVic = 0;
 
     protected PlayerModel(Pcolor color) {
@@ -20,6 +22,14 @@ public abstract class PlayerModel {
         initResources();
         cartesDev.put(CartesDev.Chevalier, 0);
         cartesDev.put(CartesDev.Progres, 0);
+    }
+
+    public boolean isThrowDice() {
+        return throwDice;
+    }
+
+    public void setThrowDice(boolean throwDice) {
+        this.throwDice = throwDice;
     }
 
     public Map<CartesDev, Integer> getCartesDev() {

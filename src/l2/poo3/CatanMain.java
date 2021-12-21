@@ -18,6 +18,7 @@ public class CatanMain {
 
         Player p = new Player(Pcolor.RED);
 
+
         TerminalController terController = new TerminalController(platModel, terView);
         terController.start();//*/
 
