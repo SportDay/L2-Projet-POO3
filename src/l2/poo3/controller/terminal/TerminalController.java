@@ -382,7 +382,6 @@ public class TerminalController {
             askQuestion();
             System.out.print("Merci d'indiquer votre choix: ");
             String rep = sc.next().toLowerCase();
-            System.out.println(nbrTour);
 
             if(nbrTour < 3) {
                 if (rep.contains("cb")) {
