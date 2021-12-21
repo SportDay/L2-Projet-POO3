@@ -8,9 +8,24 @@ public class PlateauxModel {
 
     private CaseModel[][] plateaux;
     private int length_x, length_y;
+    private int carteDevPos = 0;
+
+    private final CartesDevList cartesDevList = new CartesDevList();
 
     public int getLength_x() {
         return length_x;
+    }
+
+    public CartesDevList getCartesDevList() {
+        return cartesDevList;
+    }
+
+    public int getCarteDevPos() {
+        return carteDevPos;
+    }
+
+    public void setCarteDevPos(int carteDevPos) {
+        this.carteDevPos = carteDevPos;
     }
 
     public int getLength_y() {

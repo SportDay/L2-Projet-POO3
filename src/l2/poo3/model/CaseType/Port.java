@@ -108,7 +108,6 @@ public class Port extends CaseModel {
     public void echangerPort(Player p){
 
         boolean run = true;
-
         p.afficheRessource();
         afficheRessourceList();
 

@@ -1,5 +1,6 @@
 package l2.poo3.model;
 
+import l2.poo3.model.Enum.CartesDev;
 import l2.poo3.model.Enum.Pcolor;
 import l2.poo3.model.Enum.Resources;
 
@@ -10,13 +11,19 @@ public abstract class PlayerModel {
 
     private final Pcolor color;
     private final Map<Resources, Integer> resources = new HashMap<>();
+    private final Map<CartesDev, Integer> cartesDev = new HashMap<>();
 
     private int pointDeVic = 0;
-
 
     protected PlayerModel(Pcolor color) {
         this.color = color;
         initResources();
+        cartesDev.put(CartesDev.Chevalier, 0);
+        cartesDev.put(CartesDev.Progres, 0);
+    }
+
+    public Map<CartesDev, Integer> getCartesDev() {
+        return cartesDev;
     }
 
     private void initResources(){
@@ -49,7 +56,15 @@ public abstract class PlayerModel {
         if(resources.get(res) == value){
             return true;
         }
+        return false;
+    }
 
+    public final boolean updateCartes(CartesDev carte){
+        int oldVal = cartesDev.get(carte);
+        cartesDev.put(carte, oldVal+1);
+        if(cartesDev.get(carte) == oldVal){
+            return true;
+        }
         return false;
     }
 
