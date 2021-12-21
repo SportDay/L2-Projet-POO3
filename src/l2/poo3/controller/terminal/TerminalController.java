@@ -17,10 +17,12 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class TerminalController {
+
+
     private PlayerModel[] players;
     private final PlateauxModel plateaux;
     private final Scanner sc = new Scanner(System.in);
-    private int quiJoue;
+    private int quiJoue, nbrTour = 1;
     private final TerminalView view;
 
     public TerminalController(PlateauxModel plateaux, TerminalView view){
@@ -164,21 +166,25 @@ public class TerminalController {
                     }else{
                         System.out.println("Vous avez pas asses de ressources");
                     }
-                }else if(type.contains("vil")){
-                    if(plateaux.getPlateaux()[y][x].getName().contains("C")) {
-                        if (players[quiJoue].getResources().get(Resources.BLE) >= 2 && players[quiJoue].getResources().get(Resources.MINERAI) >= 3) {
-                            plateaux.getPlateaux()[y][x].setName("V " + players[quiJoue].getColor().toString().charAt(0));
-                            ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(players[quiJoue]);
-                            System.out.println("Vous avez construit une ville");
-                            players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 2);
-                            players[quiJoue].getResources().put(Resources.MINERAI, players[quiJoue].getResources().get(Resources.MINERAI) - 3);
-                            players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic()+1);
+                }else if(type.contains("vil")) {
+                    if (nbrTour > 2) {
+                        if (plateaux.getPlateaux()[y][x].getName().contains("C")) {
+                            if (players[quiJoue].getResources().get(Resources.BLE) >= 2 && players[quiJoue].getResources().get(Resources.MINERAI) >= 3) {
+                                plateaux.getPlateaux()[y][x].setName("V " + players[quiJoue].getColor().toString().charAt(0));
+                                ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(players[quiJoue]);
+                                System.out.println("Vous avez construit une ville");
+                                players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 2);
+                                players[quiJoue].getResources().put(Resources.MINERAI, players[quiJoue].getResources().get(Resources.MINERAI) - 3);
+                                players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic() + 1);
+                            } else {
+                                System.out.println("Vous avez pas asses de ressources");
+                            }
                         } else {
-                            System.out.println("Vous avez pas asses de ressources");
+                            System.out.println("Vous devez construire d'abord une collonie");
                         }
-                    }else {
-                        System.out.println("Vous devez construire d'abord une collonie");
                     }
+                }else {
+                    System.out.println("C'est pas le bon tour pour construire");
                 }
             }else {
                 System.out.println("C'est pas un endroit pour construire un batiment");
@@ -295,7 +301,10 @@ public class TerminalController {
     public void joueurSuivant() {
         players[quiJoue].setThrowDice(false);
         quiJoue++;
-        if (quiJoue == players.length) quiJoue = 0;
+        if (quiJoue == players.length){
+            quiJoue = 0;
+            nbrTour++;
+        }
         view.affichePlateaux();
     }
 
@@ -358,21 +367,52 @@ public class TerminalController {
             int number = dice.throwDice();
             System.out.println("lancer de dés\nLe résultat est: " + number);
             players[quiJoue].setThrowDice(true);
-            plateaux.generateRessources(number);
+            if(number == 7) {
+                //voleur
+            }else {
+                plateaux.generateRessources(number);
+            }
         }else {
             System.out.println("Vous avez deja lancer le des");
         }
     }
-
-
 
     private void askDecission(){
         while (true) {
             askQuestion();
             System.out.print("Merci d'indiquer votre choix: ");
             String rep = sc.next().toLowerCase();
+            System.out.println(nbrTour);
 
-            if(players[quiJoue].isThrowDice()) {
+            if(nbrTour < 3) {
+                if (rep.contains("cb")) {
+                    construireBat();
+                    break;
+                }
+                if (rep.contains("br")) {
+                    construireRoute();
+                    break;
+                }
+                if (rep.contains("end")) {
+                    joueurSuivant();
+                    for (int i = 0; i < 25; i ++){
+                        System.out.println();
+                    }
+                    break;
+                }
+                if (rep.contains("af")) {
+                    view.affichePlateaux();
+                    break;
+                }
+                System.out.println("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes (br) (cb)");
+            }
+
+            if (rep.contains("ld")) {
+                thwrodDice();
+                break;
+            }
+
+            if(players[quiJoue].isThrowDice() && nbrTour > 2) {
                 if (rep.contains("cr")) {
                     consulterRessources();
                     break;
@@ -407,18 +447,17 @@ public class TerminalController {
                 }
                 if (rep.contains("end")) {
                     joueurSuivant();
-                    view.affichePlateaux();
+                    for (int i = 0; i < 25; i ++){
+                        System.out.println();
+                    }
                     break;
                 }
-            }else {
+            }else if(nbrTour > 2){
                 System.out.println("D'abord il faut lancer les dés (ld)");
                 break;
             }
 
-            if (rep.contains("ld")) {
-                thwrodDice();
-                break;
-            }
+
             System.out.println("Reponse incorrecte!");
         }
     }
@@ -441,7 +480,6 @@ public class TerminalController {
                 }
             }
             System.out.println("Reponse incorrecte!");
-
         }
     }
 
@@ -451,7 +489,7 @@ public class TerminalController {
             if(players[quiJoue] instanceof Player){
                 askDecission();
             }else {
-                System.err.println("TOUR de l'ia");
+                System.out.println("TOUR de l'ia");
                 joueurSuivant();
             }
             /*line = sc.nextLine();
