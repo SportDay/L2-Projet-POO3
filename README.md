@@ -17,4 +17,4 @@
   * [ ] Acheter, stocker, utiliser les cartes spéciales de développement
   * [x] Consulter ses ressources
   * [x] Echanger des ressources via les ports
-  * [ ] Gérer le personnage du voleur en cas de 7 aux dés
+  * [x] Gérer le personnage du voleur en cas de 7 aux dés
