@@ -13,21 +13,21 @@ import l2.poo3.model.PlayerType.Ai;
 import l2.poo3.model.PlayerType.Player;
 import l2.poo3.view.terminal.TerminalView;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class TerminalController {
 
+    private ArrayList<Resources> removeRessource = new ArrayList<>();
+
 
     private PlayerModel[] players;
     private final PlateauxModel plateaux;
     private final Scanner sc = new Scanner(System.in);
-    private int quiJoue, nbrTour = 1, playerThiefID = 0;
+    private int quiJoue, nbrTour = 1;
     private final TerminalView view;
 
-    private boolean thiefPlay = false;
-
-    private PlayerModel playerThief = null;
 
     public TerminalController(PlateauxModel plateaux, TerminalView view){
         this.plateaux = plateaux;
@@ -86,6 +86,8 @@ public class TerminalController {
                 System.out.print("Veuillez indiquer la largeur du tableau: ");
             }else if(type.contains("xBuild")){
                 System.out.print("Veuillez indiquer la cordonne x: ");
+            }else if(type.equalsIgnoreCase("id")) {
+                System.out.print("Veuillez indiquer indiquer l'id de la ressource que vous voulez echanger: ");
             }
             String input = sc.next();
             try {
@@ -93,6 +95,10 @@ public class TerminalController {
                 if(type.contains("nbrPlayer")) {
                     if (to_return == 3 || to_return == 4) {
                        return to_return;
+                    }
+                }else if(type.contains("id")){
+                    if(to_return >= 1 && to_return <= 5){
+                        return to_return;
                     }
                 }else {
                     if(to_return != -1){
@@ -111,6 +117,8 @@ public class TerminalController {
         while (true) {
             if(type.contains("aiPlayer")) {
                 System.out.print("Veuillez indiquer si le jouer " + (i + 1) + " est un ordinateur (oui ou non): ");
+            }else if(type.contains("yesno")){
+                System.out.print("(oui / non): ");
             }
             String rep = sc.next().toLowerCase();
             if(rep.contains("oui") || rep.contains("non")){
@@ -161,10 +169,11 @@ public class TerminalController {
                         ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(players[quiJoue]);
                         System.out.println("Vous avez construit une colonie");
 
-                        players[quiJoue].getResources().put(Resources.BOIS, players[quiJoue].getResources().get(Resources.BOIS) - 1);
-                        players[quiJoue].getResources().put(Resources.ARGILE, players[quiJoue].getResources().get(Resources.ARGILE) - 1);
-                        players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 1);
-                        players[quiJoue].getResources().put(Resources.MOUTON, players[quiJoue].getResources().get(Resources.MOUTON) - 1);
+                        players[quiJoue].setResources(Resources.BOIS,players[quiJoue].getResources().get(Resources.BOIS) - 1);
+                        players[quiJoue].setResources(Resources.ARGILE,players[quiJoue].getResources().get(Resources.ARGILE) - 1);
+                        players[quiJoue].setResources(Resources.BLE,players[quiJoue].getResources().get(Resources.BLE) - 1);
+                        players[quiJoue].setResources(Resources.MOUTON,players[quiJoue].getResources().get(Resources.MOUTON) - 1);
+
 
                         players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic()+1);
                     }else{
@@ -177,8 +186,11 @@ public class TerminalController {
                                 plateaux.getPlateaux()[y][x].setName("V " + players[quiJoue].getColor().toString().charAt(0));
                                 ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(players[quiJoue]);
                                 System.out.println("Vous avez construit une ville");
-                                players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 2);
-                                players[quiJoue].getResources().put(Resources.MINERAI, players[quiJoue].getResources().get(Resources.MINERAI) - 3);
+
+                                players[quiJoue].setResources(Resources.BLE,players[quiJoue].getResources().get(Resources.BLE) - 2);
+                                players[quiJoue].setResources(Resources.MINERAI,players[quiJoue].getResources().get(Resources.MINERAI) - 3);
+
+
                                 players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic() + 1);
                             } else {
                                 System.out.println("Vous avez pas asses de ressources");
@@ -228,8 +240,10 @@ public class TerminalController {
                     if (allowBuild) {
                         plateaux[y][x].setName("R " + players[quiJoue].getColor().toString().charAt(0));
                         ((Route) plateaux[y][x]).setPlayer(players[quiJoue]);
-                        players[quiJoue].getResources().put(Resources.BOIS, players[quiJoue].getResources().get(Resources.BOIS) - 1);
-                        players[quiJoue].getResources().put(Resources.ARGILE, players[quiJoue].getResources().get(Resources.ARGILE) - 1);
+
+                        players[quiJoue].setResources(Resources.BOIS,players[quiJoue].getResources().get(Resources.BOIS) - 1);
+                        players[quiJoue].setResources(Resources.ARGILE,players[quiJoue].getResources().get(Resources.ARGILE) - 1);
+
                         System.out.println("Vous avez construit une route");
                     } else {
                         System.out.println("Vous avez pas le droit de construire une route ici");
@@ -256,9 +270,11 @@ public class TerminalController {
                     System.out.println("Vous avez obtenu une carte de " + carte);
                 }
                 plateaux.setCarteDevPos(plateaux.getCarteDevPos() + 1);
-                players[quiJoue].getResources().put(Resources.MINERAI, players[quiJoue].getResources().get(Resources.MINERAI) - 1);
-                players[quiJoue].getResources().put(Resources.MOUTON, players[quiJoue].getResources().get(Resources.MOUTON) - 1);
-                players[quiJoue].getResources().put(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 1);
+
+                players[quiJoue].setResources(Resources.MINERAI,players[quiJoue].getResources().get(Resources.MINERAI) - 1);
+                players[quiJoue].setResources(Resources.MOUTON,players[quiJoue].getResources().get(Resources.MOUTON) - 1);
+                players[quiJoue].setResources(Resources.BLE,players[quiJoue].getResources().get(Resources.BLE) - 1);
+
 
             } else {
                 System.out.println("Vous avez pas assez de ressources");
@@ -308,9 +324,6 @@ public class TerminalController {
         if (quiJoue == players.length){
             quiJoue = 0;
             nbrTour++;
-        }
-        if(playerThiefID == quiJoue){
-            thiefPlay = false;
         }
         view.affichePlateaux();
     }
@@ -387,100 +400,119 @@ public class TerminalController {
     }
 
     private void thief(){
-        while (true) {
+        boolean good = true;
+        while (good) {
             System.out.println("Merci de choisir, les nouvelles coordonnes du volleur");
             int x = askInteger("xBuild") - 1;
             int y = ((int) askString("yBuild").charAt(0) - 65);
             String result = plateaux.moveThief(x, y);
             if(result.contains("present")){
                 System.out.println("Le voleur est deja sur cette case merci de le deplacer.");
+            }else if(result.contains("noneRessources")){
+                System.out.println("Merci de choisir une case qui peut generer des ressources");
             }else if(result.contains("ok")){
-                playerThief = players[quiJoue];
-                playerThiefID = quiJoue;
-                Resources res = plateaux.stealOneRessources(x,y);
-                players[quiJoue].getResources().put(res, players[quiJoue].getResources().get(res)+1);
-                break;
+                Resources res = plateaux.stealOneRessources(x,y, players[quiJoue]);
+                System.out.println("Vous avez voler une ressource: " + res.toString());
+                for(PlayerModel p : players){
+                    p.setThiefPlay(true);
+                }
+                deleteRessources();
+                System.out.println("| 2 |");
+                good = false;
             }
         }
     }
 
+    private void debug(){
+        System.out.println("DEBUG MODE!");
+        players[quiJoue].debug();
+    }
+
     private void askDecission() {
         while (true) {
-            askQuestion();
-            System.out.print("Merci d'indiquer votre choix: ");
-            String rep = sc.next().toLowerCase();
-            System.out.println();
-            if (nbrTour < 3) {
-                if (rep.contains("cb")) {
-                    construireBat();
+            if (players[quiJoue].isThiefPlay()) {
+                deleteRessources();
+            } else {
+                askQuestion();
+                System.out.print("Merci d'indiquer votre choix: ");
+                String rep = sc.next().toLowerCase();
+                System.out.println();
+                if(rep.contains("debug")){
+                    debug();
                     break;
-                } else if (rep.contains("br")) {
-                    construireRoute();
+                }
+                if (nbrTour < 3) {
+                    if (rep.contains("cb")) {
+                        construireBat();
+                        break;
+                    } else if (rep.contains("br")) {
+                        construireRoute();
+                        break;
+                    } else if (rep.contains("end")) {
+                        if (players[quiJoue].getPointDeVic() > 0) {
+                            joueurSuivant();
+                            for (int i = 0; i < 25; i++) {
+                                System.out.println();
+                            }
+                            break;
+                        } else {
+                            System.out.println("Vous devez en moins contruite une collonie");
+                        }
+                    } else if (rep.contains("af")) {
+                        view.affichePlateaux();
+                        break;
+                    } else {
+                        System.out.println("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes (br) (cb)");
+                    }
+                } else if (rep.contains("ld")) {
+                    throwdDice();
                     break;
-                } else if (rep.contains("end")) {
-                    if(players[quiJoue].getPointDeVic() > 0) {
+                } else if (players[quiJoue].isThrowDice() && nbrTour > 2) {
+                    if (rep.contains("cr")) {
+                        consulterRessources();
+                        break;
+                    }
+                    if (rep.contains("cb")) {
+                        construireBat();
+                        break;
+                    }
+                    if (rep.contains("br")) {
+                        construireRoute();
+                        break;
+                    }
+                    if (rep.contains("pc")) {
+                        jouerCarte();
+                        break;
+                    }
+                    if (rep.contains("af")) {
+                        view.affichePlateaux();
+                        break;
+                    }
+                    if (rep.contains("ep")) {
+                        echangerPort();
+                        break;
+                    }
+                    if (rep.contains("ac")) {
+                        acheterCarte();
+                        break;
+                    }
+                    if (rep.contains("mc")) {
+                        montrerCartes();
+                        break;
+                    }
+                    if (rep.contains("end")) {
                         joueurSuivant();
                         for (int i = 0; i < 25; i++) {
                             System.out.println();
                         }
                         break;
-                    }else {
-                        System.out.println("Vous devez en moins contruite une collonie");
                     }
-                }else if (rep.contains("af")) {
-                    view.affichePlateaux();
+                } else if (nbrTour > 2) {
+                    System.out.println("D'abord il faut lancer les dés (ld)");
                     break;
-                }else {
-                    System.out.println("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes (br) (cb)");
+                } else {
+                    System.out.println("Reponse incorrecte!");
                 }
-            } else if (rep.contains("ld")) {
-                throwdDice();
-                break;
-            } else if (players[quiJoue].isThrowDice() && nbrTour > 2) {
-                if (rep.contains("cr")) {
-                    consulterRessources();
-                    break;
-                }
-                if (rep.contains("cb")) {
-                    construireBat();
-                    break;
-                }
-                if (rep.contains("br")) {
-                    construireRoute();
-                    break;
-                }
-                if (rep.contains("pc")) {
-                    jouerCarte();
-                    break;
-                }
-                if (rep.contains("af")) {
-                    view.affichePlateaux();
-                    break;
-                }
-                if (rep.contains("ep")) {
-                    echangerPort();
-                    break;
-                }
-                if (rep.contains("ac")) {
-                    acheterCarte();
-                    break;
-                }
-                if (rep.contains("mc")) {
-                    montrerCartes();
-                    break;
-                }
-                if (rep.contains("end")) {
-                    joueurSuivant();
-                    for (int i = 0; i < 25; i++) {
-                        System.out.println();
-                    }
-                    break;
-                }
-            } else if (nbrTour > 2) {
-                System.out.println("D'abord il faut lancer les dés (ld)");
-                break;
-            }else {
-                System.out.println("Reponse incorrecte!");
             }
         }
     }
@@ -491,10 +523,40 @@ public class TerminalController {
                 System.out.print("Que voulez-vous construire ? (colonie/ville) ");
             }else if(type.contains("yBuild")){
                 System.out.print("Veuillez indiquer la cordonne y: ");
+            }else if(type.equalsIgnoreCase("des")){
+                System.out.print("Faite votre choix: ");
             }
             String rep = sc.next().toLowerCase();
 
-            if(rep.contains("col") || rep.contains("vil")) {
+            if(type.equalsIgnoreCase("des")) {
+                if (rep.contains("aj")) {
+                    return "ajout";
+                }
+                if (rep.contains("en")) {
+                    return "enlev";
+                }
+                if (rep.contains("co")) {
+                    return "conf";
+                }
+                if (rep.contains("an")) {
+                    return "annul";
+                }
+                if (rep.contains("af")) {
+                    return "af";
+                }
+                if (rep.contains("ar")) {
+                    return "ar";
+                }
+                if (rep.contains("ao")) {
+                    return "ao";
+                }
+                if (rep.contains("ac")) {
+                    return "ac";
+                }
+                if (rep.contains("id")) {
+                    return "id";
+                }
+            }else if(rep.contains("col") || rep.contains("vil")) {
                 return rep;
             }else if(type.contains("yBuild")){
                 Pattern allLetter = Pattern.compile("[a-zA-Z]+");
@@ -504,6 +566,155 @@ public class TerminalController {
             }
             System.out.println("Reponse incorrecte!");
         }
+    }
+
+    private void deleteRessources(){
+        System.out.println("| 3 |");
+        if(players[quiJoue].getNbrRessources() > 7 && players[quiJoue] instanceof Player) {
+            System.out.println("Le voleur a etait deplacer.\n" + "Vous devez vous debarasser de " + (players[quiJoue].getNbrRessources()-7) + " ressources de votre choix.");
+            boolean run = true;
+            ((Player) players[quiJoue]).afficheRessource();
+            deleteAfficheRessourceList();
+
+            deleteAfficheCommande();
+            while (run){
+                if (players[quiJoue].getNbrRessources() > 7) {
+                    System.out.println("Il faut rajouter encore: " + (players[quiJoue].getNbrRessources() - 7) + " ressources");
+                }
+
+                String reponse = askString("des");
+
+                if(reponse.contains("ajou")){
+                    deleteAdd(askInteger("id"));
+                }
+                if(reponse.contains("enlev")){
+                    if(removeRessource.size() <= 0){
+                        System.out.println("La liste est vide");
+                    }else {
+                        deleteRemove(askInteger("id"));
+                    }
+                }
+                if(reponse.contains("conf")){
+                    if(deleteAccept()){
+                        run = false;
+                        System.out.println("| ! |");
+                    }
+                }
+                if (reponse.contains("af")) {
+                    ((Player) players[quiJoue]).afficheRessource();
+                }
+                if (reponse.contains("ar")) {
+                    deleteAfficheAddRessource();
+                }
+                if (reponse.contains("ac")) {
+                    deleteAfficheCommande();
+                }
+                if (reponse.contains("id")) {
+                    deleteAfficheRessourceList();
+                }
+            }
+        }
+        players[quiJoue].setThiefPlay(false);
+        System.out.println("| 4 |");
+
+    }
+
+    private void deleteAfficheRessourceList(){
+        System.out.println("\n+------------+---------+---------+---------+---------+---------+");
+        System.out.println("|     ID     |    1    |    2    |    3    |    4    |    5    |");
+        System.out.println("+------------+---------+---------+---------+---------+---------+");
+        System.out.println("| Ressources |   " + Resources.BLE + "   | " + Resources.ARGILE + "  | " + Resources.MINERAI + " |  " + Resources.BOIS + "   | " + Resources.MOUTON + "  |");
+        System.out.println("+------------+---------+---------+---------+---------+---------+");
+    }
+
+    private void deleteAfficheAddRessource(){
+        if(removeRessource.size() >= 1){
+            System.out.println("+------------"+ StringUtil.buildTablePatternV2("---------+", removeRessource.size()));
+            System.out.print("| Ressources |");
+            for(Resources x : removeRessource){
+                System.out.print(StringUtil.center(x.toString(),9) + "|");
+            }
+            System.out.println("\n+------------"+ StringUtil.buildTablePatternV2("---------+", removeRessource.size()));
+        }else {
+            System.out.println("La liste est vide");
+        }
+    }
+
+    private void deleteAfficheCommande(){
+        System.out.println("Commandes:");
+        System.out.println(" - Ajouter(aj)");
+        System.out.println(" - Enlever(en)");
+        System.out.println(" - Confirmer(co)");
+        System.out.println(" - Afficher les commandes(ac)");
+        System.out.println(" - Afficher mes ressources(af)");
+        System.out.println(" - Afficher qui sont rajouter(ar)");
+        System.out.println(" - Afficher les id des ressources(id)");
+        System.out.println();
+    }
+
+    private Resources deleteChoixRessource(int choix){
+        switch (choix) {
+            case 1:
+                return Resources.BLE;
+            case 2:
+                return Resources.ARGILE;
+            case 3:
+                return Resources.MINERAI;
+            case 4:
+                return Resources.BOIS;
+            case 5:
+                return Resources.MOUTON;
+        }
+        return null;
+    }
+
+    private void deleteAdd(int id){
+        Resources to_add = deleteChoixRessource(id);
+        if (players[quiJoue].getNbrRessources() <= 7) {
+            System.out.println("Vous avait rajoute le bon nombre de ressources");
+            return;
+        }
+        if(players[quiJoue].getResources().get(to_add) >= 1) {
+            removeRessource.add(to_add);
+            players[quiJoue].setResources(to_add,players[quiJoue].getResources().get(to_add) - 1);
+            System.out.println("Vous avez avez rajouter " + to_add);
+        }else {
+            System.out.println("Vous avez pas asses de cette ressource merci de choisir une autre");
+        }
+    }
+
+    private void deleteRemove(int id){
+        Resources to_add = deleteChoixRessource(id);
+        if(removeRessource.size() <= 0){
+            System.out.println("La liste est vide");
+            return;
+        }
+        if(removeRessource.contains(to_add)) {
+            removeRessource.remove(to_add);
+            players[quiJoue].setResources(to_add,players[quiJoue].getResources().get(to_add) + 1);
+            System.out.println("Vous avez avez enlever une " + to_add);
+        }else {
+            System.out.println("Cette ressource n'est pas dans la liste");
+        }
+    }
+
+    private boolean deleteAccept(){
+        if(removeRessource.size() <= 0){
+            System.out.println("La liste est vide");
+            return false;
+        }
+        System.out.print("Voulez vous effacer ces ressources: ");
+        for(Resources x : removeRessource){
+            System.out.print(x.toString() + ", ");
+        }
+
+        boolean reponse = askYesNo("yesno", -99);
+
+        if(reponse) {
+            System.out.println("Vous avez supprimer les ressources");
+            return true;
+        }
+        return false;
     }
 
     public void round(){

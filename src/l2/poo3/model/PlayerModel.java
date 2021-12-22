@@ -13,15 +13,23 @@ public abstract class PlayerModel {
     private final Map<Resources, Integer> resources = new HashMap<>();
     private final Map<CartesDev, Integer> cartesDev = new HashMap<>();
 
-    private boolean throwDice = false;
+    private boolean throwDice = false, thiefPlay = false;
 
-    private int pointDeVic = 0;
+    private int pointDeVic = 0, nbrRessources = 0;
 
     protected PlayerModel(Pcolor color) {
         this.color = color;
         initResources();
         cartesDev.put(CartesDev.Chevalier, 0);
         cartesDev.put(CartesDev.Progres, 0);
+    }
+
+    public boolean isThiefPlay() {
+        return thiefPlay;
+    }
+
+    public void setThiefPlay(boolean thiefPlay) {
+        this.thiefPlay = thiefPlay;
     }
 
     public boolean isThrowDice() {
@@ -60,9 +68,14 @@ public abstract class PlayerModel {
         return pointDeVic;
     }
 
-    public final boolean updateResources(Resources res, int value){
+    public int getNbrRessources() {
+        return nbrRessources;
+    }
+
+    public final boolean setResources(Resources res, int value){
 
         resources.replace(res, value);
+        updateRessources();
         if(resources.get(res) == value){
             return true;
         }
@@ -85,6 +98,20 @@ public abstract class PlayerModel {
             to_return.append(res.getKey() + ": " + res.getValue() + "\n");
         }
         return to_return.toString();
+    }
+
+    public void updateRessources(){
+        int maxCartes = 0;
+        for(int i: resources.values()){
+            maxCartes += i;
+        }
+        nbrRessources = maxCartes;
+    }
+
+    public void debug(){
+        for(Map.Entry<Resources, Integer> t : resources.entrySet()){
+            resources.put(t.getKey(), 2);
+        }
     }
 
     public final String toString(){

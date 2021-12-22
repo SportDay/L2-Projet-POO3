@@ -277,11 +277,12 @@ public class Port extends CaseModel {
         }
         if(p.getResources().get(to_add) >= 1) {
             sellRessource.add(to_add);
-            p.getResources().put(to_add, p.getResources().get(to_add) - 1);
+            p.setResources(to_add,p.getResources().get(to_add) - 1);
+
 
             System.out.println("Vous avez avez rajouter " + to_add);
         }else {
-            System.out.println("Vous avez pas asse de cette ressource merci de choisir une autre");
+            System.out.println("Vous avez pas asses de cette ressource merci de choisir une autre");
         }
     }
 
@@ -293,7 +294,8 @@ public class Port extends CaseModel {
         }
         if(sellRessource.contains(to_add)) {
             sellRessource.remove(to_add);
-            p.getResources().put(to_add, p.getResources().get(to_add) + 1);
+            p.setResources(to_add,p.getResources().get(to_add) + 1);
+
             System.out.println("Vous avez avez enlever une " + to_add);
         }else {
             System.out.println("Cette ressource n'est pas dans la liste");
@@ -314,7 +316,8 @@ public class Port extends CaseModel {
         boolean reponse = askYesNo();
 
         if(reponse) {
-            p.getResources().put(buy, p.getResources().get(buy) + 1);
+            p.setResources(buy,p.getResources().get(buy) + 1);
+
             System.out.println("Vous avait obtenu: " + buy);
             if(getPrix().contains("3:1")){
                 buy = null;

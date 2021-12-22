@@ -3,7 +3,6 @@ package l2.poo3.model;
 import l2.poo3.model.CaseType.*;
 import l2.poo3.model.Enum.Resources;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
 
@@ -176,31 +175,37 @@ public class PlateauxModel {
                                 if(num == number){
                                     if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y + 1][x + 1]).getPlayer();
+                                        System.out.println("Generate 1 " + player.getColor() + " " + res);
                                         if(plateaux[y + 1][x + 1].getName().contains("V")){
-                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                            player.setResources(res,player.getResources().get(res) + 2);
                                         }else {
-                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                            player.setResources(res,player.getResources().get(res) + 1);
                                         }
                                     } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y - 1][x - 1]).getPlayer();
+                                        System.out.println("Generate 2 " + player.getColor() + " " + res);
                                         if(plateaux[y - 1][x - 1].getName().contains("V")){
-                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                            player.setResources(res,player.getResources().get(res) + 2);
                                         }else {
-                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                            player.setResources(res,player.getResources().get(res) + 1);
                                         }
                                     } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
+                                        System.out.println("Generate 3 " + player.getColor() + " " + res);
+
                                         if(plateaux[y - 1][x + 1].getName().contains("V")){
-                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                            player.setResources(res,player.getResources().get(res) + 2);
                                         }else {
-                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                            player.setResources(res,player.getResources().get(res) + 1);
                                         }
                                     } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
+                                        System.out.println("Generate 4 " + player.getColor() + " " + res);
+
                                         if(plateaux[y + 1][x - 1].getName().contains("V")){
-                                            player.getResources().put(res, player.getResources().get(res)+2);
+                                            player.setResources(res,player.getResources().get(res) + 2);
                                         }else {
-                                            player.getResources().put(res, player.getResources().get(res)+1);
+                                            player.setResources(res,player.getResources().get(res) + 1);
                                         }
                                     }
                                 }
@@ -216,6 +221,9 @@ public class PlateauxModel {
         if(plateaux[y][x].thiefPresent()){
             return "Error thief present";
         }
+        if(plateaux[y][x] instanceof Batiment || plateaux[y][x] instanceof Route || plateaux[y][x] instanceof Port){
+            return "noneRessources";
+        }
         if(plateaux[thiefY][thiefX].thiefPresent()){
             plateaux[thiefY][thiefX].setThief(false);
             plateaux[y][x].setThief(true);
@@ -224,7 +232,7 @@ public class PlateauxModel {
         return "error";
     }
 
-    public Resources stealOneRessources(int x, int y) {
+    public Resources stealOneRessources(int x, int y, PlayerModel playerThief) {
         Resources max = null;
         PlayerModel player = null;
         int tmp = 0;
@@ -261,11 +269,12 @@ public class PlateauxModel {
                 }
             }
         }
-
         if(player != null && max != null){
-            player.getResources().put(max, tmp-1);
+            player.setResources(max,player.getResources().get(max)-1);
+            playerThief.setResources(max, player.getResources().get(max)+1);
+            player.updateRessources();
+            playerThief.updateRessources();
         }
-
 
         return max;
     }
