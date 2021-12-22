@@ -236,7 +236,7 @@ public class PlateauxModel {
         Resources max = null;
         PlayerModel player = null;
         int tmp = 0;
-        if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null) {
+        if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
            player = ((Batiment) plateaux[y + 1][x + 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
@@ -244,7 +244,7 @@ public class PlateauxModel {
                     max = t.getKey();
                 }
             }
-        } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null) {
+        } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
             player = ((Batiment) plateaux[y - 1][x - 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
@@ -252,7 +252,7 @@ public class PlateauxModel {
                     max = t.getKey();
                 }
             }
-        } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null) {
+        } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
             player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
@@ -260,7 +260,7 @@ public class PlateauxModel {
                     max = t.getKey();
                 }
             }
-        } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null) {
+        } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
             player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
