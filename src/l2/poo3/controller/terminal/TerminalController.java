@@ -22,8 +22,12 @@ public class TerminalController {
     private PlayerModel[] players;
     private final PlateauxModel plateaux;
     private final Scanner sc = new Scanner(System.in);
-    private int quiJoue, nbrTour = 1;
+    private int quiJoue, nbrTour = 1, playerThiefID = 0;
     private final TerminalView view;
+
+    private boolean thiefPlay = false;
+
+    private PlayerModel playerThief = null;
 
     public TerminalController(PlateauxModel plateaux, TerminalView view){
         this.plateaux = plateaux;
@@ -182,9 +186,9 @@ public class TerminalController {
                         } else {
                             System.out.println("Vous devez construire d'abord une collonie");
                         }
+                    }else {
+                        System.out.println("C'est pas le bon tour pour construire");
                     }
-                }else {
-                    System.out.println("C'est pas le bon tour pour construire");
                 }
             }else {
                 System.out.println("C'est pas un endroit pour construire un batiment");
@@ -305,6 +309,9 @@ public class TerminalController {
             quiJoue = 0;
             nbrTour++;
         }
+        if(playerThiefID == quiJoue){
+            thiefPlay = false;
+        }
         view.affichePlateaux();
     }
 
@@ -361,23 +368,15 @@ public class TerminalController {
         System.out.println("    - Finir (end): ");
     }
 
-    public void thwrodDice(){
+    public void throwdDice(){
         if(!players[quiJoue].isThrowDice()) {
             DiceModel dice = new DiceModel();
             int number = dice.throwDice();
             System.out.println("lancer de dés\nLe résultat est: " + number);
             players[quiJoue].setThrowDice(true);
             if(number == 7) {
-                while (true) {
-                    System.out.println("Merci de choisir, les nouvelles coordonnes du volleur");
-                    int x = askInteger("xBuild") - 1;
-                    int y = ((int) askString("yBuild").charAt(0) - 65);
-                    String result = plateaux.moveThief(x, y);
-                    if(result.contains("present")){
-                        System.out.println("Le voleur est deja sur cette case merci de le deplacer.");
-                    }else if(result.contains("ok")){
-                        break;
-                    }
+                if(players[quiJoue] instanceof Player) {
+                    thief();
                 }
             }else {
                 plateaux.generateRessources(number);
@@ -387,35 +386,55 @@ public class TerminalController {
         }
     }
 
+    private void thief(){
+        while (true) {
+            System.out.println("Merci de choisir, les nouvelles coordonnes du volleur");
+            int x = askInteger("xBuild") - 1;
+            int y = ((int) askString("yBuild").charAt(0) - 65);
+            String result = plateaux.moveThief(x, y);
+            if(result.contains("present")){
+                System.out.println("Le voleur est deja sur cette case merci de le deplacer.");
+            }else if(result.contains("ok")){
+                playerThief = players[quiJoue];
+                playerThiefID = quiJoue;
+                Resources res = plateaux.stealOneRessources(x,y);
+                players[quiJoue].getResources().put(res, players[quiJoue].getResources().get(res)+1);
+                break;
+            }
+        }
+    }
+
     private void askDecission() {
         while (true) {
             askQuestion();
             System.out.print("Merci d'indiquer votre choix: ");
             String rep = sc.next().toLowerCase();
-
+            System.out.println();
             if (nbrTour < 3) {
                 if (rep.contains("cb")) {
                     construireBat();
                     break;
-                }
-                if (rep.contains("br")) {
+                } else if (rep.contains("br")) {
                     construireRoute();
                     break;
-                }
-                if (rep.contains("end")) {
-                    joueurSuivant();
-                    for (int i = 0; i < 25; i++) {
-                        System.out.println();
+                } else if (rep.contains("end")) {
+                    if(players[quiJoue].getPointDeVic() > 0) {
+                        joueurSuivant();
+                        for (int i = 0; i < 25; i++) {
+                            System.out.println();
+                        }
+                        break;
+                    }else {
+                        System.out.println("Vous devez en moins contruite une collonie");
                     }
-                    break;
-                }
-                if (rep.contains("af")) {
+                }else if (rep.contains("af")) {
                     view.affichePlateaux();
                     break;
+                }else {
+                    System.out.println("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes (br) (cb)");
                 }
-                System.out.println("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes (br) (cb)");
             } else if (rep.contains("ld")) {
-                thwrodDice();
+                throwdDice();
                 break;
             } else if (players[quiJoue].isThrowDice() && nbrTour > 2) {
                 if (rep.contains("cr")) {

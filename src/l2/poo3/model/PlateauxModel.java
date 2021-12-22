@@ -3,6 +3,8 @@ package l2.poo3.model;
 import l2.poo3.model.CaseType.*;
 import l2.poo3.model.Enum.Resources;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 
 public class PlateauxModel {
@@ -220,5 +222,51 @@ public class PlateauxModel {
             return "ok";
         }
         return "error";
+    }
+
+    public Resources stealOneRessources(int x, int y) {
+        Resources max = null;
+        PlayerModel player = null;
+        int tmp = 0;
+        if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null) {
+           player = ((Batiment) plateaux[y + 1][x + 1]).getPlayer();
+            for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
+                if(tmp < t.getValue()){
+                    tmp = t.getValue();
+                    max = t.getKey();
+                }
+            }
+        } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null) {
+            player = ((Batiment) plateaux[y - 1][x - 1]).getPlayer();
+            for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
+                if(tmp < t.getValue()){
+                    tmp = t.getValue();
+                    max = t.getKey();
+                }
+            }
+        } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null) {
+            player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
+            for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
+                if(tmp < t.getValue()){
+                    tmp = t.getValue();
+                    max = t.getKey();
+                }
+            }
+        } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null) {
+            player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
+            for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
+                if(tmp < t.getValue()){
+                    tmp = t.getValue();
+                    max = t.getKey();
+                }
+            }
+        }
+
+        if(player != null && max != null){
+            player.getResources().put(max, tmp-1);
+        }
+
+
+        return max;
     }
 }
