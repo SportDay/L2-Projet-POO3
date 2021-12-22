@@ -368,7 +368,17 @@ public class TerminalController {
             System.out.println("lancer de dés\nLe résultat est: " + number);
             players[quiJoue].setThrowDice(true);
             if(number == 7) {
-                //voleur
+                while (true) {
+                    System.out.println("Merci de choisir, les nouvelles coordonnes du volleur");
+                    int x = askInteger("xBuild") - 1;
+                    int y = ((int) askString("yBuild").charAt(0) - 65);
+                    String result = plateaux.moveThief(x, y);
+                    if(result.contains("present")){
+                        System.out.println("Le voleur est deja sur cette case merci de le deplacer.");
+                    }else if(result.contains("ok")){
+                        break;
+                    }
+                }
             }else {
                 plateaux.generateRessources(number);
             }
@@ -377,13 +387,13 @@ public class TerminalController {
         }
     }
 
-    private void askDecission(){
+    private void askDecission() {
         while (true) {
             askQuestion();
             System.out.print("Merci d'indiquer votre choix: ");
             String rep = sc.next().toLowerCase();
 
-            if(nbrTour < 3) {
+            if (nbrTour < 3) {
                 if (rep.contains("cb")) {
                     construireBat();
                     break;
@@ -394,7 +404,7 @@ public class TerminalController {
                 }
                 if (rep.contains("end")) {
                     joueurSuivant();
-                    for (int i = 0; i < 25; i ++){
+                    for (int i = 0; i < 25; i++) {
                         System.out.println();
                     }
                     break;
@@ -404,14 +414,10 @@ public class TerminalController {
                     break;
                 }
                 System.out.println("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes (br) (cb)");
-            }
-
-            if (rep.contains("ld")) {
+            } else if (rep.contains("ld")) {
                 thwrodDice();
                 break;
-            }
-
-            if(players[quiJoue].isThrowDice() && nbrTour > 2) {
+            } else if (players[quiJoue].isThrowDice() && nbrTour > 2) {
                 if (rep.contains("cr")) {
                     consulterRessources();
                     break;
@@ -446,18 +452,17 @@ public class TerminalController {
                 }
                 if (rep.contains("end")) {
                     joueurSuivant();
-                    for (int i = 0; i < 25; i ++){
+                    for (int i = 0; i < 25; i++) {
                         System.out.println();
                     }
                     break;
                 }
-            }else if(nbrTour > 2){
+            } else if (nbrTour > 2) {
                 System.out.println("D'abord il faut lancer les dés (ld)");
                 break;
+            }else {
+                System.out.println("Reponse incorrecte!");
             }
-
-
-            System.out.println("Reponse incorrecte!");
         }
     }
 

@@ -8,8 +8,8 @@ import java.util.Random;
 public class PlateauxModel {
 
     private CaseModel[][] plateaux;
-    private int length_x, length_y;
-    private int carteDevPos = 0;
+    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY;
+    
 
     private final CartesDevList cartesDevList = new CartesDevList();
 
@@ -80,6 +80,8 @@ public class PlateauxModel {
                         } else if (y >= (length_y) / 2 && x >= (length_x) / 2 && !setThief) {
                             plateaux[y][x] = new Deserts();
                             setThief = true;
+                            thiefX = x;
+                            thiefY = y;
                         } else if (x != 0 && x != length_x - 1) {
                             int randomCase = new Random().nextInt(5);
                             switch (randomCase) {
@@ -170,7 +172,6 @@ public class PlateauxModel {
                                 Resources res = cas.getNature();
                                 int num = cas.getNumber();
                                 if(num == number){
-                                    System.out.println("GENERATE");
                                     if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y + 1][x + 1]).getPlayer();
                                         if(plateaux[y + 1][x + 1].getName().contains("V")){
@@ -207,5 +208,17 @@ public class PlateauxModel {
                 }
             }
         }
+    }
+
+    public String moveThief(int x, int y) {
+        if(plateaux[y][x].thiefPresent()){
+            return "Error thief present";
+        }
+        if(plateaux[thiefY][thiefX].thiefPresent()){
+            plateaux[thiefY][thiefX].setThief(false);
+            plateaux[y][x].setThief(true);
+            return "ok";
+        }
+        return "error";
     }
 }

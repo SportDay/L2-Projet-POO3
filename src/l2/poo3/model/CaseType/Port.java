@@ -41,7 +41,6 @@ public class Port extends CaseModel {
             while (add) {
                 int randomCase = new Random().nextInt(5) + 1;
                 if(buy == null){
-                    System.out.println(1);
                     buy = choixRessource(randomCase);
                     super.setNature(buy);
                     add = false;
