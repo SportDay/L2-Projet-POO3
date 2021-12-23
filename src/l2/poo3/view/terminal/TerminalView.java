@@ -436,8 +436,6 @@ public class TerminalView {
         return false;
     }
 
-
-
     public void deleteRessources(PlayerModel player){
         if(player.getNbrRessources() > 7 && player instanceof Player) {
             System.out.println("Le voleur a etait deplacer.\n" + "Vous devez vous debarasser de " + (player.getNbrRessources()-7) + " ressources de votre choix.");
