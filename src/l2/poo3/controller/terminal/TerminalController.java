@@ -19,14 +19,18 @@ import java.util.regex.Pattern;
 
 public class TerminalController {
 
-    private ArrayList<Resources> removeRessource = new ArrayList<>();
-
-
     private PlayerModel[] players;
     private final PlateauxModel plateaux;
     private final Scanner sc = new Scanner(System.in);
     private int quiJoue, nbrTour = 1;
     private final TerminalView view;
+
+    private PlayerModel biggestThief = null;
+
+    private boolean monopole = false;
+    private PlayerModel monopolePlayer = null;
+    private Resources monopoleRes = null;
+
 
 
     public TerminalController(PlateauxModel plateaux, TerminalView view){
@@ -86,8 +90,10 @@ public class TerminalController {
                 System.out.print("Veuillez indiquer la largeur du tableau: ");
             }else if(type.contains("xBuild")){
                 System.out.print("Veuillez indiquer la cordonne x: ");
-            }else if(type.equalsIgnoreCase("id")) {
-                System.out.print("Veuillez indiquer indiquer l'id de la ressource que vous voulez echanger: ");
+            }else if(type.contains("idCartes")){
+                System.out.print("Veuillez indiquer l'id de la carte que vous voulez utiliser: ");
+            }else if(type.contains("idRessources")){
+                System.out.print("Veuillez indiquer l'id de la ressource que vous voulez obtenir: ");
             }
             String input = sc.next();
             try {
@@ -96,7 +102,7 @@ public class TerminalController {
                     if (to_return == 3 || to_return == 4) {
                        return to_return;
                     }
-                }else if(type.contains("id")){
+                }else if(type.contains("idCartes") || type.contains("idRessources")){
                     if(to_return >= 1 && to_return <= 5){
                         return to_return;
                     }
@@ -152,7 +158,7 @@ public class TerminalController {
 
     public void consulterRessources() {
         if(players != null && players[quiJoue] instanceof Player){
-            ((Player) players[quiJoue]).afficheRessource();
+            view.afficheRessource(players[quiJoue], false);
         }
     }
 
@@ -263,18 +269,15 @@ public class TerminalController {
                 CartesDev carte = plateaux.getCartesDevList().getList().get(plateaux.getCarteDevPos());
                 System.out.println(plateaux.getCartesDevList().getList());
                 if (carte.equals(CartesDev.PointVictoire)) {
-                    players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic() + 1);
-                    System.out.println("Vous avez obtenu un point de victoire");
-                } else {
-                    players[quiJoue].updateCartes(carte);
-                    System.out.println("Vous avez obtenu une carte de " + carte);
+                    players[quiJoue].setInvPVic(players[quiJoue].getInvPVic() + 1);
                 }
+                players[quiJoue].updateCartes(carte, true);
+                System.out.println("Vous avez obtenu une carte de " + carte);
                 plateaux.setCarteDevPos(plateaux.getCarteDevPos() + 1);
 
                 players[quiJoue].setResources(Resources.MINERAI,players[quiJoue].getResources().get(Resources.MINERAI) - 1);
                 players[quiJoue].setResources(Resources.MOUTON,players[quiJoue].getResources().get(Resources.MOUTON) - 1);
                 players[quiJoue].setResources(Resources.BLE,players[quiJoue].getResources().get(Resources.BLE) - 1);
-
 
             } else {
                 System.out.println("Vous avez pas assez de ressources");
@@ -284,12 +287,93 @@ public class TerminalController {
 
     public void montrerCartes() {
         if(players != null && players[quiJoue] instanceof Player){
-            ((Player) players[quiJoue]).afficheCarteDev(false);
+            view.afficheCarteDev(false,players[quiJoue]);
         }
     }
 
     public void jouerCarte() {
+        view.afficheCarteDev(true, players[quiJoue]);
+        CartesDev carte = idToCartes(askInteger("idCartes"));
+        if(carte == CartesDev.PointVictoire){
+            System.out.println("Vous pouvez pas utiliser cette carte");
+        }else {
+            if (players[quiJoue].getCartesDev().get(carte) > 0) {
+                players[quiJoue].updateCartes(carte, false);
+                if(carte == CartesDev.Route){
+                    players[quiJoue].setResources(Resources.ARGILE, players[quiJoue].getResources().get(Resources.ARGILE)+2);
+                    players[quiJoue].setResources(Resources.BOIS, players[quiJoue].getResources().get(Resources.BOIS)+2);
+                    System.out.println("Vous avez obtenu les ressources necessaire pour construire 2 routes");
+                }else if(carte == CartesDev.Invention){
+                    int num = 0;
+                    while (num < 2) {
+                        view.afficheRessource(players[quiJoue], true);
+                        Resources get = idToRessources(askInteger("idRessources"));
+                        players[quiJoue].setResources(get, players[quiJoue].getResources().get(get)+1);
+                        System.out.println("Vous avez obtenue une ressource de type " + get);
+                        num++;
+                    }
+                }else if(carte == CartesDev.Monopole){
+                    view.afficheRessource(players[quiJoue], true);
+                    Resources get = idToRessources(askInteger("idRessources"));
+                    for(PlayerModel p : players){
+                        if(p != players[quiJoue]){
+                            int nbr = p.getResources().get(get);
+                            p.setResources(get, 0);
+                            players[quiJoue].setResources(get, players[quiJoue].getResources().get(get) + nbr);
+                            System.out.println("Le jouer: " + players[quiJoue].getColor() + " a voler tout votre stock de " + get);
+                            System.out.println("Vous avez voler tout le stock de " + get + " aux joueur " + p.getColor());
+                        }
+                    }
+                    monopole = true;
+                    monopolePlayer = players[quiJoue];
+                    monopoleRes = get;
+                }else if(carte == CartesDev.Chevalier){
+                    thief();
+                    players[quiJoue].increaseNbrKnight();
+                    updateBiggestKnight();
+                }
+            } else {
+                System.out.println("Vous avez pas assez de cartes");
+            }
+        }
+    }
 
+    private void updateBiggestKnight(){
+        for(PlayerModel p : players){
+            if(biggestThief == null){
+                biggestThief = p;
+            }else if(p != biggestThief){
+                if(p.getNbrKnight() > biggestThief.getNbrKnight()){
+                    biggestThief.setPointDeVic(biggestThief.getPointDeVic()-2);
+                    biggestThief.setMoreKnight(false);
+                    p.setMoreKnight(true);
+                    p.setPointDeVic(p.getPointDeVic()+2);
+                    biggestThief = p;
+                }
+            }
+        }
+    }
+
+    private CartesDev idToCartes(int id){
+        switch (id){
+            case 1: return CartesDev.Chevalier;
+            case 2: return CartesDev.Monopole;
+            case 3: return CartesDev.Route;
+            case 4: return CartesDev.Invention;
+            case 5: return CartesDev.PointVictoire;
+        }
+        return null;
+    }
+
+    private Resources idToRessources(int id){
+        switch (id){
+            case 1: return Resources.BOIS;
+            case 2: return Resources.BLE;
+            case 3: return Resources.ARGILE;
+            case 4: return Resources.MINERAI;
+            case 5: return Resources.MOUTON;
+        }
+        return null;
     }
 
     public void echangerPort() {
@@ -310,7 +394,7 @@ public class TerminalController {
                     allowUse = true;
                 }
                 if (allowUse) {
-                    ((Port) plateaux[y][x]).echangerPort((Player) players[quiJoue]);
+                    view.echangerPort((Player) players[quiJoue], (Port) plateaux[y][x]);
                 } else {
                     System.out.println("Vous devez avoir une collonie ou une ville a cote du port");
                 }
@@ -324,6 +408,12 @@ public class TerminalController {
         if (quiJoue == players.length){
             quiJoue = 0;
             nbrTour++;
+        }
+
+        if(players[quiJoue] == monopolePlayer){
+            monopole = false;
+            monopoleRes = null;
+            monopolePlayer = null;
         }
         view.affichePlateaux();
     }
@@ -371,6 +461,7 @@ public class TerminalController {
         System.out.println("Que voulez vous faire?:");
         System.out.println("    - Consulter les ressources (cr): ");
         System.out.println("    - Construire des batiments (cb): ");
+        System.out.println("    - Afficher les commandes (help): ");
         System.out.println("    - Echanger avec le port (ep): ");
         System.out.println("    - Afficher le plateaux (af): ");
         System.out.println("    - Construire une route (br): ");
@@ -412,12 +503,13 @@ public class TerminalController {
                 System.out.println("Merci de choisir une case qui peut generer des ressources");
             }else if(result.contains("ok")){
                 Resources res = plateaux.stealOneRessources(x,y, players[quiJoue]);
-                System.out.println("Vous avez voler une ressource: " + res.toString());
-                for(PlayerModel p : players){
-                    p.setThiefPlay(true);
+                if(res != null) {
+                    System.out.println("Vous avez voler une ressource: " + res);
+                    for (PlayerModel p : players) {
+                        p.setThiefPlay(true);
+                    }
                 }
-                deleteRessources();
-                System.out.println("| 2 |");
+                view.deleteRessources(players[quiJoue]);
                 good = false;
             }
         }
@@ -430,8 +522,11 @@ public class TerminalController {
 
     private void askDecission() {
         while (true) {
+            if(monopole && players[quiJoue] != monopolePlayer){
+                System.out.println("Le jouer: " + monopolePlayer.getColor() + " a voler tout votre stock de " + monopoleRes);
+            }
             if (players[quiJoue].isThiefPlay()) {
-                deleteRessources();
+                view.deleteRessources(players[quiJoue]);
             } else {
                 askQuestion();
                 System.out.print("Merci d'indiquer votre choix: ");
@@ -439,6 +534,10 @@ public class TerminalController {
                 System.out.println();
                 if(rep.contains("debug")){
                     debug();
+                    break;
+                }
+                if(rep.contains("help")){
+                    askQuestion();
                     break;
                 }
                 if (nbrTour < 3) {
@@ -523,40 +622,10 @@ public class TerminalController {
                 System.out.print("Que voulez-vous construire ? (colonie/ville) ");
             }else if(type.contains("yBuild")){
                 System.out.print("Veuillez indiquer la cordonne y: ");
-            }else if(type.equalsIgnoreCase("des")){
-                System.out.print("Faite votre choix: ");
             }
             String rep = sc.next().toLowerCase();
 
-            if(type.equalsIgnoreCase("des")) {
-                if (rep.contains("aj")) {
-                    return "ajout";
-                }
-                if (rep.contains("en")) {
-                    return "enlev";
-                }
-                if (rep.contains("co")) {
-                    return "conf";
-                }
-                if (rep.contains("an")) {
-                    return "annul";
-                }
-                if (rep.contains("af")) {
-                    return "af";
-                }
-                if (rep.contains("ar")) {
-                    return "ar";
-                }
-                if (rep.contains("ao")) {
-                    return "ao";
-                }
-                if (rep.contains("ac")) {
-                    return "ac";
-                }
-                if (rep.contains("id")) {
-                    return "id";
-                }
-            }else if(rep.contains("col") || rep.contains("vil")) {
+            if(rep.contains("col") || rep.contains("vil")) {
                 return rep;
             }else if(type.contains("yBuild")){
                 Pattern allLetter = Pattern.compile("[a-zA-Z]+");
@@ -568,154 +637,7 @@ public class TerminalController {
         }
     }
 
-    private void deleteRessources(){
-        System.out.println("| 3 |");
-        if(players[quiJoue].getNbrRessources() > 7 && players[quiJoue] instanceof Player) {
-            System.out.println("Le voleur a etait deplacer.\n" + "Vous devez vous debarasser de " + (players[quiJoue].getNbrRessources()-7) + " ressources de votre choix.");
-            boolean run = true;
-            ((Player) players[quiJoue]).afficheRessource();
-            deleteAfficheRessourceList();
 
-            deleteAfficheCommande();
-            while (run){
-                if (players[quiJoue].getNbrRessources() > 7) {
-                    System.out.println("Il faut rajouter encore: " + (players[quiJoue].getNbrRessources() - 7) + " ressources");
-                }
-
-                String reponse = askString("des");
-
-                if(reponse.contains("ajou")){
-                    deleteAdd(askInteger("id"));
-                }
-                if(reponse.contains("enlev")){
-                    if(removeRessource.size() <= 0){
-                        System.out.println("La liste est vide");
-                    }else {
-                        deleteRemove(askInteger("id"));
-                    }
-                }
-                if(reponse.contains("conf")){
-                    if(deleteAccept()){
-                        run = false;
-                        System.out.println("| ! |");
-                    }
-                }
-                if (reponse.contains("af")) {
-                    ((Player) players[quiJoue]).afficheRessource();
-                }
-                if (reponse.contains("ar")) {
-                    deleteAfficheAddRessource();
-                }
-                if (reponse.contains("ac")) {
-                    deleteAfficheCommande();
-                }
-                if (reponse.contains("id")) {
-                    deleteAfficheRessourceList();
-                }
-            }
-        }
-        players[quiJoue].setThiefPlay(false);
-        System.out.println("| 4 |");
-
-    }
-
-    private void deleteAfficheRessourceList(){
-        System.out.println("\n+------------+---------+---------+---------+---------+---------+");
-        System.out.println("|     ID     |    1    |    2    |    3    |    4    |    5    |");
-        System.out.println("+------------+---------+---------+---------+---------+---------+");
-        System.out.println("| Ressources |   " + Resources.BLE + "   | " + Resources.ARGILE + "  | " + Resources.MINERAI + " |  " + Resources.BOIS + "   | " + Resources.MOUTON + "  |");
-        System.out.println("+------------+---------+---------+---------+---------+---------+");
-    }
-
-    private void deleteAfficheAddRessource(){
-        if(removeRessource.size() >= 1){
-            System.out.println("+------------"+ StringUtil.buildTablePatternV2("---------+", removeRessource.size()));
-            System.out.print("| Ressources |");
-            for(Resources x : removeRessource){
-                System.out.print(StringUtil.center(x.toString(),9) + "|");
-            }
-            System.out.println("\n+------------"+ StringUtil.buildTablePatternV2("---------+", removeRessource.size()));
-        }else {
-            System.out.println("La liste est vide");
-        }
-    }
-
-    private void deleteAfficheCommande(){
-        System.out.println("Commandes:");
-        System.out.println(" - Ajouter(aj)");
-        System.out.println(" - Enlever(en)");
-        System.out.println(" - Confirmer(co)");
-        System.out.println(" - Afficher les commandes(ac)");
-        System.out.println(" - Afficher mes ressources(af)");
-        System.out.println(" - Afficher qui sont rajouter(ar)");
-        System.out.println(" - Afficher les id des ressources(id)");
-        System.out.println();
-    }
-
-    private Resources deleteChoixRessource(int choix){
-        switch (choix) {
-            case 1:
-                return Resources.BLE;
-            case 2:
-                return Resources.ARGILE;
-            case 3:
-                return Resources.MINERAI;
-            case 4:
-                return Resources.BOIS;
-            case 5:
-                return Resources.MOUTON;
-        }
-        return null;
-    }
-
-    private void deleteAdd(int id){
-        Resources to_add = deleteChoixRessource(id);
-        if (players[quiJoue].getNbrRessources() <= 7) {
-            System.out.println("Vous avait rajoute le bon nombre de ressources");
-            return;
-        }
-        if(players[quiJoue].getResources().get(to_add) >= 1) {
-            removeRessource.add(to_add);
-            players[quiJoue].setResources(to_add,players[quiJoue].getResources().get(to_add) - 1);
-            System.out.println("Vous avez avez rajouter " + to_add);
-        }else {
-            System.out.println("Vous avez pas asses de cette ressource merci de choisir une autre");
-        }
-    }
-
-    private void deleteRemove(int id){
-        Resources to_add = deleteChoixRessource(id);
-        if(removeRessource.size() <= 0){
-            System.out.println("La liste est vide");
-            return;
-        }
-        if(removeRessource.contains(to_add)) {
-            removeRessource.remove(to_add);
-            players[quiJoue].setResources(to_add,players[quiJoue].getResources().get(to_add) + 1);
-            System.out.println("Vous avez avez enlever une " + to_add);
-        }else {
-            System.out.println("Cette ressource n'est pas dans la liste");
-        }
-    }
-
-    private boolean deleteAccept(){
-        if(removeRessource.size() <= 0){
-            System.out.println("La liste est vide");
-            return false;
-        }
-        System.out.print("Voulez vous effacer ces ressources: ");
-        for(Resources x : removeRessource){
-            System.out.print(x.toString() + ", ");
-        }
-
-        boolean reponse = askYesNo("yesno", -99);
-
-        if(reponse) {
-            System.out.println("Vous avez supprimer les ressources");
-            return true;
-        }
-        return false;
-    }
 
     public void round(){
         view.affichePlateaux();
