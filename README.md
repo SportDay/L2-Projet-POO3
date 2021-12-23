@@ -14,7 +14,8 @@
 * Création du plateau
 * L’utilisateur doit pouvoir:
   * [x] Construire des routes, villes, cités
-  * [ ] Acheter, stocker, utiliser les cartes spéciales de développement
+  * [x] Acheter, stocker, utiliser les cartes spéciales de développement
   * [x] Consulter ses ressources
   * [x] Echanger des ressources via les ports
   * [x] Gérer le personnage du voleur en cas de 7 aux dés
+  * [ ] La route la plus longue
