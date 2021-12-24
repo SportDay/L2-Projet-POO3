@@ -204,7 +204,7 @@ public class TerminalView {
         afficheRessource(p, true);
 
         afficheCommande();
-
+        port.setSellRessource(new ArrayList<>());
         System.out.println("Ressource que vous pouvez recevoir: " + port.getBuy());
         while (run){
 
@@ -425,6 +425,15 @@ public class TerminalView {
         boolean reponse = askYesNo();
 
         if(reponse) {
+            if(port.getPrix().contains("2:1")){
+                if(port.getSellRessource().size() < 2){
+                    return false;
+                }
+            }else if(port.getPrix().contains("3:1")){
+                if(port.getSellRessource().size() < 3){
+                    return false;
+                }
+            }
             p.setResources(port.getBuy(),p.getResources().get(port.getBuy()) + 1);
 
             System.out.println("Vous avait obtenu: " + port.getBuy());
@@ -438,6 +447,7 @@ public class TerminalView {
 
     public void deleteRessources(PlayerModel player){
         if(player.getNbrRessources() > 7 && player instanceof Player) {
+            removeRessource = new LinkedList<>();
             System.out.println("Le voleur a etait deplacer.\n" + "Vous devez vous debarasser de " + (player.getNbrRessources()-7) + " ressources de votre choix.");
             boolean run = true;
             afficheRessource(player, true);
@@ -461,7 +471,7 @@ public class TerminalView {
                     }
                 }
                 if(reponse.contains("conf")){
-                    if(deleteAccept()){
+                    if(deleteAccept((Player) player)){
                         run = false;
                     }
                 }
@@ -503,24 +513,8 @@ public class TerminalView {
         System.out.println();
     }
 
-    private Resources deleteChoixRessource(int choix){
-        switch (choix) {
-            case 1:
-                return Resources.BLE;
-            case 2:
-                return Resources.ARGILE;
-            case 3:
-                return Resources.MINERAI;
-            case 4:
-                return Resources.BOIS;
-            case 5:
-                return Resources.MOUTON;
-        }
-        return null;
-    }
-
     private void deleteAdd(int id, Player player){
-        Resources to_add = deleteChoixRessource(id);
+        Resources to_add = choixRessource(id);
         if (player.getNbrRessources() <= 7) {
             System.out.println("Vous avait rajoute le bon nombre de ressources");
             return;
@@ -535,7 +529,7 @@ public class TerminalView {
     }
 
     private void deleteRemove(int id, Player player){
-        Resources to_add = deleteChoixRessource(id);
+        Resources to_add = choixRessource(id);
         if(removeRessource.size() <= 0){
             System.out.println("La liste est vide");
             return;
@@ -549,7 +543,7 @@ public class TerminalView {
         }
     }
 
-    private boolean deleteAccept(){
+    private boolean deleteAccept(Player player){
         if(removeRessource.size() <= 0){
             System.out.println("La liste est vide");
             return false;
@@ -562,8 +556,12 @@ public class TerminalView {
         boolean reponse = askYesNo();
 
         if(reponse) {
-            System.out.println("Vous avez supprimer les ressources");
-            return true;
+            if(removeRessource.size() >= (player.getNbrRessources()-7)) {
+                System.out.println("Vous avez supprimer les ressources");
+                return true;
+            }else {
+                return false;
+            }
         }
         return false;
     }

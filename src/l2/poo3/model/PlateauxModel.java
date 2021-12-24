@@ -3,6 +3,7 @@ package l2.poo3.model;
 import l2.poo3.model.CaseType.*;
 import l2.poo3.model.Enum.Resources;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -168,7 +169,7 @@ public class PlateauxModel {
                 for (int x = 0; x < plateaux[y].length; x++) {
                     if (plateaux[y][x] != null) {
                         CaseModel cas = plateaux[y][x];
-                        if (x % 2 == 0) {
+                        if (x % 2 == 0 && !cas.thiefPresent()) {
                             if(!(cas.getNumber() < 0) && !(cas instanceof Port) && cas.getNature() != null){
                                 Resources res = cas.getNature();
                                 int num = cas.getNumber();
@@ -227,6 +228,8 @@ public class PlateauxModel {
         if(plateaux[thiefY][thiefX].thiefPresent()){
             plateaux[thiefY][thiefX].setThief(false);
             plateaux[y][x].setThief(true);
+            thiefX = x;
+            thiefY = y;
             return "ok";
         }
         return "error";
@@ -244,7 +247,7 @@ public class PlateauxModel {
                     max = t.getKey();
                 }
             }
-        } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
+        } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != playerThief) {
             player = ((Batiment) plateaux[y - 1][x - 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
@@ -252,7 +255,7 @@ public class PlateauxModel {
                     max = t.getKey();
                 }
             }
-        } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
+        } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != playerThief) {
             player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
@@ -260,7 +263,7 @@ public class PlateauxModel {
                     max = t.getKey();
                 }
             }
-        } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != playerThief) {
+        } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != playerThief) {
             player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
             for(Map.Entry<Resources, Integer> t : player.getResources().entrySet()){
                 if(tmp < t.getValue()){
@@ -277,5 +280,240 @@ public class PlateauxModel {
         }
 
         return max;
+    }
+
+
+    //Marche plus en moins
+    public int getLengthBiggestRoad(int x, int y, PlayerModel player){
+        tmp = new ArrayList<Route>();
+        int[] tmpCords =  findLastRoad(x,y, player);
+        if(tmpCords != null){
+            x = tmpCords[0];
+            y = tmpCords[1];
+            tmp = new ArrayList<Route>();
+            return checkRoad(x,y, player);
+        }
+        return 0;
+    }
+
+    int[] lastRoadCords = new int[2];
+
+    ArrayList<Route> tmp = new ArrayList<Route>();
+
+    private int[] findLastRoad(int x, int y, PlayerModel player){
+        if(!tmp.contains((Route) plateaux[y][x])) {
+            tmp.add((Route) plateaux[y][x]);
+        }
+
+        if(endRoad(x, y, player)){
+            lastRoadCords[0] = x;
+            lastRoadCords[1] = y;
+            return lastRoadCords;
+        }
+
+        if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Route && ((Route) plateaux[y + 1][x + 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y + 1][x + 1])) {
+                tmp.add((Route) plateaux[y + 1][x + 1]);
+                findLastRoad(x + 1, y + 1, player);
+            }
+        }
+        if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Route && ((Route) plateaux[y - 1][x - 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y - 1][x - 1])) {
+                tmp.add((Route) plateaux[y - 1][x - 1]);
+                findLastRoad(x - 1, y - 1, player);
+            }
+        }
+        if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Route && ((Route) plateaux[y - 1][x + 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y - 1][x + 1])) {
+                tmp.add((Route) plateaux[y - 1][x + 1]);
+                findLastRoad(x + 1, y - 1, player);
+            }
+        }
+        if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Route && ((Route) plateaux[y + 1][x - 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y + 1][x - 1])) {
+                tmp.add((Route) plateaux[y + 1][x - 1]);
+                findLastRoad(x - 1, y + 1, player);
+            }
+        }
+
+        if (y % 2 != 0){
+            if (x + 2 <= getLength_x() - 1 && plateaux[y][x + 2] instanceof Route && ((Route) plateaux[y][x + 2]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y][x + 2])) {
+                    tmp.add((Route) plateaux[y][x + 2]);
+                    findLastRoad(x + 2, y, player);
+                }
+            }
+            if (x - 2 >= 0 && plateaux[y][x - 2] instanceof Route && ((Route) plateaux[y][x - 2]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y][x - 2])) {
+                    tmp.add((Route) plateaux[y][x - 2]);
+                    findLastRoad(x - 2, y, player);
+                }
+            }
+        }
+        if(x % 2 != 0){
+            if (y - 2 >= 0 && plateaux[y - 2][x] instanceof Route && ((Route) plateaux[y - 2][x]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y-2][x])) {
+                    tmp.add((Route) plateaux[y - 2][x]);
+                    findLastRoad(x, y - 2, player);
+                }
+            }
+            if (y + 2 <= getLength_y() - 1 && plateaux[y + 2][x] instanceof Route && ((Route) plateaux[y + 2][x]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y + 2][x])) {
+                    tmp.add((Route) plateaux[y + 2][x]);
+                    findLastRoad(x, y + 2, player);
+                }
+            }
+        }
+        return lastRoadCords;
+    }
+
+    public int checkRoad(int x, int y, PlayerModel player){
+        if(!tmp.contains((Route) plateaux[y][x])) {
+            tmp.add((Route) plateaux[y][x]);
+        }
+        if(endRoad(x, y, player)){
+            return 1;
+        }
+
+        int upl = 0, downl = 0, upr = 0, downr = 0, down = 0, up = 0, left = 0, right = 0;
+        if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Route && ((Route) plateaux[y + 1][x + 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y + 1][x + 1])) {
+                tmp.add((Route) plateaux[y + 1][x + 1]);
+                downr = checkRoad(x + 1, y + 1, player);
+            }
+        }
+        if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Route && ((Route) plateaux[y - 1][x - 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y - 1][x - 1])) {
+                tmp.add((Route) plateaux[y - 1][x - 1]);
+                upl = checkRoad(x - 1, y - 1, player);
+            }
+        }
+        if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Route && ((Route) plateaux[y - 1][x + 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y - 1][x + 1])) {
+                tmp.add((Route) plateaux[y - 1][x + 1]);
+                upr = checkRoad(x + 1, y - 1, player);
+            }
+        }
+        if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Route && ((Route) plateaux[y + 1][x - 1]).getPlayer() == player) {
+            if(!tmp.contains((Route) plateaux[y + 1][x - 1])) {
+                tmp.add((Route) plateaux[y + 1][x - 1]);
+
+                downl = checkRoad(x - 1, y + 1, player);
+            }
+        }
+
+        if (y % 2 != 0){
+            if (x + 2 <= getLength_x() - 1 && plateaux[y][x + 2] instanceof Route && ((Route) plateaux[y][x + 2]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y ][x + 2])) {
+                    tmp.add((Route) plateaux[y][x + 2]);
+                    right = checkRoad(x + 2, y, player);
+                }
+            }
+            if (x - 2 >= 0 && plateaux[y][x - 2] instanceof Route && ((Route) plateaux[y][x - 2]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y][x - 2])) {
+                    tmp.add((Route) plateaux[y][x - 2]);
+                    left = checkRoad(x - 2, y, player);
+                }
+            }
+        }
+        if(x % 2 != 0){
+            if (y - 2 >= 0 && plateaux[y - 2][x] instanceof Route && ((Route) plateaux[y - 2][x]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y - 2][x])) {
+                    tmp.add((Route) plateaux[y - 2][x]);
+                    up = checkRoad(x, y - 2, player);
+                }
+            }
+            if (y + 2 <= getLength_y() - 1 && plateaux[y + 2][x] instanceof Route && ((Route) plateaux[y + 2][x]).getPlayer() == player) {
+                if(!tmp.contains((Route) plateaux[y + 2][x])) {
+                    tmp.add((Route) plateaux[y + 2][x]);
+                    down = checkRoad(x, y + 2, player);
+                }
+            }
+        }
+        return 1+ Math.max(Math.max(Math.max(upr,upl),Math.max(downl,downr)), Math.max(Math.max(left,right),Math.max(up,down)));
+    }
+
+    private boolean endRoad(int x, int y, PlayerModel player){
+        if(plateaux[y][x] instanceof  Route){
+            boolean to_return = false;
+            if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Route && ((Route) plateaux[y + 1][x + 1]).getPlayer() != player) {
+                to_return = true;
+            }
+            if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Route && ((Route) plateaux[y - 1][x - 1]).getPlayer() != player) {
+                to_return = true;
+            }
+            if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Route && ((Route) plateaux[y - 1][x + 1]).getPlayer() != player) {
+                to_return = true;
+            }
+            if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Route && ((Route) plateaux[y + 1][x - 1]).getPlayer() != player) {
+                to_return = true;
+            }
+
+            if (y % 2 != 0){
+                if (x + 2 <= getLength_x() - 1 && plateaux[y][x + 2] instanceof Route && ((Route) plateaux[y][x + 2]).getPlayer() != player) {
+                    to_return = true;
+                }
+                if (x - 2 >= 0 && plateaux[y][x - 2] instanceof Route && ((Route) plateaux[y][x - 2]).getPlayer() != player ) {
+                    to_return = true;
+                }
+            }
+            if(x % 2 != 0){
+                if (y - 2 >= 0 && plateaux[y - 2][x] instanceof Route && ((Route) plateaux[y - 2][x]).getPlayer() != player) {
+                    to_return = true;
+                }
+                if (y + 2 <= getLength_y() - 1 && plateaux[y + 2][x] instanceof Route && ((Route) plateaux[y + 2][x]).getPlayer() != player) {
+                    to_return = true;
+                }
+            }
+
+            if (to_return){
+                if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Route && ((Route) plateaux[y + 1][x + 1]).getPlayer() == player) {
+                    if(!tmp.contains((Route) plateaux[y + 1][x + 1])) {
+                        to_return = false;
+                    }
+                }
+                if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Route && ((Route) plateaux[y - 1][x - 1]).getPlayer() == player) {
+                    if(!tmp.contains((Route) plateaux[y - 1][x - 1])) {
+                        to_return = false;
+                    }
+                }
+                if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Route && ((Route) plateaux[y - 1][x + 1]).getPlayer() == player) {
+                    if(!tmp.contains((Route) plateaux[y - 1][x + 1])) {
+                        to_return = false;
+                    }
+                }
+                if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Route && ((Route) plateaux[y + 1][x - 1]).getPlayer() == player) {
+                    if(!tmp.contains((Route) plateaux[y + 1][x - 1])) {
+                        to_return = false;
+                    }
+                }
+                if (y % 2 != 0){
+                    if (x + 2 <= getLength_x() - 1 && plateaux[y][x + 2] instanceof Route && ((Route) plateaux[y][x + 2]).getPlayer() == player) {
+                        if(!tmp.contains((Route) plateaux[y ][x + 2])) {
+                            to_return = false;
+                        }
+                    }
+                    if (x - 2 >= 0 && plateaux[y][x - 2] instanceof Route && ((Route) plateaux[y][x - 2]).getPlayer() == player) {
+                        if(!tmp.contains((Route) plateaux[y ][x - 2])) {
+                            to_return = false;
+                        }
+                    }
+                }
+                if(x % 2 != 0){
+                    if (y - 2 >= 0 && plateaux[y - 2][x] instanceof Route && ((Route) plateaux[y - 2][x]).getPlayer() == player) {
+                        if(!tmp.contains((Route) plateaux[y - 2][x ])) {
+                            to_return = false;
+                        }
+                    }
+                    if (y + 2 <= getLength_y() - 1 && plateaux[y + 2][x] instanceof Route && ((Route) plateaux[y + 2][x]).getPlayer() == player) {
+                        if(!tmp.contains((Route) plateaux[y + 2][x ])) {
+                            to_return = false;
+                        }
+                    }
+                }
+            }
+            return to_return;
+        }
+        return false;
     }
 }

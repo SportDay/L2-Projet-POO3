@@ -154,7 +154,7 @@ public abstract class PlayerModel {
 
     public void debug(){
         for(Map.Entry<Resources, Integer> t : resources.entrySet()){
-            resources.put(t.getKey(), 2);
+            resources.put(t.getKey(), 10);
         }
         for(Map.Entry<CartesDev, Integer> t : cartesDev.entrySet()){
             cartesDev.put(t.getKey(), 3);

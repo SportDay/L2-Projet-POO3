@@ -12,6 +12,7 @@ import l2.poo3.model.PlayerType.Ai;
 import l2.poo3.model.PlayerType.Player;
 import l2.poo3.view.terminal.TerminalView;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -286,10 +287,6 @@ public class TerminalController {
                     allowBuild = false;
                 }
 
-
-
-
-
                 if (plateaux[y][x] instanceof Route) {
                     if (allowBuild) {
                         plateaux[y][x].setName("R " + players[quiJoue].getColor().toString().charAt(0));
@@ -300,7 +297,8 @@ public class TerminalController {
 
                         System.out.println("Vous avez construit une route");
 
-                        //System.out.println(" | ! " + checkRoad(x,y, (Route) plateaux[y][x]) + " ! | ");
+                        System.out.println(" | ! " + getLengthBiggestRoad(x, y, players[quiJoue]) + " ! | ");
+
 
                     } else {
                         System.out.println("Vous avez pas le droit de construire une route ici");
@@ -314,59 +312,8 @@ public class TerminalController {
         }
     }
 
-    private void checkBiggestRoad(int x, int y){
-
-    }
-
-    public int checkRoad(int x, int y, Route father){
-        if(endRoad(x, y)){
-            System.out.println("| ! |");
-            return 1;
-        }
-
-        int upl = 0, downl = 0, upr = 0, downr = 0;
-
-        if (x + 1 <= getPlateaux().getLength_x() - 1 && y + 1 <= getPlateaux().getLength_y() - 1 && plateaux.getPlateaux()[y + 1][x + 1] instanceof Route && ((Route) plateaux.getPlateaux()[y + 1][x + 1]).getPlayer() == players[quiJoue] && plateaux.getPlateaux()[y + 1][x + 1] != father) {
-            downr = checkRoad(x+1,y+1, (Route) plateaux.getPlateaux()[y + 1][x + 1]);
-        }
-        if (x - 1 >= 0 && y - 1 >= 0 && plateaux.getPlateaux()[y - 1][x - 1] instanceof Route && ((Route) plateaux.getPlateaux()[y - 1][x - 1]).getPlayer() == players[quiJoue] && plateaux.getPlateaux()[y - 1][x - 1] != father) {
-            upl = checkRoad(x-1, y-1, (Route) plateaux.getPlateaux()[y - 1][x - 1]);
-        }
-        if (y - 1 >= 0 && x + 1 <= getPlateaux().getLength_x() - 1 && plateaux.getPlateaux()[y - 1][x + 1] instanceof Route && ((Route) plateaux.getPlateaux()[y - 1][x + 1]).getPlayer() == players[quiJoue] && plateaux.getPlateaux()[y - 1][x + 1] != father) {
-            upr = checkRoad(x+1, y-1, (Route) plateaux.getPlateaux()[y - 1][x - 1]);
-        }
-        if (y + 1 <= getPlateaux().getLength_y() - 1 && x - 1 >= 0 && plateaux.getPlateaux()[y + 1][x - 1] instanceof Route && ((Route) plateaux.getPlateaux()[y + 1][x - 1]).getPlayer() == players[quiJoue] && plateaux.getPlateaux()[y + 1][x - 1] != father) {
-            downl = checkRoad(x-1,y+1, (Route) plateaux.getPlateaux()[y + 1][x - 1]);
-        }
-        return 1+Math.max(Math.max(upr,upl),Math.max(downl,downr));
-    }
-
-    private boolean endRoad(int x, int y){
-        if(plateaux.getPlateaux()[y][x] instanceof  Route){
-            boolean to_return = false;
-            if (x + 1 <= getPlateaux().getLength_x() - 1 && y + 1 <= getPlateaux().getLength_y() - 1 && plateaux.getPlateaux()[y + 1][x + 1] instanceof Route && ((Route) plateaux.getPlateaux()[y + 1][x + 1]).getPlayer() != players[quiJoue]) {
-                to_return = true;
-            } else {
-                to_return = false;
-            }
-            if (x - 1 >= 0 && y - 1 >= 0 && plateaux.getPlateaux()[y - 1][x - 1] instanceof Route && ((Route) plateaux.getPlateaux()[y - 1][x - 1]).getPlayer() != players[quiJoue]) {
-                to_return = true;
-            } else {
-                to_return = false;
-            }
-            if (y - 1 >= 0 && x + 1 <= getPlateaux().getLength_x() - 1 && plateaux.getPlateaux()[y - 1][x + 1] instanceof Route && ((Route) plateaux.getPlateaux()[y - 1][x + 1]).getPlayer() != players[quiJoue]) {
-                to_return = true;
-            } else {
-                to_return = false;
-            }
-            if (y + 1 <= getPlateaux().getLength_y() - 1 && x - 1 >= 0 && plateaux.getPlateaux()[y + 1][x - 1] instanceof Route && ((Route) plateaux.getPlateaux()[y + 1][x - 1]).getPlayer() != players[quiJoue]) {
-                to_return = true;
-            }else {
-                to_return = false;
-            }
-            return to_return;
-        }
-        return false;
+    private int getLengthBiggestRoad(int x, int y, PlayerModel player){
+        return plateaux.getLengthBiggestRoad(x, y, player);
     }
 
     public void acheterCarte() {
@@ -588,9 +535,9 @@ public class TerminalController {
                 if(players[quiJoue] instanceof Player) {
                     thief();
                 }
-            }else {
-                plateaux.generateRessources(number);
             }
+            plateaux.generateRessources(number);
+
         }else {
             System.out.println("Vous avez deja lancer le des");
         }

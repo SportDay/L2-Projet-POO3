@@ -66,9 +66,9 @@ public abstract class CaseModel {
         this.thief = thief;
     }
 
-    public final String toString(){
-        return "Terrains: " + nature + " Numero: " + number;
-    }
+//    public final String toString(){
+//        return "Terrains: " + nature + " Numero: " + number;
+//    }
 
 
 }

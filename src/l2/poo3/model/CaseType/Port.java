@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Port extends CaseModel {
 
-    private final ArrayList<Resources> sellRessource = new ArrayList<>();
+    private ArrayList<Resources> sellRessource = new ArrayList<>();
 
     private String prix = "";
 
@@ -21,6 +21,10 @@ public class Port extends CaseModel {
         super(null, "Port", 2);
         setRandomPrice();
         setRandomResources();
+    }
+
+    public void setSellRessource(ArrayList<Resources> sellRessource) {
+        this.sellRessource = sellRessource;
     }
 
     public String getPrix() {
