@@ -14,9 +14,9 @@ public abstract class PlayerModel {
     private final Map<Resources, Integer> resources = new LinkedHashMap<>();
     private final Map<CartesDev, Integer> cartesDev = new LinkedHashMap<>();
 
-    private boolean throwDice = false, thiefPlay = false, biggestRoad = false, moreKnight = false;
+    private boolean throwDice = false, thiefPlay = false, largestRoadP = false, moreKnight = false;
 
-    private int pointDeVic = 0, nbrRessources = 0, nbrRoad = 0, nbrKnight = 0, invPVic = 0;
+    private int pointDeVic = 0, nbrRessources = 0, largestRoad = 0, nbrKnight = 0, invPVic = 0;
 
     protected PlayerModel(Pcolor color) {
         this.color = color;
@@ -28,12 +28,12 @@ public abstract class PlayerModel {
         cartesDev.put(CartesDev.PointVictoire, 0);
     }
 
-    public boolean isBiggestRoad() {
-        return biggestRoad;
+    public boolean isLargestRoad() {
+        return largestRoadP;
     }
 
-    public void setBiggestRoad(boolean biggestRoad) {
-        this.biggestRoad = biggestRoad;
+    public void setLargestRoad(boolean largestRoadP) {
+        this.largestRoadP = largestRoadP;
     }
 
     public boolean isMoreKnight() {
@@ -72,12 +72,12 @@ public abstract class PlayerModel {
         resources.put(Resources.MOUTON, 2);
     }
 
-    public int getNbrRoad() {
-        return nbrRoad;
+    public int getLargestRoad() {
+        return largestRoad;
     }
 
-    public void setNbrRoad(int nbrRoad) {
-        this.nbrRoad = nbrRoad;
+    public void setLargestRoad(int nbrRoad) {
+        this.largestRoad = nbrRoad;
     }
 
     public int getNbrKnight() {
@@ -112,7 +112,7 @@ public abstract class PlayerModel {
         this.invPVic = invPVic;
     }
 
-    public int getPoVicFinal(){
+    public int getPoVicReal(){
         return pointDeVic + invPVic;
     }
 
@@ -121,7 +121,6 @@ public abstract class PlayerModel {
     }
 
     public final void setResources(Resources res, int value){
-
         resources.replace(res, value);
         updateRessources();
     }
@@ -161,8 +160,18 @@ public abstract class PlayerModel {
         }
     }
 
+    public void debug(int t){
+        pointDeVic = t;
+    }
+
+    public void debug2(int t){
+        invPVic = t;
+    }
+
+
+
     public final String toString(){
-        return "\nJouer " + color + "\n" + getStringResources();
+        return "\nJouer " + color + "\n";
     }
 
 }

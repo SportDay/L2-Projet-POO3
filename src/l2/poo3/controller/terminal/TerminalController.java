@@ -12,7 +12,6 @@ import l2.poo3.model.PlayerType.Ai;
 import l2.poo3.model.PlayerType.Player;
 import l2.poo3.view.terminal.TerminalView;
 
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -24,7 +23,7 @@ public class TerminalController {
     private int quiJoue, nbrTour = 1;
     private final TerminalView view;
 
-    private PlayerModel biggestThief = null;
+    private PlayerModel biggestKnight = null;
 
     private boolean monopole = false;
     private PlayerModel monopolePlayer = null;
@@ -296,10 +295,7 @@ public class TerminalController {
                         players[quiJoue].setResources(Resources.ARGILE,players[quiJoue].getResources().get(Resources.ARGILE) - 1);
 
                         System.out.println("Vous avez construit une route");
-
-                        System.out.println(" | ! " + getLengthBiggestRoad(x, y, players[quiJoue]) + " ! | ");
-
-
+                        updateLargestRoadPlayer(x, y, players[quiJoue], players);
                     } else {
                         System.out.println("Vous avez pas le droit de construire une route ici");
                     }
@@ -312,8 +308,8 @@ public class TerminalController {
         }
     }
 
-    private int getLengthBiggestRoad(int x, int y, PlayerModel player){
-        return plateaux.getLengthBiggestRoad(x, y, player);
+    private void updateLargestRoadPlayer(int x, int y,PlayerModel player, PlayerModel[] players){
+        plateaux.updateLargestRoadPlayer(x, y, player,players);
     }
 
     public void acheterCarte() {
@@ -383,26 +379,10 @@ public class TerminalController {
                 }else if(carte == CartesDev.Chevalier){
                     thief();
                     players[quiJoue].increaseNbrKnight();
-                    updateBiggestKnight();
+                    plateaux.updateBiggestKnight(players);
                 }
             } else {
                 System.out.println("Vous avez pas assez de cartes");
-            }
-        }
-    }
-
-    private void updateBiggestKnight(){
-        for(PlayerModel p : players){
-            if(biggestThief == null){
-                biggestThief = p;
-            }else if(p != biggestThief){
-                if(p.getNbrKnight() > biggestThief.getNbrKnight()){
-                    biggestThief.setPointDeVic(biggestThief.getPointDeVic()-2);
-                    biggestThief.setMoreKnight(false);
-                    p.setMoreKnight(true);
-                    p.setPointDeVic(p.getPointDeVic()+2);
-                    biggestThief = p;
-                }
             }
         }
     }
@@ -585,8 +565,16 @@ public class TerminalController {
                 System.out.print("Merci d'indiquer votre choix: ");
                 String rep = sc.next().toLowerCase();
                 System.out.println();
-                if(rep.contains("debug")){
+                if(rep.equalsIgnoreCase("debug")){
                     debug();
+                    break;
+                }
+                if(rep.equalsIgnoreCase("debug1")){
+                    debug1();
+                    break;
+                }
+                if(rep.equalsIgnoreCase("debug2")){
+                    debug2();
                     break;
                 }
                 if(rep.contains("help")){
@@ -669,6 +657,16 @@ public class TerminalController {
         }
     }
 
+    private void debug1() {
+        System.out.println("DEBUG MODE 1!");
+        players[quiJoue].debug(askInteger("xBuild"));
+    }
+
+    private void debug2() {
+        System.out.println("DEBUG MODE 2!");
+        players[quiJoue].debug2(askInteger("xBuild"));
+    }
+
     private String askString(String type){
         while (true) {
             if(type.contains("cb")){
@@ -690,55 +688,36 @@ public class TerminalController {
         }
     }
 
+    private boolean endGame(){
+        if(plateaux.tmpWinPlayer(players) != null){
+            return true;
+        }
+        return false;
+    }
 
-
-    public void round(){
+    public void start(){
         view.affichePlateaux();
-        while(true){
+        while(!endGame()){
             if(players[quiJoue] instanceof Player){
                 askDecission();
+                System.out.println(players[quiJoue].getPoVicReal() + " " + players[quiJoue].getPointDeVic() + " " + players[quiJoue].getInvPVic());
             }else {
                 System.out.println("TOUR de l'ia");
                 joueurSuivant();
             }
-            /*line = sc.nextLine();
-
-            if ("consulter_ress".equals(line)) {
-                consulterRessources();
-
-            } else if ("construire_batiment".equals(line)) {
-                System.out.println("Que voulez-vous construire ? colonnie/cité");
-                String choix = sc.nextLine();
-                System.out.println("A quel emplacement ? ligne colonne");
-                String lieu = sc.nextLine();
-                //construireBat(choix, lieu);
-
-            } else if ("construire_route".equals(line)) {
-                System.out.println("Point de départ de la route ? ligne colonne");
-                String depart = sc.nextLine();
-                System.out.println("Point d'arrivée de la route ? ligne colonne");
-                String arrive = sc.nextLine();
-                construireRoute(depart,arrive);
-
-            } else if ("acheter_carte".equals(line)) {
-                acheterCarte();
-
-            } else if ("jouer_carte".equals(line)) {
-                montrerCartes();
-                System.out.println("Quelle carte voulez-vous jouer ? numéro");
-                String num = sc.nextLine();
-                jouerCarte(num);
-
-            } else if ("échanger".equals(line)) {
-                // J'ai pas encore d'idée pour faire ça
-            } else if ("finir".equals(line)) {
-                joueurSuivant();
-            }*/
         }
-    }
-
-    public void start(){
-        round();
+        if(endGame()){
+            PlayerModel tmpWinPlayer = plateaux.tmpWinPlayer(players);
+            if(tmpWinPlayer != null){
+                System.out.println("Fin de la partie");
+                System.out.println("Le joueur " + tmpWinPlayer.getColor() + " a obtenu " + tmpWinPlayer.getPointDeVic() + " point de victoire");
+                PlayerModel realWinPlayer = plateaux.realWinPlayer(players);
+                if(realWinPlayer != null) {
+                    System.out.println();
+                    System.out.println("Le vainqueur est le joueur " + realWinPlayer.getColor() + ", avec " + realWinPlayer.getPoVicReal() + " point de victoire, grace aux cartes de devloppement");
+                }
+            }
+        }
     }
 
 }

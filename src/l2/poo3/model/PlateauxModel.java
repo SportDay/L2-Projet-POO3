@@ -11,7 +11,9 @@ public class PlateauxModel {
 
     private CaseModel[][] plateaux;
     private int length_x, length_y, carteDevPos = 0, thiefX, thiefY;
-    
+
+    private PlayerModel biggestKnight = null;
+    private PlayerModel biggestRoad = null;
 
     private final CartesDevList cartesDevList = new CartesDevList();
 
@@ -283,14 +285,34 @@ public class PlateauxModel {
     }
 
 
+    public void updateBiggestKnight(PlayerModel[] players){
+        PlayerModel oldBiggestKnight = biggestKnight;
+        for(PlayerModel p : players){
+            if(biggestKnight == null){
+                biggestKnight = p;
+            }else if(p != biggestKnight){
+                if(p.getNbrKnight() > biggestKnight.getNbrKnight()){
+                    biggestKnight.setPointDeVic(biggestKnight.getPointDeVic()-2);
+                    biggestKnight.setMoreKnight(false);
+                    p.setMoreKnight(true);
+                    p.setPointDeVic(p.getPointDeVic()+2);
+                    biggestKnight = p;
+                }
+            }
+        }
+        if(oldBiggestKnight != biggestKnight){
+            System.out.println("Le joueur " + biggestKnight + " a la plus grande armee");
+        }
+    }
+
     //Marche plus en moins
-    public int getLengthBiggestRoad(int x, int y, PlayerModel player){
-        tmp = new ArrayList<Route>();
+    private int getLengthBiggestRoad(int x, int y, PlayerModel player){
+        tmp = new ArrayList<>();
         int[] tmpCords =  findLastRoad(x,y, player);
         if(tmpCords != null){
             x = tmpCords[0];
             y = tmpCords[1];
-            tmp = new ArrayList<Route>();
+            tmp = new ArrayList<>();
             return checkRoad(x,y, player);
         }
         return 0;
@@ -298,7 +320,7 @@ public class PlateauxModel {
 
     int[] lastRoadCords = new int[2];
 
-    ArrayList<Route> tmp = new ArrayList<Route>();
+    ArrayList<Route> tmp = new ArrayList<>();
 
     private int[] findLastRoad(int x, int y, PlayerModel player){
         if(!tmp.contains((Route) plateaux[y][x])) {
@@ -515,5 +537,50 @@ public class PlateauxModel {
             return to_return;
         }
         return false;
+    }
+
+    public void updateLargestRoadPlayer(int x, int y, PlayerModel player, PlayerModel[] players) {
+        int max_road = getLengthBiggestRoad(x, y, player);
+        player.setLargestRoad(max_road);
+        PlayerModel oldBiggestRoad = biggestRoad;
+        for(PlayerModel p : players){
+            if(biggestRoad == null){
+                biggestRoad = p;
+            }else if(p != biggestRoad){
+                if(p.getLargestRoad() >= 5 && biggestRoad.getLargestRoad() < p.getLargestRoad()){
+                    biggestRoad.setPointDeVic(biggestRoad.getPointDeVic()-2);
+                    biggestRoad.setLargestRoad(false);
+                    p.setLargestRoad(true);
+                    p.setPointDeVic(p.getPointDeVic()+2);
+                    biggestRoad = p;
+                }
+            }
+        }
+        if(oldBiggestRoad != biggestRoad){
+            System.out.println("Le joueur " + biggestRoad + " a la route la plus longue");
+        }
+    }
+
+    public PlayerModel tmpWinPlayer(PlayerModel[] players){
+        for(PlayerModel p : players){
+            if(p.getPointDeVic() >= 10){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public PlayerModel realWinPlayer(PlayerModel[] players){
+        PlayerModel winP = null;
+        for(PlayerModel p : players){
+            if(winP == null){
+                winP = p;
+            }else if(p != winP){
+                if(winP.getPoVicReal() < p.getPoVicReal()){
+                    winP = p;
+                }
+            }
+        }
+        return winP;
     }
 }

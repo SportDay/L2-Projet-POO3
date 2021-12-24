@@ -4,5 +4,10 @@ public enum Pcolor {
     RED,
     GREEN,
     YELLOW,
-    BLUE
+    BLUE;
+
+    @Override
+    public String toString() {
+        return super.toString().charAt(0)+super.toString().substring(1).toLowerCase();
+    }
 }
