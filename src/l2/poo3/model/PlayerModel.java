@@ -97,6 +97,9 @@ public abstract class PlayerModel {
     }
 
     public void setPointDeVic(int pointDeVic) {
+        if(pointDeVic < 0){
+            pointDeVic = 0;
+        }
         this.pointDeVic = pointDeVic;
     }
 
@@ -109,6 +112,9 @@ public abstract class PlayerModel {
     }
 
     public void setInvPVic(int invPVic) {
+        if(invPVic < 0){
+            invPVic = 0;
+        }
         this.invPVic = invPVic;
     }
 
@@ -153,8 +159,9 @@ public abstract class PlayerModel {
 
     public void debug(){
         for(Map.Entry<Resources, Integer> t : resources.entrySet()){
-            resources.put(t.getKey(), 10);
+            resources.put(t.getKey(), 2);
         }
+        updateRessources();
         for(Map.Entry<CartesDev, Integer> t : cartesDev.entrySet()){
             cartesDev.put(t.getKey(), 3);
         }
@@ -171,7 +178,7 @@ public abstract class PlayerModel {
 
 
     public final String toString(){
-        return "\nJouer " + color + "\n";
+        return color + "";
     }
 
 }

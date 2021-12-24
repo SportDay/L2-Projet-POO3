@@ -544,7 +544,7 @@ public class PlateauxModel {
         player.setLargestRoad(max_road);
         PlayerModel oldBiggestRoad = biggestRoad;
         for(PlayerModel p : players){
-            if(biggestRoad == null){
+            if(biggestRoad == null && p.getLargestRoad() >= 5){
                 biggestRoad = p;
             }else if(p != biggestRoad){
                 if(p.getLargestRoad() >= 5 && biggestRoad.getLargestRoad() < p.getLargestRoad()){
