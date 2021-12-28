@@ -4,7 +4,6 @@ import l2.poo3.model.Enum.CartesDev;
 import l2.poo3.model.Enum.Pcolor;
 import l2.poo3.model.Enum.Resources;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public abstract class PlayerModel {
 
     private boolean throwDice = false, thiefPlay = false, largestRoadP = false, moreKnight = false;
 
-    private int pointDeVic = 0, nbrRessources = 0, largestRoad = 0, nbrKnight = 0, invPVic = 0;
+    private int pointDeVic = 0, nbrRessources = 0, largestRoad = 0, nbrKnight = 0, invPVic = 0, nbrBat;
 
     protected PlayerModel(Pcolor color) {
         this.color = color;
@@ -30,6 +29,14 @@ public abstract class PlayerModel {
 
     public boolean isLargestRoad() {
         return largestRoadP;
+    }
+
+    public int getNbrBat() {
+        return nbrBat;
+    }
+
+    public void addNbrBat() {
+        nbrBat++;
     }
 
     public void setLargestRoad(boolean largestRoadP) {

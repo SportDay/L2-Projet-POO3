@@ -2,6 +2,8 @@ package l2.poo3.model;
 
 import l2.poo3.model.CaseType.*;
 import l2.poo3.model.Enum.Resources;
+import l2.poo3.view.ViewModel;
+import l2.poo3.view.terminal.TerminalView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -10,10 +12,12 @@ import java.util.Random;
 public class PlateauxModel {
 
     private CaseModel[][] plateaux;
-    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY;
+    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY, realX, realY;
 
     private PlayerModel biggestKnight = null;
     private PlayerModel biggestRoad = null;
+
+    private ViewModel viewModel;
 
     private final CartesDevList cartesDevList = new CartesDevList();
 
@@ -39,6 +43,10 @@ public class PlateauxModel {
 
     public PlateauxModel(){}
 
+    public void setViewModel(ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     public void initPlateaux(int x, int y){
         if(y > 11){
             y = 11;
@@ -52,6 +60,8 @@ public class PlateauxModel {
         if(x < 1){
             x = 4;
         }
+        realX = x;
+        realY = y;
         length_x = 2*x+3;
         length_y = 2*y+3;
         plateaux = new CaseModel[length_y][length_x];
@@ -60,6 +70,14 @@ public class PlateauxModel {
 
     public CaseModel[][] getPlateaux() {
         return plateaux;
+    }
+
+    public int getRealX() {
+        return realX;
+    }
+
+    public int getRealY() {
+        return realY;
     }
 
     public void construirePlateaux() {
@@ -165,7 +183,8 @@ public class PlateauxModel {
 
     }
 
-    public void generateRessources(int number) {
+    public boolean generateRessources(int number) {
+        boolean generate = false;
         for(int y = 0; y < plateaux.length; y++){
             if(y % 2 == 0) {
                 for (int x = 0; x < plateaux[y].length; x++) {
@@ -178,38 +197,79 @@ public class PlateauxModel {
                                 if(num == number){
                                     if (x + 1 <= getLength_x() - 1 && y + 1 <= getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x + 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y + 1][x + 1]).getPlayer();
-                                        System.out.println("Generate 1 " + player.getColor() + " " + res);
                                         if(plateaux[y + 1][x + 1].getName().contains("V")){
                                             player.setResources(res,player.getResources().get(res) + 2);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 2, res);
+                                            }else if(viewModel instanceof TerminalView){
+
+                                            }
                                         }else {
                                             player.setResources(res,player.getResources().get(res) + 1);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 1, res);
+                                            }else if(viewModel instanceof TerminalView){
+
+                                            }
                                         }
-                                    } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null) {
+                                        generate = true;
+                                    }
+                                    if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x - 1]).getPlayer() != null) {
                                         PlayerModel player = ((Batiment) plateaux[y - 1][x - 1]).getPlayer();
-                                        System.out.println("Generate 2 " + player.getColor() + " " + res);
                                         if(plateaux[y - 1][x - 1].getName().contains("V")){
                                             player.setResources(res,player.getResources().get(res) + 2);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 2, res);
+                                            }else if(viewModel instanceof TerminalView){
+
+                                            }
                                         }else {
                                             player.setResources(res,player.getResources().get(res) + 1);
-                                        }
-                                    } else if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null) {
-                                        PlayerModel player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
-                                        System.out.println("Generate 3 " + player.getColor() + " " + res);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 1, res);
+                                            }else if(viewModel instanceof TerminalView){
 
+                                            }
+                                        }
+                                        generate = true;
+                                    }
+                                    if (y - 1 >= 0 && x + 1 <= getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Batiment && ((Batiment) plateaux[y - 1][x + 1]).getPlayer() != null) {
+                                        PlayerModel player = ((Batiment) plateaux[y - 1][x + 1]).getPlayer();
                                         if(plateaux[y - 1][x + 1].getName().contains("V")){
                                             player.setResources(res,player.getResources().get(res) + 2);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 2, res);
+                                            }else if(viewModel instanceof TerminalView){
+
+                                            }
                                         }else {
                                             player.setResources(res,player.getResources().get(res) + 1);
-                                        }
-                                    } else if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null) {
-                                        PlayerModel player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
-                                        System.out.println("Generate 4 " + player.getColor() + " " + res);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 1, res);
+                                            }else if(viewModel instanceof TerminalView){
 
+                                            }
+                                        }
+                                        generate = true;
+                                    }
+                                    if (y + 1 <= getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Batiment && ((Batiment) plateaux[y + 1][x - 1]).getPlayer() != null) {
+                                        PlayerModel player = ((Batiment) plateaux[y + 1][x - 1]).getPlayer();
                                         if(plateaux[y + 1][x - 1].getName().contains("V")){
                                             player.setResources(res,player.getResources().get(res) + 2);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 2, res);
+                                            }else if(viewModel instanceof TerminalView){
+
+                                            }
                                         }else {
                                             player.setResources(res,player.getResources().get(res) + 1);
+                                            if(viewModel instanceof TerminalView){
+                                                ((TerminalView) viewModel).printGenerate(player, 1, res);
+                                            }else if(viewModel instanceof TerminalView){
+
+                                            }
                                         }
+                                        generate = true;
                                     }
                                 }
                             }
@@ -218,6 +278,7 @@ public class PlateauxModel {
                 }
             }
         }
+        return generate;
     }
 
     public String moveThief(int x, int y) {

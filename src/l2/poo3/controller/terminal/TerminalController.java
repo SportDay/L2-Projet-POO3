@@ -1,15 +1,9 @@
 package l2.poo3.controller.terminal;
 
-import l2.poo3.model.CaseModel;
 import l2.poo3.model.CaseType.*;
-import l2.poo3.model.DiceModel;
-import l2.poo3.model.Enum.CartesDev;
-import l2.poo3.model.Enum.Pcolor;
-import l2.poo3.model.Enum.Resources;
-import l2.poo3.model.PlateauxModel;
-import l2.poo3.model.PlayerModel;
-import l2.poo3.model.PlayerType.Ai;
-import l2.poo3.model.PlayerType.Player;
+import l2.poo3.model.Enum.*;
+import l2.poo3.model.*;
+import l2.poo3.model.PlayerType.*;
 import l2.poo3.view.terminal.TerminalView;
 
 import java.util.Scanner;
@@ -34,6 +28,7 @@ public class TerminalController {
     public TerminalController(PlateauxModel plateaux, TerminalView view){
         this.plateaux = plateaux;
         this.view = view;
+        plateaux.setViewModel(view);
         view.setController(this);
         showTitle();
         initAll();
@@ -48,24 +43,36 @@ public class TerminalController {
             switch (i){
                 case 0: if(ia){
                             players[i] = new Ai(Pcolor.RED);
+                            if(players[i] instanceof Ai) {
+                                ((Ai) players[i]).setPlateaux(plateaux);
+                            }
                         }else{
                             players[i] = new Player(Pcolor.RED);
                         }
                             break;
                 case 1: if(ia){
                             players[i] = new Ai(Pcolor.GREEN);
+                            if(players[i] instanceof Ai) {
+                                ((Ai) players[i]).setPlateaux(plateaux);
+                            }
                         }else{
                             players[i] = new Player(Pcolor.GREEN);
                         }
                     break;
                 case 2: if(ia){
                             players[i] = new Ai(Pcolor.YELLOW);
+                            if(players[i] instanceof Ai) {
+                                ((Ai) players[i]).setPlateaux(plateaux);
+                            }
                         }else{
                             players[i] = new Player(Pcolor.YELLOW);
                         }
                         break;
                 case 3: if(ia){
                             players[i] = new Ai(Pcolor.BLUE);
+                            if(players[i] instanceof Ai) {
+                                ((Ai) players[i]).setPlateaux(plateaux);
+                            }
                         }else{
                             players[i] = new Player(Pcolor.BLUE);
                         }
@@ -117,7 +124,6 @@ public class TerminalController {
     }
 
     private boolean askYesNo(String type, int i){
-        boolean ia = false;
         while (true) {
             if(type.contains("aiPlayer")) {
                 System.out.print("Veuillez indiquer si le jouer " + (i + 1) + " est un ordinateur (oui ou non): ");
@@ -202,7 +208,7 @@ public class TerminalController {
                             players[quiJoue].setResources(Resources.BLE, players[quiJoue].getResources().get(Resources.BLE) - 1);
                             players[quiJoue].setResources(Resources.MOUTON, players[quiJoue].getResources().get(Resources.MOUTON) - 1);
 
-
+                            players[quiJoue].addNbrBat();
                             players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic() + 1);
                         }else {
                             System.out.println("Vous pouvez pas contruire une collonie ici");
@@ -377,7 +383,7 @@ public class TerminalController {
                     monopolePlayer = players[quiJoue];
                     monopoleRes = get;
                 }else if(carte == CartesDev.Chevalier){
-                    thief();
+                    thiefPlayer();
                     players[quiJoue].increaseNbrKnight();
                     plateaux.updateBiggestKnight(players);
                 }
@@ -472,6 +478,9 @@ public class TerminalController {
                     if (((Batiment) cases).getPlayer() == null) {
                         return true;
                     }
+                    if (cases.getName().contains("C") && ((Batiment) cases).getPlayer() == players[quiJoue]) {
+                        return true;
+                    }
                 }
                 System.out.println("La case est aucuper");
             }
@@ -509,21 +518,30 @@ public class TerminalController {
         if(!players[quiJoue].isThrowDice()) {
             DiceModel dice = new DiceModel();
             int number = dice.throwDice();
-            System.out.println("lancer de dés\nLe résultat est: " + number);
+            System.out.println();
+            System.out.println("Lancer de dés\nLe résultat est: " + number);
+            System.out.println();
             players[quiJoue].setThrowDice(true);
             if(number == 7) {
                 if(players[quiJoue] instanceof Player) {
-                    thief();
+                    thiefPlayer();
+                }else if(players[quiJoue] instanceof Ai) {
+                    thiefAi();
                 }
             }
-            plateaux.generateRessources(number);
-
+            System.out.println("Generation des ressource");
+            boolean generate = plateaux.generateRessources(number);
+            if(generate){
+                System.out.println("Les ressources ont etait generer\n");
+            }else {
+                System.out.println("Aucune ressource n'a etait generer\n");
+            }
         }else {
             System.out.println("Vous avez deja lancer le des");
         }
     }
 
-    private void thief(){
+    private void thiefPlayer(){
         boolean good = true;
         while (good) {
             System.out.println("Merci de choisir, les nouvelles coordonnes du volleur");
@@ -546,6 +564,13 @@ public class TerminalController {
                 good = false;
             }
         }
+    }
+
+    private void thiefAi(){
+       if(players[quiJoue] instanceof Ai){
+           System.out.println("| THIEF AI |");
+           ((Ai) players[quiJoue]).thiefAi(plateaux.getRealX(), plateaux.getRealY(), players);
+       }
     }
 
     private void debug(){
@@ -700,9 +725,18 @@ public class TerminalController {
         while(!endGame()){
             if(players[quiJoue] instanceof Player){
                 askDecission();
-                System.out.println(players[quiJoue].getPoVicReal() + " " + players[quiJoue].getPointDeVic() + " " + players[quiJoue].getInvPVic());
-            }else {
-                System.out.println("TOUR de l'ia");
+            }else if(players[quiJoue] instanceof Ai){
+                System.out.println("AI " + players[quiJoue].getColor() + " a commencer son tour");
+                if (players[quiJoue].isThiefPlay()) {
+                    ((Ai) players[quiJoue]).deleteRessources();
+                }
+                throwdDice();
+                if(((Ai) players[quiJoue]).getPlateaux() != null) {
+                    ((Ai) players[quiJoue]).buildVill(plateaux.getRealX(), plateaux.getRealY());
+                    ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);
+                    ((Ai) players[quiJoue]).buildColl(plateaux.getRealX(), plateaux.getRealY(), players);
+                }
+                System.out.println("AI " + players[quiJoue].getColor() + " a finit son tour");
                 joueurSuivant();
             }
         }
@@ -710,11 +744,16 @@ public class TerminalController {
             PlayerModel tmpWinPlayer = plateaux.tmpWinPlayer(players);
             if(tmpWinPlayer != null){
                 System.out.println("Fin de la partie");
+                System.out.println("La partie a duree " + nbrTour + " tours");
                 System.out.println("Le joueur " + tmpWinPlayer.getColor() + " a obtenu " + tmpWinPlayer.getPointDeVic() + " point de victoire");
                 PlayerModel realWinPlayer = plateaux.realWinPlayer(players);
                 if(realWinPlayer != null) {
                     System.out.println();
-                    System.out.println("Le vainqueur est le joueur " + realWinPlayer.getColor() + ", avec " + realWinPlayer.getPoVicReal() + " point de victoire, grace aux cartes de devloppement");
+                    String text = "Le vainqueur est le joueur " + realWinPlayer.getColor() + ", avec " + realWinPlayer.getPoVicReal() + " point de victoire";
+                    if(realWinPlayer.getPoVicReal() > 10){
+                        text += " grace aux cartes de devloppement";
+                    }
+                    System.out.println(text);
                 }
             }
         }

@@ -16,6 +16,8 @@ public class CatanMain {
 
         Player p = new Player(Pcolor.RED);
 
+
+
         //terView.afficheCarteDev(true, p);
         //terView.afficheRessource(p,true);
 

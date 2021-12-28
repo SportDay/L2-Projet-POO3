@@ -1,24 +1,25 @@
 package l2.poo3.view.terminal;
 
 import l2.poo3.Other.StringUtil;
-import l2.poo3.controller.terminal.TerminalController;
-import l2.poo3.model.CaseModel;
+import l2.poo3.controller.terminal.*;
+import l2.poo3.model.*;
 import l2.poo3.model.CaseType.*;
-import l2.poo3.model.Enum.CartesDev;
-import l2.poo3.model.Enum.Resources;
-import l2.poo3.model.PlateauxModel;
-import l2.poo3.model.PlayerModel;
-import l2.poo3.model.PlayerType.Player;
+import l2.poo3.model.Enum.*;
+import l2.poo3.model.PlayerType.*;
+import l2.poo3.view.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
-public class TerminalView {
+public class TerminalView implements ViewModel {
 
     private TerminalController controller;
     private PlateauxModel plateaux;
+
+    private final Scanner sc = new Scanner(System.in);
+
 
     public TerminalController getController() {
         return controller;
@@ -283,7 +284,7 @@ public class TerminalView {
                 System.out.print("Veuillez indiquer indiquer l'id de la ressource que vous voulez effacer: ");
             }
 
-            String input = new Scanner(System.in).next();
+            String input = sc.next();
             try {
                 to_return = Integer.parseInt(input);
                 if(type.contains("id") || type.contains("idBuy") || type.contains("remove")){
@@ -304,7 +305,7 @@ public class TerminalView {
     private String askString(String type){
         while (true) {
             System.out.print("Faite votre choix: ");
-            String rep = new Scanner(System.in).next().toLowerCase();
+            String rep = sc.next().toLowerCase();
             if(type.contains("des")) {
                 if (rep.contains("aj")) {
                     return "ajout";
@@ -358,7 +359,7 @@ public class TerminalView {
     private boolean askYesNo(){
         while (true) {
             System.out.print("(oui / non): ");
-            String rep = new Scanner(System.in).next().toLowerCase();
+            String rep = sc.next().toLowerCase();
             if(rep.contains("oui") || rep.contains("non")){
                 if(rep.contains("oui")){
                     return true;
@@ -566,5 +567,8 @@ public class TerminalView {
         return false;
     }
 
+    public void printGenerate(PlayerModel player, int num, Resources res){
+        System.out.println("Le joueur " + player.getColor() + " a obtenu " + num + " : " + res);
+    }
 
 }

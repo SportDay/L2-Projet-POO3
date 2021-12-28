@@ -4,9 +4,8 @@ import java.util.Random;
 
 public class DiceModel {
 
-    private int result;
-
     public int throwDice(){
-        return new Random().nextInt(11) + 2;
+        Random r = new Random(System.nanoTime()*System.currentTimeMillis());
+        return ((r.nextInt(6) + 1)+(r.nextInt(6) + 1));
     }
 }
