@@ -163,27 +163,7 @@ public abstract class PlayerModel {
         }
         nbrRessources = maxCartes;
     }
-
-    public void debug(){
-        for(Map.Entry<Resources, Integer> t : resources.entrySet()){
-            resources.put(t.getKey(), 2);
-        }
-        updateRessources();
-        for(Map.Entry<CartesDev, Integer> t : cartesDev.entrySet()){
-            cartesDev.put(t.getKey(), 3);
-        }
-    }
-
-    public void debug(int t){
-        pointDeVic = t;
-    }
-
-    public void debug2(int t){
-        invPVic = t;
-    }
-
-
-
+    
     public final String toString(){
         return color + "";
     }

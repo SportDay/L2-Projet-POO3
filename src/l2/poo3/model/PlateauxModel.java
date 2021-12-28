@@ -12,7 +12,7 @@ import java.util.Random;
 public class PlateauxModel {
 
     private CaseModel[][] plateaux;
-    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY, realX, realY;
+    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY, realX, realY, pointLimit = 10;
 
     private PlayerModel biggestKnight = null;
     private PlayerModel biggestRoad = null;
@@ -23,6 +23,14 @@ public class PlateauxModel {
 
     public int getLength_x() {
         return length_x;
+    }
+
+    public int getPointLimit() {
+        return pointLimit;
+    }
+
+    public void setPointLimit(int pointLimit) {
+        this.pointLimit = pointLimit;
     }
 
     public CartesDevList getCartesDevList() {
@@ -624,7 +632,7 @@ public class PlateauxModel {
 
     public PlayerModel tmpWinPlayer(PlayerModel[] players){
         for(PlayerModel p : players){
-            if(p.getPointDeVic() >= 10){
+            if(p.getPointDeVic() >= getPointLimit()){
                 return p;
             }
         }

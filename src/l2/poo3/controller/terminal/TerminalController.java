@@ -1,5 +1,6 @@
 package l2.poo3.controller.terminal;
 
+import l2.poo3.Other.StringUtil;
 import l2.poo3.model.CaseType.*;
 import l2.poo3.model.Enum.*;
 import l2.poo3.model.*;
@@ -81,13 +82,17 @@ public class TerminalController {
         }
         int x = askInteger("xTab");
         int y = askInteger("yTab");
+        int pointLimit = askInteger("pointLimit");
         plateaux.initPlateaux(x,y);
+        plateaux.setPointLimit(pointLimit);
     }
 
     private int askInteger(String type){
         int to_return = -1;
         while (true) {
-            if(type.contains("nbrPlayer")) {
+            if(type.equalsIgnoreCase("pointLimit")){
+                System.out.print("Veuillez choisir le nombre de points nécessaires pour gagner: ");
+            }else if(type.contains("nbrPlayer")) {
                 System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
             }else if(type.contains("xTab")){
                 System.out.print("Veuillez indiquer la longueur du tableau: ");
@@ -109,6 +114,10 @@ public class TerminalController {
                     }
                 }else if(type.contains("idCartes") || type.contains("idRessources")){
                     if(to_return >= 1 && to_return <= 5){
+                        return to_return;
+                    }
+                }else if(type.equalsIgnoreCase("pointLimit")){
+                    if(to_return >= 1){
                         return to_return;
                     }
                 }else {
@@ -454,6 +463,7 @@ public class TerminalController {
             monopoleRes = null;
             monopolePlayer = null;
         }
+
         view.affichePlateaux();
     }
 
@@ -498,12 +508,13 @@ public class TerminalController {
 
     private void askQuestion(){
 
-        System.out.println("\nTour du jouer: " + players[quiJoue].getColor());
+        System.out.println("Tour du jouer: " + players[quiJoue].getColor());
 
         System.out.println("Que voulez vous faire?:");
         System.out.println("    - Consulter les ressources (cr): ");
         System.out.println("    - Construire des batiments (cb): ");
         System.out.println("    - Afficher les commandes (help): ");
+        System.out.println("    - Couts de construction (cc): ");
         System.out.println("    - Echanger avec le port (ep): ");
         System.out.println("    - Afficher le plateaux (af): ");
         System.out.println("    - Construire une route (br): ");
@@ -568,42 +579,27 @@ public class TerminalController {
 
     private void thiefAi(){
        if(players[quiJoue] instanceof Ai){
-           System.out.println("| THIEF AI |");
            ((Ai) players[quiJoue]).thiefAi(plateaux.getRealX(), plateaux.getRealY(), players);
        }
     }
 
-    private void debug(){
-        System.out.println("DEBUG MODE!");
-        players[quiJoue].debug();
-    }
-
     private void askDecission() {
-        while (true) {
+       while (true) {
             if(monopole && players[quiJoue] != monopolePlayer){
                 System.out.println("Le jouer: " + monopolePlayer.getColor() + " a voler tout votre stock de " + monopoleRes);
             }
             if (players[quiJoue].isThiefPlay()) {
                 view.deleteRessources(players[quiJoue]);
             } else {
-                askQuestion();
                 System.out.print("Merci d'indiquer votre choix: ");
                 String rep = sc.next().toLowerCase();
                 System.out.println();
-                if(rep.equalsIgnoreCase("debug")){
-                    debug();
-                    break;
-                }
-                if(rep.equalsIgnoreCase("debug1")){
-                    debug1();
-                    break;
-                }
-                if(rep.equalsIgnoreCase("debug2")){
-                    debug2();
-                    break;
-                }
                 if(rep.contains("help")){
                     askQuestion();
+                    break;
+                }
+                if(rep.contains("cc")){
+                    view.affPrix();
                     break;
                 }
                 if (nbrTour < 3) {
@@ -682,16 +678,6 @@ public class TerminalController {
         }
     }
 
-    private void debug1() {
-        System.out.println("DEBUG MODE 1!");
-        players[quiJoue].debug(askInteger("xBuild"));
-    }
-
-    private void debug2() {
-        System.out.println("DEBUG MODE 2!");
-        players[quiJoue].debug2(askInteger("xBuild"));
-    }
-
     private String askString(String type){
         while (true) {
             if(type.contains("cb")){
@@ -723,7 +709,9 @@ public class TerminalController {
     public void start(){
         view.affichePlateaux();
         while(!endGame()){
+            System.out.println("\nTour Numero: " + nbrTour + "\n");
             if(players[quiJoue] instanceof Player){
+                askQuestion();
                 askDecission();
             }else if(players[quiJoue] instanceof Ai){
                 System.out.println("AI " + players[quiJoue].getColor() + " a commencer son tour");
@@ -750,7 +738,7 @@ public class TerminalController {
                 if(realWinPlayer != null) {
                     System.out.println();
                     String text = "Le vainqueur est le joueur " + realWinPlayer.getColor() + ", avec " + realWinPlayer.getPoVicReal() + " point de victoire";
-                    if(realWinPlayer.getPoVicReal() > 10){
+                    if(realWinPlayer.getPoVicReal() > plateaux.getPointLimit()){
                         text += " grace aux cartes de devloppement";
                     }
                     System.out.println(text);

@@ -571,4 +571,27 @@ public class TerminalView implements ViewModel {
         System.out.println("Le joueur " + player.getColor() + " a obtenu " + num + " : " + res);
     }
 
+    public void affPrix(){
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center("Couts de Constuction", 51)+"|");
+
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center("Routes 0 PV", 25)+"|"+StringUtil.center("Ville 2 PV", 25)+"|");
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center("Ressources", 12)+"|"+StringUtil.center("Quantite", 12)+"|"+StringUtil.center("Ressources", 12)+"|"+StringUtil.center("Quantite", 12)+"|");
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center(Resources.BOIS + "", 12)+"|" + StringUtil.center("1", 12) +"|"+StringUtil.center(Resources.BLE + "", 12)+"|" + StringUtil.center("2", 12) +"|");
+        System.out.println("|"+StringUtil.center(Resources.ARGILE + "", 12)+"|" + StringUtil.center("1", 12) +"|"+StringUtil.center(Resources.MINERAI + "", 12)+"|" + StringUtil.center("3", 12) +"|");
+
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center("Colonie 1 PV", 25)+"|"+StringUtil.center("Developpement", 25)+"|");
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center("Ressources", 12)+"|"+StringUtil.center("Quantite", 12)+"|"+StringUtil.center("Ressources", 12)+"|"+StringUtil.center("Quantite", 12)+"|");
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+        System.out.println("|"+StringUtil.center(Resources.BOIS + "", 12)+"|" + StringUtil.center("1", 12) +"|"+StringUtil.center(Resources.BLE + "", 12)+"|" + StringUtil.center("1", 12) +"|");
+        System.out.println("|"+StringUtil.center(Resources.ARGILE + "", 12)+"|" + StringUtil.center("1", 12) +"|"+StringUtil.center(Resources.MOUTON + "", 12)+"|" + StringUtil.center("1", 12) +"|");
+        System.out.println("|"+StringUtil.center(Resources.BLE + "", 12)+"|" + StringUtil.center("1", 12) +"|"+StringUtil.center(Resources.MINERAI + "", 12)+"|" + StringUtil.center("1", 12) +"|");
+        System.out.println("|"+StringUtil.center(Resources.MOUTON + "", 12)+"|" + StringUtil.center("1", 12) +"|"+StringUtil.center("", 12)+"|" + StringUtil.center("", 12) +"|");
+        System.out.println(StringUtil.buildTablePatternV2("-",25)+StringUtil.buildTablePatternV2("-",25)+"+");
+    }
 }
