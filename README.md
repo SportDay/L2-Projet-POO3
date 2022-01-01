@@ -10,7 +10,7 @@
 * Paramétrage du jeu:
   * [x] Choisir le nombre de joueurs (3 ou 4)
   * [x] Sélectionner “humain” ou “IA” pour chaque joueur
-  * [ ] Choisir le mode d'affichage terminale ou gui
+  * [x] Choisir le mode d'affichage terminale ou gui
 * Création du plateau
 * L’utilisateur doit pouvoir:
   * [x] Construire des routes, villes, cités
