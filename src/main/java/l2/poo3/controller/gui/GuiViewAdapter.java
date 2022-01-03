@@ -20,7 +20,7 @@ public class GuiViewAdapter extends WindowAdapter {
         if(frame.isEnd()){
             frame.getGuiView().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }else {
-            int res = JOptionPane.showConfirmDialog(frame.getGuiView(), "Vous êtes sur le point de fermer le jeu\nEtes-vous sur?", "Groupe 48 - Fermeture du jeu", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon("src/main/resources/warning.png"));
+            int res = JOptionPane.showConfirmDialog(frame.getGuiView(), "Vous êtes sur le point de fermer le jeu\nEtes-vous sur?", "Groupe 48 - Fermeture du jeu", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(ClassLoader.getSystemResource("warning.png")));
             if (res == JOptionPane.YES_OPTION) {
                 frame.getGuiView().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }

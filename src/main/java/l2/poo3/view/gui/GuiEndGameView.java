@@ -18,7 +18,7 @@ public class GuiEndGameView extends JDialog{
     private final JPanel contentPanel = new JPanel();
     private final JLabel back = new JLabel();
 
-    private final ImageIcon background=new ImageIcon("src/main/resources/background/winBackground.png");
+    private final ImageIcon background=new ImageIcon(ClassLoader.getSystemResource("background/winBackground.png"));
 
     public GuiEndGameView(GuiView guiView, String text) {
 
@@ -27,7 +27,7 @@ public class GuiEndGameView extends JDialog{
         setTitle("Groupe 48 - Fin de la partie");
         setBounds(100, 100, 450, 250);
         addWindowListener(new GuiEndGameWinAdapter(this,guiView));
-        setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/catan-universe.png"));
+        setIconImage(new ImageIcon(ClassLoader.getSystemResource("catan-universe.png")).getImage());
         UpdateBackgroundImageWorker updateBackgroundImageWorker = new UpdateBackgroundImageWorker(back, background, getWidth(), getHeight());
         updateBackgroundImageWorker.execute();
 
@@ -52,7 +52,7 @@ public class GuiEndGameView extends JDialog{
         JLabel lblNewLabel = new JLabel("");
         panel_2.add(lblNewLabel);
         lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblNewLabel.setIcon(new ImageIcon("src/main/resources/cup.png"));
+        lblNewLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("cup.png")));
 
         Component verticalStrut = Box.createVerticalStrut(10);
         contentPanel.add(verticalStrut);

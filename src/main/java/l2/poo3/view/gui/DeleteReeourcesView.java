@@ -28,7 +28,7 @@ public class DeleteReeourcesView extends JDialog {
 	private final JLabel labelNum;
 	private final JLabel back = new JLabel();
 
-	private final ImageIcon background = new ImageIcon("src/main/resources/background/removeBackground.jpg");
+	private final ImageIcon background = new ImageIcon(ClassLoader.getSystemResource("background/removeBackground.jpg"));
 
 	private final Color textArroundColor = new Color(255, 255, 255);
 
@@ -46,7 +46,7 @@ public class DeleteReeourcesView extends JDialog {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setTitle("Groupe 48 - Choix Ressources A Supprimer");
 		setBounds(100, 100, 500, 250);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/catan-universe.png"));
+		setIconImage(new ImageIcon(ClassLoader.getSystemResource("catan-universe.png")).getImage());
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setOpaque(false);
 		contentPanel.setLayout(new FlowLayout());
@@ -87,7 +87,7 @@ public class DeleteReeourcesView extends JDialog {
 
 		JLabel boisIcon = new JLabel();
 		boisIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		boisIcon.setIcon(new ImageIcon("src/main/resources/woodSmall.png"));
+		boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("woodSmall.png")));
 		boisRes.add(boisIcon);
 		Component verticalStrut = Box.createVerticalStrut(10);
 		boisRes.add(verticalStrut);
@@ -110,7 +110,7 @@ public class DeleteReeourcesView extends JDialog {
 
 		JLabel wheatIcon = new JLabel();
 		wheatIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		wheatIcon.setIcon(new ImageIcon("src/main/resources/wheatSmall.png"));
+		wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("wheatSmall.png")));
 		wheatRes.add(wheatIcon);
 		Component verticalStrut1 = Box.createVerticalStrut(10);
 		wheatRes.add(verticalStrut1);
@@ -133,7 +133,7 @@ public class DeleteReeourcesView extends JDialog {
 
 		JLabel argileIcon = new JLabel();
 		argileIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		argileIcon.setIcon(new ImageIcon("src/main/resources/brickSmall.png"));
+		argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("brickSmall.png")));
 		argileRes.add(argileIcon);
 		Component verticalStrut2 = Box.createVerticalStrut(10);
 		argileRes.add(verticalStrut2);
@@ -156,7 +156,7 @@ public class DeleteReeourcesView extends JDialog {
 
 		JLabel minIcon = new JLabel();
 		minIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		minIcon.setIcon(new ImageIcon("src/main/resources/oreSmall.png"));
+		minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("oreSmall.png")));
 		minRes.add(minIcon);
 		Component verticalStrut3 = Box.createVerticalStrut(10);
 		minRes.add(verticalStrut3);

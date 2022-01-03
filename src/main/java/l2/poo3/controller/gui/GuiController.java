@@ -85,7 +85,7 @@ public class GuiController {
             initView();
             if(aiNumber == players.length) {
                 Object[] options = {"Ok"};
-                JOptionPane.showOptionDialog(viewSettings, "Il faut avoir en moins un joueur humain", "Groupe 48 - Attention", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon("src/main/resources/warning.png"),options,options[0]);
+                JOptionPane.showOptionDialog(viewSettings, "Il faut avoir en moins un joueur humain", "Groupe 48 - Attention", JOptionPane.OK_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(ClassLoader.getSystemResource("warning.png")),options,options[0]);
             }else{
                 viewSettings.dispose();
                 guiView.initialize();
@@ -715,8 +715,8 @@ public class GuiController {
             int num2 = dice.throwOneDice();
             int result = num1 + num2;
 
-            guiView.getDice1().setIcon(new ImageIcon(getDiceImagePath(num1)));
-            guiView.getDice2().setIcon(new ImageIcon(getDiceImagePath(num2)));
+            guiView.getDice1().setIcon(new ImageIcon(ClassLoader.getSystemResource(getDiceImagePath(num1))));
+            guiView.getDice2().setIcon(new ImageIcon(ClassLoader.getSystemResource(getDiceImagePath(num2))));
 
             guiView.addLogs("Le joueur " + players[quiJoue].getColor() + " a lancer les des, le resultat est: " + result);
             players[quiJoue].setThrowDice(true);
@@ -766,12 +766,12 @@ public class GuiController {
 
     private String getDiceImagePath(int i){
         switch(i){
-            case 1: return "src/main/resources/die/die1.png";
-            case 2: return "src/main/resources/die/die2.png";
-            case 3: return "src/main/resources/die/die3.png";
-            case 4: return "src/main/resources/die/die4.png";
-            case 5: return "src/main/resources/die/die5.png";
-            case 6: return "src/main/resources/die/die6.png";
+            case 1: return "die/die1.png";
+            case 2: return "die/die2.png";
+            case 3: return "die/die3.png";
+            case 4: return "die/die4.png";
+            case 5: return "die/die5.png";
+            case 6: return "die/die6.png";
         }
         return "";
     }

@@ -30,7 +30,7 @@ public class UsePortView extends JDialog {
 	private final JLabel lblVousPouvezCliquer = new JLabel("Vous pouvez cliquer sur l'image pour changer la resources");
 	private final JLabel back = new JLabel();
 
-	private final ImageIcon background=new ImageIcon("src/main/resources/background/portBackground.jpg");
+	private final ImageIcon background=new ImageIcon(ClassLoader.getSystemResource("background/portBackground.jpg"));
 
 	private final Color textArroundColor = new Color(255, 255, 255);
 
@@ -61,7 +61,7 @@ public class UsePortView extends JDialog {
 		setTitle("Groupe 48 - Port " + port.getPrix());
 		setBounds(100, 100, 500, 350);
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/catan-universe.png"));
+		setIconImage(new ImageIcon(ClassLoader.getSystemResource("catan-universe.png")).getImage());
 
 		UpdateBackgroundImageWorker updateBackgroundImageWorker = new UpdateBackgroundImageWorker(back, background, getWidth(), getHeight());
 		updateBackgroundImageWorker.execute();
@@ -104,7 +104,7 @@ public class UsePortView extends JDialog {
 
 		JLabel boisIcon = new JLabel();
 		boisIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		boisIcon.setIcon(new ImageIcon("src/main/resources/woodSmall.png"));
+		boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("woodSmall.png")));
 		boisRes.add(boisIcon);
 		Component verticalStrut = Box.createVerticalStrut(10);
 		boisRes.add(verticalStrut);
@@ -129,7 +129,7 @@ public class UsePortView extends JDialog {
 
 		JLabel wheatIcon = new JLabel();
 		wheatIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		wheatIcon.setIcon(new ImageIcon("src/main/resources/wheatSmall.png"));
+		wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("wheatSmall.png")));
 		wheatRes.add(wheatIcon);
 		Component verticalStrut1 = Box.createVerticalStrut(10);
 		wheatRes.add(verticalStrut1);
@@ -154,7 +154,7 @@ public class UsePortView extends JDialog {
 
 		JLabel argileIcon = new JLabel();
 		argileIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		argileIcon.setIcon(new ImageIcon("src/main/resources/brickSmall.png"));
+		argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("brickSmall.png")));
 		argileRes.add(argileIcon);
 		Component verticalStrut2 = Box.createVerticalStrut(10);
 		argileRes.add(verticalStrut2);
@@ -179,7 +179,7 @@ public class UsePortView extends JDialog {
 
 		JLabel minIcon = new JLabel();
 		minIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		minIcon.setIcon(new ImageIcon("src/main/resources/oreSmall.png"));
+		minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("oreSmall.png")));
 		minRes.add(minIcon);
 		Component verticalStrut3 = Box.createVerticalStrut(10);
 		minRes.add(verticalStrut3);
@@ -204,7 +204,7 @@ public class UsePortView extends JDialog {
 
 		JLabel mouIcon = new JLabel();
 		mouIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		mouIcon.setIcon(new ImageIcon("src/main/resources/sheepSmall.png"));
+		mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("sheepSmall.png")));
 		mouRes.add(mouIcon);
 		Component verticalStrut4 = Box.createVerticalStrut(10);
 		mouRes.add(verticalStrut4);
@@ -263,7 +263,7 @@ public class UsePortView extends JDialog {
 		lblNewLabel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel_2.add(lblNewLabel_1);
 
-		lblSfd.setIcon(new ImageIcon(resToImgPath(port.getBuy())));
+		lblSfd.setIcon(new ImageIcon(ClassLoader.getSystemResource(resToImgPath(port.getBuy()))));
 		panel_2.add(lblSfd);
 		lblSfd.setAlignmentX(0.5f);
 
@@ -321,7 +321,7 @@ public class UsePortView extends JDialog {
 					AskRessourcesView askRes = new AskRessourcesView(guiView, "Choisissez le stock la ressource a obtenir");
 					askRes.setVisible(true);
 					buyRes = askRes.getRes();
-					lblSfd.setIcon(new ImageIcon(resToImgPath(buyRes)));
+					lblSfd.setIcon(new ImageIcon(ClassLoader.getSystemResource(resToImgPath(buyRes))));
 					lblNewLabel_1.setText("Ressource a obtenir");
 					lblVousPouvezCliquer.setVisible(true);
 				}
@@ -353,17 +353,17 @@ public class UsePortView extends JDialog {
 
 	private String resToImgPath(Resources res){
 		if(res == Resources.ARGILE){
-			return "src/main/resources/brickSmall.png";
+			return "brickSmall.png";
 		}else if(res == Resources.BLE){
-			return "src/main/resources/wheatSmall.png";
+			return "wheatSmall.png";
 		}else if(res == Resources.MOUTON){
-			return "src/main/resources/sheepSmall.png";
+			return "sheepSmall.png";
 		}else if(res == Resources.MINERAI){
-			return "src/main/resources/oreSmall.png";
+			return "oreSmall.png";
 		}else if(res == Resources.BOIS){
-			return "src/main/resources/woodSmall.png";
+			return "woodSmall.png";
 		}
-		return "src/main/resources/blankSmall.png";
+		return "blankSmall.png";
 	}
 
 	private void updateView(PlayerModel player) {

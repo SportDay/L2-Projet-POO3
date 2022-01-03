@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -31,7 +32,7 @@ public class GuiSettingsView extends JFrame {
     private final JSpinner spinnerY = new JSpinner();
     private final JSpinner spinnerPV = new JSpinner();
 
-    private final ImageIcon background=new ImageIcon("src/main/resources/background/GuiViewBackground3.jpg");
+    private final ImageIcon background=new ImageIcon(ClassLoader.getSystemResource("background/GuiViewBackground3.jpg"));
 
     private final Color textArroundColor = new Color(255, 255, 255);
 
@@ -101,7 +102,7 @@ public class GuiSettingsView extends JFrame {
         setBounds(100, 100, 766, 539);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/catan-universe.png"));
+        setIconImage(new ImageIcon(ClassLoader.getSystemResource("catan-universe.png")).getImage());
 
         UpdateBackgroundImageWorker updateBackgroundImageWorker = new UpdateBackgroundImageWorker(back, background, getWidth(), getHeight());
         updateBackgroundImageWorker.execute();
@@ -422,8 +423,7 @@ public class GuiSettingsView extends JFrame {
 
         btnNewButton.setOpaque(false);
         btnNewButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnNewButton.setBorder(new LineBorder(new Color(0, 204, 0), 2, true));
-        btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnNewButton.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2, true), new LineBorder(new Color(0, 0, 0, 0), 4)));
         btnNewButton.setForeground(textArroundColor);
         btnNewButton.setBackground(new Color(0, 0, 0,0));
         btnNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);

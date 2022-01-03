@@ -99,7 +99,7 @@ public class GuiView extends JFrame implements ViewModel {
 
     private final Color textArroundColor = new Color(255, 255, 255);
 
-    private final ImageIcon background=new ImageIcon("src/main/resources/background/GuiViewBackground2.jpg");
+    private final ImageIcon background=new ImageIcon(ClassLoader.getSystemResource("background/GuiViewBackground2.jpg"));
 
     public JButton getUsePort() {
         return usePort;
@@ -284,9 +284,9 @@ public class GuiView extends JFrame implements ViewModel {
             getUseMonopole().setEnabled(false);
         }
 
-        roadLabel.setIcon(new ImageIcon(playerToColorImage("wall",playerQuijoue)));
-        colLabel.setIcon(new ImageIcon(playerToColorImage("village",playerQuijoue)));
-        vilLabel.setIcon(new ImageIcon(playerToColorImage("city",playerQuijoue)));
+        roadLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource(playerToColorImage("wall",playerQuijoue))));
+        colLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource(playerToColorImage("village",playerQuijoue))));
+        vilLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource(playerToColorImage("city",playerQuijoue))));
 
 
         if (plateaux != null) {
@@ -394,7 +394,7 @@ public class GuiView extends JFrame implements ViewModel {
 
 
                             JLabel case1 = new JLabel();
-                            case1.setIcon(new ImageIcon("src/main/resources/boat3.png"));
+                            case1.setIcon(new ImageIcon(ClassLoader.getSystemResource("boat3.png")));
                             panel_22.setBackground(new Color(52, 152, 219));
                             panel_22.add(case1);
                             yElementType1.add(panel_22);
@@ -515,19 +515,19 @@ public class GuiView extends JFrame implements ViewModel {
                             if (cases instanceof Deserts) {
                                 panel_22.setBackground(new Color(188, 162, 95));
                             } else if (cases instanceof Forests) {
-                                case1.setIcon(new ImageIcon("src/main/resources/res/woodHarbor.png"));
+                                case1.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/woodHarbor.png")));
                                 panel_22.setBackground(new Color(68, 89, 50));
                             } else if (cases instanceof Hills) {
-                                case1.setIcon(new ImageIcon("src/main/resources/res/brickHarbor.png"));
+                                case1.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/brickHarbor.png")));
                                 panel_22.setBackground(new Color(160, 61, 12));
                             } else if (cases instanceof Mountain) {
-                                case1.setIcon(new ImageIcon("src/main/resources/res/oreHarbor.png"));
+                                case1.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/oreHarbor.png")));
                                 panel_22.setBackground(new Color(53, 58, 62));
                             } else if (cases instanceof Pastures) {
-                                case1.setIcon(new ImageIcon("src/main/resources/res/sheepHarbor.png"));
+                                case1.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/sheepHarbor.png")));
                                 panel_22.setBackground(new Color(147, 203, 115));
                             } else if (cases instanceof Wheat) {
-                                case1.setIcon(new ImageIcon("src/main/resources/res/wheatHarbor.png"));
+                                case1.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/wheatHarbor.png")));
                                 panel_22.setBackground(new Color(203, 172, 29));
                             }
                         }
@@ -541,7 +541,7 @@ public class GuiView extends JFrame implements ViewModel {
     }
 
     public String playerToColorImage(String type, PlayerModel player){
-        String to_return = "src/main/resources/batiment/"+type+"_$replace.png";
+        String to_return = "batiment/"+type+"_$replace.png";
         if(player.getColor() == Pcolor.Rouge) {
             to_return = to_return.replace("$replace","red");
         }else if(player.getColor() == Pcolor.Jaune) {
@@ -559,7 +559,8 @@ public class GuiView extends JFrame implements ViewModel {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new GuiViewAdapter(controller));
         getContentPane().setLayout(new BorderLayout(0, 0));
-        setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/catan-universe.png"));
+        setIconImage(new ImageIcon(ClassLoader.getSystemResource("catan-universe.png")).getImage());
+
 
         UIManager.put("Button.disabledText", new ColorUIResource(textArroundColor));
 
@@ -988,7 +989,7 @@ public class GuiView extends JFrame implements ViewModel {
         JLabel lblNewLabel_3 = new JLabel("");
         lblNewLabel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblNewLabel_3.setBorder(new TitledBorder(new LineBorder(textArroundColor, 2, true), "Cout de construction", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 13), textArroundColor));
-        lblNewLabel_3.setIcon(new ImageIcon("src/main/resources/costs.png"));
+        lblNewLabel_3.setIcon(new ImageIcon(ClassLoader.getSystemResource("costs.png")));
         centerContent.add(lblNewLabel_3);
 
         Component verticalGlue_5 = Box.createVerticalGlue();
@@ -1010,10 +1011,10 @@ public class GuiView extends JFrame implements ViewModel {
         dicePanel.setOpaque(false);
         dicePanel.setBorder(new TitledBorder(new LineBorder(textArroundColor, 2, true), "D\u00E9", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 13), textArroundColor));
 
-        dice1.setIcon(new ImageIcon("src/main/resources/die/die0.png"));
+        dice1.setIcon(new ImageIcon(ClassLoader.getSystemResource("die/die0.png")));
         dicePanel.add(dice1);
 
-        dice2.setIcon(new ImageIcon("src/main/resources/die/die0.png"));
+        dice2.setIcon(new ImageIcon(ClassLoader.getSystemResource("die/die0.png")));
         dicePanel.add(dice2);
 
 
@@ -1163,7 +1164,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel boisIcon = new JLabel();
         boisIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        boisIcon.setIcon(new ImageIcon("src/main/resources/woodSmall.png"));
+        boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("woodSmall.png")));
         boisRes.add(boisIcon);
 
         boisNum.setForeground(textArroundColor);
@@ -1183,7 +1184,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel wheatIcon = new JLabel();
         wheatIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        wheatIcon.setIcon(new ImageIcon("src/main/resources/wheatSmall.png"));
+        wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("wheatSmall.png")));
         wheatRes.add(wheatIcon);
 
         wheatNum.setForeground(textArroundColor);
@@ -1203,7 +1204,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel argileIcon = new JLabel();
         argileIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        argileIcon.setIcon(new ImageIcon("src/main/resources/brickSmall.png"));
+        argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("brickSmall.png")));
         argileRes.add(argileIcon);
 
         argileNum.setForeground(textArroundColor);
@@ -1223,7 +1224,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel minIcon = new JLabel();
         minIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        minIcon.setIcon(new ImageIcon("src/main/resources/oreSmall.png"));
+        minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("oreSmall.png")));
         minRes.add(minIcon);
 
         minNum.setForeground(textArroundColor);
@@ -1243,7 +1244,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel mouIcon = new JLabel();
         mouIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mouIcon.setIcon(new ImageIcon("src/main/resources/sheepSmall.png"));
+        mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("sheepSmall.png")));
         mouRes.add(mouIcon);
 
         mouNum.setForeground(textArroundColor);
@@ -1273,7 +1274,7 @@ public class GuiView extends JFrame implements ViewModel {
         JLabel lblNewLabel_1 = new JLabel();
         lblNewLabel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel_24.add(lblNewLabel_1);
-        lblNewLabel_1.setIcon(new ImageIcon("src/main/resources/dev/icons8-knight-64.png"));
+        lblNewLabel_1.setIcon(new ImageIcon(ClassLoader.getSystemResource("dev/icons8-knight-64.png")));
 
         lblNewLabel_2.setForeground(textArroundColor);
         lblNewLabel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1301,7 +1302,7 @@ public class GuiView extends JFrame implements ViewModel {
         panel_25.setLayout(new BoxLayout(panel_25, BoxLayout.Y_AXIS));
 
         JLabel label_27 = new JLabel();
-        label_27.setIcon(new ImageIcon("src/main/resources/dev/icons8-monopoly-64.png"));
+        label_27.setIcon(new ImageIcon(ClassLoader.getSystemResource("dev/icons8-monopoly-64.png")));
         label_27.setAlignmentX(0.5f);
         panel_25.add(label_27);
 
@@ -1334,7 +1335,7 @@ public class GuiView extends JFrame implements ViewModel {
         panel_26.add(verticalGlue_2);
 
         JLabel label_29 = new JLabel();
-        label_29.setIcon(new ImageIcon("src/main/resources/dev/icons8-medal-64.png"));
+        label_29.setIcon(new ImageIcon(ClassLoader.getSystemResource("dev/icons8-medal-64.png")));
         label_29.setAlignmentX(0.5f);
         panel_26.add(label_29);
 
@@ -1356,7 +1357,7 @@ public class GuiView extends JFrame implements ViewModel {
         panel_27.setLayout(new BoxLayout(panel_27, BoxLayout.Y_AXIS));
 
         JLabel label_31 = new JLabel();
-        label_31.setIcon(new ImageIcon("src/main/resources/dev/icons8-path-64.png"));
+        label_31.setIcon(new ImageIcon(ClassLoader.getSystemResource("dev/icons8-path-64.png")));
         label_31.setAlignmentX(0.5f);
         panel_27.add(label_31);
 
@@ -1387,7 +1388,7 @@ public class GuiView extends JFrame implements ViewModel {
         panel_28.setLayout(new BoxLayout(panel_28, BoxLayout.Y_AXIS));
 
         JLabel label_33 = new JLabel();
-        label_33.setIcon(new ImageIcon("src/main/resources/dev/icons8-invention-64.png"));
+        label_33.setIcon(new ImageIcon(ClassLoader.getSystemResource("dev/icons8-invention-64.png")));
         label_33.setAlignmentX(0.5f);
         panel_28.add(label_33);
 

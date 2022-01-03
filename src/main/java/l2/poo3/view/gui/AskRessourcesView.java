@@ -29,7 +29,7 @@ public class AskRessourcesView extends JDialog {
 
 	private final JLabel back = new JLabel();
 
-	private final ImageIcon background=new ImageIcon("src/main/resources/background/askRessourcesBackground.jpg");
+	private final ImageIcon background=new ImageIcon(ClassLoader.getSystemResource("background/askRessourcesBackground.jpg"));
 
 	private final Color textArroundColor = new Color(255, 255, 255);
 
@@ -40,7 +40,7 @@ public class AskRessourcesView extends JDialog {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setTitle("Groupe 48 - Choix Ressources");
 		setBounds(100, 100, 500, 200);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/catan-universe.png"));
+		setIconImage(new ImageIcon(ClassLoader.getSystemResource("catan-universe.png")).getImage());
 
 		UpdateBackgroundImageWorker updateBackgroundImageWorker = new UpdateBackgroundImageWorker(back, background, getWidth(), getHeight());
 		updateBackgroundImageWorker.execute();
@@ -83,7 +83,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel boisIcon = new JLabel();
 		boisIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		boisIcon.setIcon(new ImageIcon("src/main/resources/woodSmall.png"));
+		boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("woodSmall.png")));
 		boisRes.add(boisIcon);
 
 		JRadioButton rdbtnNewRadioButton5 = new JRadioButton("");
@@ -105,7 +105,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel wheatIcon = new JLabel();
 		wheatIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		wheatIcon.setIcon(new ImageIcon("src/main/resources/wheatSmall.png"));
+		wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("wheatSmall.png")));
 		wheatRes.add(wheatIcon);
 
 		JRadioButton rdbtnNewRadioButton4 = new JRadioButton("");
@@ -127,7 +127,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel argileIcon = new JLabel();
 		argileIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		argileIcon.setIcon(new ImageIcon("src/main/resources/brickSmall.png"));
+		argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("brickSmall.png")));
 		argileRes.add(argileIcon);
 
 		JRadioButton rdbtnNewRadioButton3 = new JRadioButton("");
@@ -149,7 +149,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel minIcon = new JLabel();
 		minIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		minIcon.setIcon(new ImageIcon("src/main/resources/oreSmall.png"));
+		minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("oreSmall.png")));
 		minRes.add(minIcon);
 
 		JRadioButton rdbtnNewRadioButton2 = new JRadioButton("");
@@ -171,7 +171,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel mouIcon = new JLabel();
 		mouIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		mouIcon.setIcon(new ImageIcon("src/main/resources/sheepSmall.png"));
+		mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("sheepSmall.png")));
 		mouRes.add(mouIcon);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("");
