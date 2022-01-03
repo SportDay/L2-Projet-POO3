@@ -20,7 +20,7 @@ public abstract class PlayerModel {
     protected PlayerModel(Pcolor color) {
         this.color = color;
         initResources();
-        cartesDev.put(CartesDev.Chevalier, 1);
+        cartesDev.put(CartesDev.Chevalier, 0);
         cartesDev.put(CartesDev.Monopole, 0);
         cartesDev.put(CartesDev.Route, 0);
         cartesDev.put(CartesDev.Invention, 0);
