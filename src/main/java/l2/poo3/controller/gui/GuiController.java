@@ -867,8 +867,8 @@ public class GuiController {
                 }
                 if (((Ai) players[quiJoue]).getPlateaux() != null) {
                     ((Ai) players[quiJoue]).buildVill(plateaux.getRealX(), plateaux.getRealY());
-                    ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);
                     ((Ai) players[quiJoue]).buildColl(plateaux.getRealX(), plateaux.getRealY(), players);
+                    ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);
                 }
                 guiView.addLogs("\n");
                 guiView.addLogs("AI " + players[quiJoue].getColor() + " a finit son tour");

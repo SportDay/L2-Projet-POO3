@@ -10,6 +10,7 @@ import l2.poo3.model.PlateauxModel;
 import l2.poo3.model.PlayerModel;
 import l2.poo3.view.gui.GuiView;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Ai extends PlayerModel {
@@ -29,6 +30,8 @@ public class Ai extends PlayerModel {
     public PlateauxModel getPlateaux() {
         return plateaux;
     }
+
+    private final LinkedList<String> badCords = new LinkedList<>();
 
     public void deleteRessources(){
         while ((getNbrRessources()-7) > 0){
@@ -84,21 +87,26 @@ public class Ai extends PlayerModel {
                 minBat = p.getNbrBat();
             }
         }
-        if(plateaux != null && getNbrBat() <= minBat) {
+        if(plateaux != null && getNbrBat() <= minBat+r.nextInt(3)) {
             int x = aiGenerateRandom(false, xLength);
             int y = aiGenerateRandom(false, yLength);
-            if(verifCase(y, x)){
-                if(plateaux.getPlateaux()[y][x] instanceof Batiment){
-                        if(this.getResources().get(Resources.BOIS) >= 1 && this.getResources().get(Resources.ARGILE) >= 1 && this.getResources().get(Resources.BLE) >= 1 && this.getResources().get(Resources.MOUTON) >= 1) {
+            while (badCords.contains(x + ":" + y)){
+                x = aiGenerateRandom(false, xLength);
+                y = aiGenerateRandom(false, yLength);
+            }
+            if (!badCords.contains(x + ":" + y)) {
+                if (verifCase(y, x)) {
+                    if (plateaux.getPlateaux()[y][x] instanceof Batiment) {
+                        if (this.getResources().get(Resources.BOIS) >= 1 && this.getResources().get(Resources.ARGILE) >= 1 && this.getResources().get(Resources.BLE) >= 1 && this.getResources().get(Resources.MOUTON) >= 1) {
                             boolean allowBuild = false;
 
                             if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux.getPlateaux()[y + 1][x] instanceof Route && (((Route) plateaux.getPlateaux()[y + 1][x]).getPlayer() == this || ((Route) plateaux.getPlateaux()[y + 1][x]).getPlayer() == null)) {
                                 allowBuild = true;
                             } else if (y - 1 >= 0 && plateaux.getPlateaux()[y - 1][x] instanceof Route && (((Route) plateaux.getPlateaux()[y - 1][x]).getPlayer() == this || ((Route) plateaux.getPlateaux()[y - 1][x]).getPlayer() == null)) {
                                 allowBuild = true;
-                            } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux.getPlateaux()[y][x + 1] instanceof Route && (((Route) plateaux.getPlateaux()[y][x + 1]).getPlayer() == this || ((Route) plateaux.getPlateaux()[y][x+1]).getPlayer() == null)) {
+                            } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux.getPlateaux()[y][x + 1] instanceof Route && (((Route) plateaux.getPlateaux()[y][x + 1]).getPlayer() == this || ((Route) plateaux.getPlateaux()[y][x + 1]).getPlayer() == null)) {
                                 allowBuild = true;
-                            } else if (x - 1 >= 0 && plateaux.getPlateaux()[y][x - 1] instanceof Route && (((Route) plateaux.getPlateaux()[y][x - 1]).getPlayer() == this || ((Route) plateaux.getPlateaux()[y][x-1]).getPlayer() == null)) {
+                            } else if (x - 1 >= 0 && plateaux.getPlateaux()[y][x - 1] instanceof Route && (((Route) plateaux.getPlateaux()[y][x - 1]).getPlayer() == this || ((Route) plateaux.getPlateaux()[y][x - 1]).getPlayer() == null)) {
                                 allowBuild = true;
                             }
 
@@ -106,19 +114,19 @@ public class Ai extends PlayerModel {
                                 allowBuild = false;
                             } else if (y - 1 >= 0 && plateaux.getPlateaux()[y - 1][x] instanceof Route && ((Route) plateaux.getPlateaux()[y - 1][x]).getPlayer() != this && ((Route) plateaux.getPlateaux()[y - 1][x]).getPlayer() != null) {
                                 allowBuild = false;
-                            } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux.getPlateaux()[y][x + 1] instanceof Route && ((Route) plateaux.getPlateaux()[y][x + 1]).getPlayer() != this && ((Route) plateaux.getPlateaux()[y][x+1]).getPlayer() != null) {
+                            } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux.getPlateaux()[y][x + 1] instanceof Route && ((Route) plateaux.getPlateaux()[y][x + 1]).getPlayer() != this && ((Route) plateaux.getPlateaux()[y][x + 1]).getPlayer() != null) {
                                 allowBuild = false;
-                            } else if (x - 1 >= 0 && plateaux.getPlateaux()[y][x - 1] instanceof Route && ((Route) plateaux.getPlateaux()[y][x - 1]).getPlayer() != this && ((Route) plateaux.getPlateaux()[y][x-1]).getPlayer() != null) {
+                            } else if (x - 1 >= 0 && plateaux.getPlateaux()[y][x - 1] instanceof Route && ((Route) plateaux.getPlateaux()[y][x - 1]).getPlayer() != this && ((Route) plateaux.getPlateaux()[y][x - 1]).getPlayer() != null) {
                                 allowBuild = false;
                             }
 
-                            if(allowBuild) {
+                            if (allowBuild) {
                                 plateaux.getPlateaux()[y][x].setName("C " + this.getColor().toString().charAt(0));
                                 ((Batiment) plateaux.getPlateaux()[y][x]).setPlayer(this);
 
-                                if(plateaux.getViewModel() instanceof GuiView){
+                                if (plateaux.getViewModel() instanceof GuiView) {
                                     ((GuiView) plateaux.getViewModel()).addInfo("AI " + getColor() + " a construit une ville");
-                                }else {
+                                } else {
                                     System.out.println("AI " + getColor() + " a construit une colonie");
                                 }
                                 super.addNbrCol();
@@ -129,8 +137,10 @@ public class Ai extends PlayerModel {
 
 
                                 this.setPointDeVic(this.getPointDeVic() + 1);
+                                badCords.add(x + ":" + y);
                             }
                         }
+                    }
                 }
             }
         }
@@ -206,70 +216,80 @@ public class Ai extends PlayerModel {
             if (r.nextBoolean()) {
                 x = aiGenerateRandom(false, xLength);
                 y = aiGenerateRandom(true, yLength);
+                while (badCords.contains(x + ":" + y)){
+                    x = aiGenerateRandom(false, xLength);
+                    y = aiGenerateRandom(true, yLength);
+                }
             } else {
                 x = aiGenerateRandom(true, xLength);
                 y = aiGenerateRandom(false, yLength);
+                while (badCords.contains(x + ":" + y)){
+                    x = aiGenerateRandom(true, xLength);
+                    y = aiGenerateRandom(false, yLength);
+                }
             }
 
-
-            if (this.getResources().get(Resources.BOIS) >= 1 && this.getResources().get(Resources.ARGILE) >= 1) {
-                CaseModel[][] plateaux = this.plateaux.getPlateaux();
-                boolean allowBuild = false;
-                if (verifCase(y, x)) {
-                    if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x] instanceof Batiment && ((Batiment) plateaux[y + 1][x]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (y - 1 >= 0 && plateaux[y - 1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x + 1] instanceof Batiment && ((Batiment) plateaux[y][x + 1]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (x - 1 >= 0 && plateaux[y][x - 1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (x + 1 <= getPlateaux().getLength_x() - 1 && y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Route && ((Route) plateaux[y + 1][x + 1]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Route && ((Route) plateaux[y - 1][x - 1]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (y - 1 >= 0 && x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Route && ((Route) plateaux[y - 1][x + 1]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (y + 1 <= getPlateaux().getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Route && ((Route) plateaux[y + 1][x - 1]).getPlayer() == this) {
-                        allowBuild = true;
-                    } else if (y % 2 != 0) {
-                        if (x + 2 <= getPlateaux().getLength_x() - 1 && plateaux[y][x + 2] instanceof Route && ((Route) plateaux[y][x + 2]).getPlayer() == this) {
+            if (!badCords.contains(x + ":" + y)) {
+                if (this.getResources().get(Resources.BOIS) >= 1 && this.getResources().get(Resources.ARGILE) >= 1) {
+                    CaseModel[][] plateaux = this.plateaux.getPlateaux();
+                    boolean allowBuild = false;
+                    if (verifCase(y, x)) {
+                        if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x] instanceof Batiment && ((Batiment) plateaux[y + 1][x]).getPlayer() == this) {
                             allowBuild = true;
-                        } else if (x - 2 >= 0 && plateaux[y][x - 2] instanceof Route && ((Route) plateaux[y][x - 2]).getPlayer() == this) {
+                        } else if (y - 1 >= 0 && plateaux[y - 1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() == this) {
                             allowBuild = true;
-                        }
-                    } else if (x % 2 != 0) {
-                        if (y - 2 >= 0 && plateaux[y - 2][x] instanceof Route && ((Route) plateaux[y - 2][x]).getPlayer() == this) {
+                        } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x + 1] instanceof Batiment && ((Batiment) plateaux[y][x + 1]).getPlayer() == this) {
                             allowBuild = true;
-                        } else if (y + 2 <= getPlateaux().getLength_y() - 1 && plateaux[y + 2][x] instanceof Route && ((Route) plateaux[y + 2][x]).getPlayer() == this) {
+                        } else if (x - 1 >= 0 && plateaux[y][x - 1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() == this) {
                             allowBuild = true;
-                        }
-                    }
-
-                    if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x] instanceof Batiment && ((Batiment) plateaux[y + 1][x]).getPlayer() != this && ((Batiment) plateaux[y + 1][x]).getPlayer() != null) {
-                        allowBuild = false;
-                    } else if (y - 1 >= 0 && plateaux[y - 1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() != this && ((Batiment) plateaux[y - 1][x]).getPlayer() != null) {
-                        allowBuild = false;
-                    } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x + 1] instanceof Batiment && ((Batiment) plateaux[y][x + 1]).getPlayer() != this && ((Batiment) plateaux[y][x + 1]).getPlayer() != null) {
-                        allowBuild = false;
-                    } else if (x - 1 >= 0 && plateaux[y][x - 1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() != this && ((Batiment) plateaux[y][x - 1]).getPlayer() != null) {
-                        allowBuild = false;
-                    }
-
-                    if (plateaux[y][x] instanceof Route) {
-                        if (allowBuild) {
-                            plateaux[y][x].setName("R " + this.getColor().toString().charAt(0));
-                            ((Route) plateaux[y][x]).setPlayer(this);
-
-                            this.setResources(Resources.BOIS, this.getResources().get(Resources.BOIS) - 1);
-                            this.setResources(Resources.ARGILE, this.getResources().get(Resources.ARGILE) - 1);
-
-                            if(this.plateaux.getViewModel() instanceof GuiView){
-                                ((GuiView) this.plateaux.getViewModel()).addInfo("AI " + getColor() + " a construit une route");
-                            }else {
-                                System.out.println("AI " + getColor() + " a construit une route");
+                        } else if (x + 1 <= getPlateaux().getLength_x() - 1 && y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x + 1] instanceof Route && ((Route) plateaux[y + 1][x + 1]).getPlayer() == this) {
+                            allowBuild = true;
+                        } else if (x - 1 >= 0 && y - 1 >= 0 && plateaux[y - 1][x - 1] instanceof Route && ((Route) plateaux[y - 1][x - 1]).getPlayer() == this) {
+                            allowBuild = true;
+                        } else if (y - 1 >= 0 && x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y - 1][x + 1] instanceof Route && ((Route) plateaux[y - 1][x + 1]).getPlayer() == this) {
+                            allowBuild = true;
+                        } else if (y + 1 <= getPlateaux().getLength_y() - 1 && x - 1 >= 0 && plateaux[y + 1][x - 1] instanceof Route && ((Route) plateaux[y + 1][x - 1]).getPlayer() == this) {
+                            allowBuild = true;
+                        } else if (y % 2 != 0) {
+                            if (x + 2 <= getPlateaux().getLength_x() - 1 && plateaux[y][x + 2] instanceof Route && ((Route) plateaux[y][x + 2]).getPlayer() == this) {
+                                allowBuild = true;
+                            } else if (x - 2 >= 0 && plateaux[y][x - 2] instanceof Route && ((Route) plateaux[y][x - 2]).getPlayer() == this) {
+                                allowBuild = true;
                             }
-                            this.plateaux.updateLargestRoadPlayer(x, y, this, players);
+                        } else if (x % 2 != 0) {
+                            if (y - 2 >= 0 && plateaux[y - 2][x] instanceof Route && ((Route) plateaux[y - 2][x]).getPlayer() == this) {
+                                allowBuild = true;
+                            } else if (y + 2 <= getPlateaux().getLength_y() - 1 && plateaux[y + 2][x] instanceof Route && ((Route) plateaux[y + 2][x]).getPlayer() == this) {
+                                allowBuild = true;
+                            }
+                        }
+
+                        if (y + 1 <= getPlateaux().getLength_y() - 1 && plateaux[y + 1][x] instanceof Batiment && ((Batiment) plateaux[y + 1][x]).getPlayer() != this && ((Batiment) plateaux[y + 1][x]).getPlayer() != null) {
+                            allowBuild = false;
+                        } else if (y - 1 >= 0 && plateaux[y - 1][x] instanceof Batiment && ((Batiment) plateaux[y - 1][x]).getPlayer() != this && ((Batiment) plateaux[y - 1][x]).getPlayer() != null) {
+                            allowBuild = false;
+                        } else if (x + 1 <= getPlateaux().getLength_x() - 1 && plateaux[y][x + 1] instanceof Batiment && ((Batiment) plateaux[y][x + 1]).getPlayer() != this && ((Batiment) plateaux[y][x + 1]).getPlayer() != null) {
+                            allowBuild = false;
+                        } else if (x - 1 >= 0 && plateaux[y][x - 1] instanceof Batiment && ((Batiment) plateaux[y][x - 1]).getPlayer() != this && ((Batiment) plateaux[y][x - 1]).getPlayer() != null) {
+                            allowBuild = false;
+                        }
+
+                        if (plateaux[y][x] instanceof Route) {
+                            if (allowBuild) {
+                                plateaux[y][x].setName("R " + this.getColor().toString().charAt(0));
+                                ((Route) plateaux[y][x]).setPlayer(this);
+
+                                this.setResources(Resources.BOIS, this.getResources().get(Resources.BOIS) - 1);
+                                this.setResources(Resources.ARGILE, this.getResources().get(Resources.ARGILE) - 1);
+
+                                if (this.plateaux.getViewModel() instanceof GuiView) {
+                                    ((GuiView) this.plateaux.getViewModel()).addInfo("AI " + getColor() + " a construit une route");
+                                } else {
+                                    System.out.println("AI " + getColor() + " a construit une route");
+                                }
+                                this.plateaux.updateLargestRoadPlayer(x, y, this, players);
+                                badCords.add(x + ":" + y);
+                            }
                         }
                     }
                 }

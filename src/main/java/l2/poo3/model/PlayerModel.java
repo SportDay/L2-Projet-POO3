@@ -85,11 +85,11 @@ public abstract class PlayerModel {
     }
 
     private void initResources(){
-        resources.put(Resources.BOIS, 4);
-        resources.put(Resources.BLE, 2);
-        resources.put(Resources.ARGILE,4);
-        resources.put(Resources.MINERAI, 0);
-        resources.put(Resources.MOUTON, 2);
+        resources.put(Resources.BOIS, 10);
+        resources.put(Resources.BLE, 10);
+        resources.put(Resources.ARGILE,10);
+        resources.put(Resources.MINERAI, 10);
+        resources.put(Resources.MOUTON, 10);
     }
 
     public int getLargestRoad() {

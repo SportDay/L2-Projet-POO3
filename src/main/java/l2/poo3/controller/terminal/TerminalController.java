@@ -94,9 +94,9 @@ public class TerminalController {
             }else if(type.contains("nbrPlayer")) {
                 System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
             }else if(type.contains("xTab")){
-                System.out.print("Veuillez indiquer la longueur du tableau (>=4): ");
+                System.out.print("Veuillez indiquer la largeur du tableau (3446>= x >=4): ");
             }else if(type.contains("yTab")){
-                System.out.print("Veuillez indiquer la largeur du tableau (>=4): ");
+                System.out.print("Veuillez indiquer la longueur du tableau (11>= y >=4): ");
             }else if(type.contains("xBuild")){
                 System.out.print("Veuillez indiquer la cordonne x: ");
             }else if(type.contains("idCartes")){
@@ -728,8 +728,8 @@ public class TerminalController {
                 }
                 if(((Ai) players[quiJoue]).getPlateaux() != null) {
                     ((Ai) players[quiJoue]).buildVill(plateaux.getRealX(), plateaux.getRealY());
-                    ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);
                     ((Ai) players[quiJoue]).buildColl(plateaux.getRealX(), plateaux.getRealY(), players);
+                    ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);
                 }
                 System.out.println("AI " + players[quiJoue].getColor() + " a finit son tour");
                 joueurSuivant();
