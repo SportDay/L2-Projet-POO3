@@ -16,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
@@ -1011,10 +1010,10 @@ public class GuiView extends JFrame implements ViewModel {
         dicePanel.setOpaque(false);
         dicePanel.setBorder(new TitledBorder(new LineBorder(textArroundColor, 2, true), "D\u00E9", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 13), textArroundColor));
 
-        dice1.setIcon(new ImageIcon(ClassLoader.getSystemResource("die/die0.png")));
+        dice1.setIcon(new ImageIcon(ClassLoader.getSystemResource("dices/dice0.png")));
         dicePanel.add(dice1);
 
-        dice2.setIcon(new ImageIcon(ClassLoader.getSystemResource("die/die0.png")));
+        dice2.setIcon(new ImageIcon(ClassLoader.getSystemResource("dices/dice0.png")));
         dicePanel.add(dice2);
 
 

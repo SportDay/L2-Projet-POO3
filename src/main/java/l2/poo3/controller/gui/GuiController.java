@@ -766,12 +766,12 @@ public class GuiController {
 
     private String getDiceImagePath(int i){
         switch(i){
-            case 1: return "die/die1.png";
-            case 2: return "die/die2.png";
-            case 3: return "die/die3.png";
-            case 4: return "die/die4.png";
-            case 5: return "die/die5.png";
-            case 6: return "die/die6.png";
+            case 1: return "dices/dice1.png";
+            case 2: return "dices/dice2.png";
+            case 3: return "dices/dice3.png";
+            case 4: return "dices/dice4.png";
+            case 5: return "dices/dice5.png";
+            case 6: return "dices/dice6.png";
         }
         return "";
     }

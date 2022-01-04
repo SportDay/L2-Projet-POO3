@@ -103,6 +103,7 @@ public class PlateauxModel {
 
     public void construirePlateaux() {
         boolean setThief = false;
+        boolean increseRes = false;
         buildPort();
         for (int y = 0; y < plateaux.length; y++) {
         if (y % 2 != 0) {
@@ -130,7 +131,7 @@ public class PlateauxModel {
                             if(firstRessource  < 5 && randomCase < 3){
                                 //cette partie est la juste pour etre sur d'avoir chaque type de ressources
                                 randomCase = firstRessource;
-                                firstRessource++;
+                                increseRes = true;
                             }
                             switch (randomCase) {
                                 case 0:
@@ -148,6 +149,11 @@ public class PlateauxModel {
                                 case 4:
                                     plateaux[y][x] = new Wheat();
                                     break;
+                            }
+                            if(increseRes){
+                                //cette partie est la juste pour etre sur d'avoir chaque type de ressources
+                                firstRessource++;
+                                increseRes = false;
                             }
                         }
                     }
