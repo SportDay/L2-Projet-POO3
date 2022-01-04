@@ -179,7 +179,7 @@ public class DeleteReeourcesView extends JDialog {
 
 		JLabel mouIcon = new JLabel();
 		mouIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		mouIcon.setIcon(new ImageIcon("src/main/resources/sheepSmall.png"));
+		mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("sheepSmall.png")));
 		mouRes.add(mouIcon);
 		Component verticalStrut4 = Box.createVerticalStrut(10);
 		mouRes.add(verticalStrut4);

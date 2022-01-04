@@ -862,7 +862,9 @@ public class GuiController {
                 if (players[quiJoue].isThiefPlay()) {
                     ((Ai) players[quiJoue]).deleteRessources();
                 }
-                throwdDice();
+                if(nbrTour > 2) {
+                    throwdDice();
+                }
                 if (((Ai) players[quiJoue]).getPlateaux() != null) {
                     ((Ai) players[quiJoue]).buildVill(plateaux.getRealX(), plateaux.getRealY());
                     ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);

@@ -366,7 +366,7 @@ public class GuiSettingsView extends JFrame {
         spinnerX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelX.setLabelFor(spinnerX);
         dimensionsSettings.add(spinnerX);
-        spinnerX.setModel(new SpinnerNumberModel(4, 1, 3446, 1));
+        spinnerX.setModel(new SpinnerNumberModel(4, 4, 3446, 1));
         spinnerX.getEditor().setOpaque(false);
         ((JSpinner.NumberEditor)spinnerX.getEditor()).getTextField().setOpaque(false);
         ((JSpinner.NumberEditor)spinnerX.getEditor()).getTextField().setForeground(textArroundColor);
@@ -384,7 +384,7 @@ public class GuiSettingsView extends JFrame {
         spinnerY.setOpaque(false);
         spinnerY.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelY.setLabelFor(spinnerY);
-        spinnerY.setModel(new SpinnerNumberModel(4, 1, 9999, 1));
+        spinnerY.setModel(new SpinnerNumberModel(4, 4, 9999, 1));
         spinnerY.getEditor().setOpaque(false);
         ((JSpinner.NumberEditor)spinnerY.getEditor()).getTextField().setOpaque(false);
         ((JSpinner.NumberEditor)spinnerY.getEditor()).getTextField().setForeground(textArroundColor);

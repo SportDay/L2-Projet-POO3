@@ -13,7 +13,7 @@ import java.util.Random;
 public class PlateauxModel {
 
     private CaseModel[][] plateaux;
-    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY, realX, realY, pointLimit = 10;
+    private int length_x, length_y, carteDevPos = 0, thiefX, thiefY, realX, realY, pointLimit = 10, firstRessource = 0;
 
     private PlayerModel biggestKnight = null;
     private PlayerModel biggestRoad = null;
@@ -69,16 +69,16 @@ public class PlateauxModel {
     }
 
     public void initPlateaux(int x, int y){
-        if(y > 11){
+        if(y > 11 && viewModel instanceof TerminalView){
             y = 11;
         }
         if(x > 3446){
             x = 3446;
         }
-        if(y < 1){
+        if(y < 4){
             y = 4;
         }
-        if(x < 1){
+        if(x < 4){
             x = 4;
         }
         realX = x;
@@ -126,7 +126,12 @@ public class PlateauxModel {
                             thiefX = x;
                             thiefY = y;
                         } else if (x != 0 && x != length_x - 1) {
-                            int randomCase = new Random().nextInt(5);
+                            int randomCase = new Random(System.nanoTime()*System.currentTimeMillis()).nextInt(5);
+                            if(firstRessource  < 5 && randomCase < 3){
+                                //cette partie est la juste pour etre sur d'avoir chaque type de ressources
+                                randomCase = firstRessource;
+                                firstRessource++;
+                            }
                             switch (randomCase) {
                                 case 0:
                                     plateaux[y][x] = new Forests();

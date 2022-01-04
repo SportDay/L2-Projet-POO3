@@ -94,9 +94,9 @@ public class TerminalController {
             }else if(type.contains("nbrPlayer")) {
                 System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
             }else if(type.contains("xTab")){
-                System.out.print("Veuillez indiquer la longueur du tableau: ");
+                System.out.print("Veuillez indiquer la longueur du tableau (>=4): ");
             }else if(type.contains("yTab")){
-                System.out.print("Veuillez indiquer la largeur du tableau: ");
+                System.out.print("Veuillez indiquer la largeur du tableau (>=4): ");
             }else if(type.contains("xBuild")){
                 System.out.print("Veuillez indiquer la cordonne x: ");
             }else if(type.contains("idCartes")){
@@ -109,6 +109,10 @@ public class TerminalController {
                 to_return = Integer.parseInt(input);
                 if(type.contains("nbrPlayer")) {
                     if (to_return == 3 || to_return == 4) {
+                       return to_return;
+                    }
+                }if(type.contains("xTab") || type.contains("yTab")) {
+                    if (to_return >= 4) {
                        return to_return;
                     }
                 }else if(type.contains("idCartes") || type.contains("idRessources")){
@@ -719,7 +723,9 @@ public class TerminalController {
                 if (players[quiJoue].isThiefPlay()) {
                     ((Ai) players[quiJoue]).deleteRessources();
                 }
-                throwdDice();
+                if(nbrTour > 2) {
+                    throwdDice();
+                }
                 if(((Ai) players[quiJoue]).getPlateaux() != null) {
                     ((Ai) players[quiJoue]).buildVill(plateaux.getRealX(), plateaux.getRealY());
                     ((Ai) players[quiJoue]).buildRoad(plateaux.getRealX(), plateaux.getRealY(), players);
