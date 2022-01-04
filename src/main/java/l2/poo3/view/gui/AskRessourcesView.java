@@ -83,7 +83,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel boisIcon = new JLabel();
 		boisIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("woodSmall.png")));
+		boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/woodSmall.png")));
 		boisRes.add(boisIcon);
 
 		JRadioButton rdbtnNewRadioButton5 = new JRadioButton("");
@@ -105,7 +105,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel wheatIcon = new JLabel();
 		wheatIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("wheatSmall.png")));
+		wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/wheatSmall.png")));
 		wheatRes.add(wheatIcon);
 
 		JRadioButton rdbtnNewRadioButton4 = new JRadioButton("");
@@ -127,7 +127,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel argileIcon = new JLabel();
 		argileIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("brickSmall.png")));
+		argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/brickSmall.png")));
 		argileRes.add(argileIcon);
 
 		JRadioButton rdbtnNewRadioButton3 = new JRadioButton("");
@@ -149,7 +149,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel minIcon = new JLabel();
 		minIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("oreSmall.png")));
+		minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/oreSmall.png")));
 		minRes.add(minIcon);
 
 		JRadioButton rdbtnNewRadioButton2 = new JRadioButton("");
@@ -171,7 +171,7 @@ public class AskRessourcesView extends JDialog {
 
 		JLabel mouIcon = new JLabel();
 		mouIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-		mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("sheepSmall.png")));
+		mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/sheepSmall.png")));
 		mouRes.add(mouIcon);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("");

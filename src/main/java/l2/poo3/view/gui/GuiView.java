@@ -1163,7 +1163,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel boisIcon = new JLabel();
         boisIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("woodSmall.png")));
+        boisIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/woodSmall.png")));
         boisRes.add(boisIcon);
 
         boisNum.setForeground(textArroundColor);
@@ -1183,7 +1183,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel wheatIcon = new JLabel();
         wheatIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("wheatSmall.png")));
+        wheatIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/wheatSmall.png")));
         wheatRes.add(wheatIcon);
 
         wheatNum.setForeground(textArroundColor);
@@ -1203,7 +1203,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel argileIcon = new JLabel();
         argileIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("brickSmall.png")));
+        argileIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/brickSmall.png")));
         argileRes.add(argileIcon);
 
         argileNum.setForeground(textArroundColor);
@@ -1223,7 +1223,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel minIcon = new JLabel();
         minIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("oreSmall.png")));
+        minIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/oreSmall.png")));
         minRes.add(minIcon);
 
         minNum.setForeground(textArroundColor);
@@ -1243,7 +1243,7 @@ public class GuiView extends JFrame implements ViewModel {
 
         JLabel mouIcon = new JLabel();
         mouIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("sheepSmall.png")));
+        mouIcon.setIcon(new ImageIcon(ClassLoader.getSystemResource("res/sheepSmall.png")));
         mouRes.add(mouIcon);
 
         mouNum.setForeground(textArroundColor);
