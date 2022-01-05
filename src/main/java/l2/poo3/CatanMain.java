@@ -17,7 +17,7 @@ public class CatanMain {
             Object[] options = {"Mode texte", "Mode graphique"};
             int res = JOptionPane.showOptionDialog(new JDialog(), "Veuillez choisir le type d'affichage", "Groupe 48 - Les Colons de Catane", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(ClassLoader.getSystemResource("icons8-question-32.png")), options, options[1]);
             if (res == JOptionPane.YES_OPTION) {
-                JOptionPane.showMessageDialog(new JDialog(), "Si vous avez lancé le programme à partir d'un terminal,\nvous avez rien à faire juste cliquer sur ok.\n" + "Si vous avez lancé le programme en double-cliquant\nmerci d'ecrire ceci dans un terminal ouvert dans un dossier contenant le programme\n \"java -jar LesColonsDeCataneGroupe48.jar\"", "Groupe 48 - Information", JOptionPane.WARNING_MESSAGE,new ImageIcon(ClassLoader.getSystemResource("icons8-question-32.png")));
+                JOptionPane.showMessageDialog(new JDialog(), "Si vous avez lancé le programme à partir d'un terminal,\nvous avez rien à faire juste cliquer sur ok.\n" + "Si vous avez lancé le programme en double-cliquant\nmerci d'ecrire ceci dans un terminal ouvert dans un dossier contenant le programme\n \"java -jar LesColonsDeCataneGroupe48.jar text\"", "Groupe 48 - Information", JOptionPane.WARNING_MESSAGE,new ImageIcon(ClassLoader.getSystemResource("icons8-question-32.png")));
                 TerminalView terView = new TerminalView();
                 TerminalController terController = new TerminalController(platModel, terView);
                 terController.start();

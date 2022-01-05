@@ -206,7 +206,7 @@ public class GuiSettingsView extends JFrame {
         rdbtnPlayer41.setFont(new Font("Arial", Font.PLAIN, 13));
         playerOneFour.add(rdbtnPlayer41);
 
-        JRadioButton rdbtnAi41 = new JRadioButton("Ai");
+        JRadioButton rdbtnAi41 = new JRadioButton("IA");
         rdbtnAi41.setForeground(textArroundColor);
         rdbtnAi41.setOpaque(false);
         rdbtnAi41.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -231,7 +231,7 @@ public class GuiSettingsView extends JFrame {
         rdbtnPlayer42.setFont(new Font("Arial", Font.PLAIN, 13));
         playerTwoFour.add(rdbtnPlayer42);
 
-        JRadioButton rdbtnAi42 = new JRadioButton("Ai");
+        JRadioButton rdbtnAi42 = new JRadioButton("IA");
         rdbtnAi42.setForeground(textArroundColor);
         rdbtnAi42.setOpaque(false);
         rdbtnAi42.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -256,7 +256,7 @@ public class GuiSettingsView extends JFrame {
         rdbtnPlayer43.setFont(new Font("Arial", Font.PLAIN, 13));
         playerThreeFour.add(rdbtnPlayer43);
 
-        JRadioButton rdbtnAi43 = new JRadioButton("Ai");
+        JRadioButton rdbtnAi43 = new JRadioButton("IA");
         rdbtnAi43.setForeground(textArroundColor);
         rdbtnAi43.setOpaque(false);
         rdbtnAi43.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -281,7 +281,7 @@ public class GuiSettingsView extends JFrame {
         rdbtnPlayer44.setFont(new Font("Arial", Font.PLAIN, 13));
         playerFourFour.add(rdbtnPlayer44);
 
-        JRadioButton rdbtnAi44 = new JRadioButton("Ai");
+        JRadioButton rdbtnAi44 = new JRadioButton("IA");
         rdbtnAi44.setForeground(textArroundColor);
         rdbtnAi44.setEnabled(false);
         rdbtnAi44.setOpaque(false);
