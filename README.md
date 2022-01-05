@@ -7,8 +7,7 @@ JAVA 10 minimum est requise
 * Gargaun Illia Info 5
 * Legrand Lilian Info 2 Info-Jap
 
-
-##Compiler le programme
+## Compiler le programme
 
 Se mettre dans le dossier “src/”, écrire une des deux commandes :
 
@@ -22,7 +21,7 @@ Pour obtenir un fichier .jar :
 3. Ouvrir un terminal dans le dossier “src/classes”
 4. Écrire la commande : `jar cvfm LesColonsDeCataneGroupe48.jar META-INF/MANIFEST.MF *`
 
-##Lancer le programme
+## Lancer le programme
 Pour lancer le programme vous avez plusieurs possibilités :
 
 1. En doublant cliquant sur le fichier LesColonsDeCataneGroupe48.jar
