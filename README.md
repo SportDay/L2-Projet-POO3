@@ -1,6 +1,7 @@
 # **L2-Projet-POO3**
 
 JAVA 10 minimum est requise
+
 ## Auteur
 
 * Gargaun Illia Info 5
@@ -20,36 +21,39 @@ Pour obtenir un fichier .jar :
 3. Ouvrir un terminal dans le dossier “src/classes”
 4. Écrire la commande : `jar cvfm LesColonsDeCataneGroupe48.jar META-INF/MANIFEST.MF *`
 
+
 ##Lancer le programme
 Pour lancer le programme vous avez plusieurs possibilités :
 
 1. En doublant cliquant sur le fichier LesColonsDeCataneGroupe48.jar
 2. En ouvrant un terminal dans le dossier contenant le fichier
    LesColonsDeCataneGroupe48.jar et en exécutant la commande
-   java -jar LesColonsDeCataneGroupe48.jar
+   `java -jar LesColonsDeCataneGroupe48.jar`
 3. Si vous avez compilé vous-même le projet :
-   1. Exécuté cette commande dans le terminal : java -cp classes/l2.poo3.CatanMain
+   1. Exécuté cette commande dans le terminal : `java -cp classes/l2.poo3.CatanMain`
    2. Si vous avez une erreur de type :![img_1.png](img_1.png)
    3. Alors il faut que vous copier touts les fichiers et dossier qui se trouve dans le
-      dossier src\main\resources vers le dossier src\classes, vous devez obtenir le
+      dossier "src\main\resources" vers le dossier "src\classes", vous devez obtenir le
       contenu suivant dans le dossier classes.
-   
+
       ![img.png](img.png)
 
-Dans tous cas le programme vous demandera le type d’affichage, vous avez le choix entre l’affichage textuel et l’affichage graphique.(voir image 1)
+Dans tous cas le programme vous demandera le type d’affichage, vous avez le choix entre l’affichage textuel et l’affichage graphique.
 
 Vous pouvez directement lancer un de ces deux affichages en exécutants les commandes suivantes :
 Pour l’affichage graphique :
-java -jar LesColonsDeCataneGroupe48.jar gui
-java -jar LesColonsDeCataneGroupe48.jar graph
-java -cp classes/ l2.poo3.CatanMain gui
-java -cp classes/ l2.poo3.CatanMain graph
+
+1. `java -jar LesColonsDeCataneGroupe48.jar gui`
+2. `java -jar LesColonsDeCataneGroupe48.jar graph`
+3. `java -cp classes/ l2.poo3.CatanMain gui` (si vous avez compilé le code)
+4. `java -cp classes/ l2.poo3.CatanMain graph` (si vous avez compilé le code)
 
 Pour l’affichage textuel :
-java -jar LesColonsDeCataneGroupe48.jar text
-java -jar LesColonsDeCataneGroupe48.jar terminal
-java -cp classes/ l2.poo3.CatanMain text
-java -cp classes/ l2.poo3.CatanMain terminal
+
+1. `java -jar LesColonsDeCataneGroupe48.jar text`
+2. `java -jar LesColonsDeCataneGroupe48.jar terminal`
+3. `java -cp classes/ l2.poo3.CatanMain text` (si vous avez compilé le code)
+4. `java -cp classes/ l2.poo3.CatanMain terminal` (si vous avez compilé le code)
 
 ### **TODO List**
 
