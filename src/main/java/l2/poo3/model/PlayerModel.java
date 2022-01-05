@@ -13,7 +13,7 @@ public abstract class PlayerModel {
     private final Map<Resources, Integer> resources = new LinkedHashMap<>();
     private final Map<CartesDev, Integer> cartesDev = new LinkedHashMap<>();
 
-    private boolean throwDice = false, thiefPlay = false, largestRoadP = false, moreKnight = false;
+    private boolean throwDice = false, thiefPlay = false;
 
     private int pointDeVic = 0, nbrRessources = 0, largestRoad = 0, nbrKnight = 0, invPVic = 0, nbrBat = 0, nbrCol = 0, nbrVil = 0;
 
@@ -25,10 +25,6 @@ public abstract class PlayerModel {
         cartesDev.put(CartesDev.Route, 0);
         cartesDev.put(CartesDev.Invention, 0);
         cartesDev.put(CartesDev.PointVictoire, 0);
-    }
-
-    public boolean isLargestRoad() {
-        return largestRoadP;
     }
 
     public int getNbrBat(){
@@ -50,18 +46,6 @@ public abstract class PlayerModel {
     public void addNbrVille() {
         nbrCol--;
         nbrVil++;
-    }
-
-    public void setLargestRoad(boolean largestRoadP) {
-        this.largestRoadP = largestRoadP;
-    }
-
-    public boolean isMoreKnight() {
-        return moreKnight;
-    }
-
-    public void setMoreKnight(boolean moreKnight) {
-        this.moreKnight = moreKnight;
     }
 
     public boolean isThiefPlay() {

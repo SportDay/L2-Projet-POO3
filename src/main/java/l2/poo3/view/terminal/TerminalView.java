@@ -20,13 +20,11 @@ public class TerminalView implements ViewModel {
 
     private final Scanner sc = new Scanner(System.in);
 
-
     public TerminalController getController() {
         return controller;
     }
 
     private LinkedList<Resources> removeRessource = new LinkedList<>();
-
 
     public void setController(TerminalController controller) {
         this.controller = controller;

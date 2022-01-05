@@ -381,14 +381,12 @@ public class PlateauxModel {
     public void updateBiggestKnight(PlayerModel[] players){
         PlayerModel oldBiggestKnight = biggestKnight;
         for(PlayerModel p : players){
-            if(biggestKnight == null){
+            if(biggestKnight == null && p.getNbrKnight() >= 3){
                 p.setPointDeVic(p.getPointDeVic()+2);
                 biggestKnight = p;
             }else if(p != biggestKnight){
-                if(p.getNbrKnight() > biggestKnight.getNbrKnight()){
+                if(p.getNbrKnight() >= 3 && p.getNbrKnight() > biggestKnight.getNbrKnight()){
                     biggestKnight.setPointDeVic(biggestKnight.getPointDeVic()-2);
-                    biggestKnight.setMoreKnight(false);
-                    p.setMoreKnight(true);
                     p.setPointDeVic(p.getPointDeVic()+2);
                     biggestKnight = p;
                 }
@@ -648,8 +646,6 @@ public class PlateauxModel {
             }else if(p != biggestRoad){
                 if(p.getLargestRoad() >= 5 && biggestRoad.getLargestRoad() < p.getLargestRoad()){
                     biggestRoad.setPointDeVic(biggestRoad.getPointDeVic()-2);
-                    biggestRoad.setLargestRoad(false);
-                    p.setLargestRoad(true);
                     p.setPointDeVic(p.getPointDeVic()+2);
                     biggestRoad = p;
                 }

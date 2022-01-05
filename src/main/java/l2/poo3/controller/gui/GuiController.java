@@ -744,6 +744,7 @@ public class GuiController {
     }
 
     private void thiefPlayer(int x, int y) {
+        guiView.updateView();
         plateaux.moveThief(x, y);
         Resources res = plateaux.stealOneRessources(x, y, players[quiJoue]);
         if (res != null) {
@@ -752,14 +753,17 @@ public class GuiController {
                 p.setThiefPlay(true);
             }
         }
+        guiView.updateView();
         if(players[quiJoue].getNbrRessources() > 7){
             DeleteReeourcesView dell = new DeleteReeourcesView(guiView, players[quiJoue]);
             dell.setVisible(true);
         }
+        guiView.updateView();
     }
 
     private void thiefAi(){
         if(players[quiJoue] instanceof Ai){
+            guiView.updateView();
             ((Ai) players[quiJoue]).thiefAi(plateaux.getRealX(), plateaux.getRealY(), players);
         }
     }

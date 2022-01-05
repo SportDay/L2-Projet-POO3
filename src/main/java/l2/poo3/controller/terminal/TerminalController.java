@@ -164,7 +164,7 @@ public class TerminalController {
                             "+======================+======================+\n" +
                             "|     Gargaun Illia    |    Legrand Lilian    |\n" +
                             "|        INFO-5        |    INFO-2 INFO-JAP   |\n" +
-                            "| N-Etudiant: 00000000 | N-Etudiant: 00000000 |\n" +
+                            "| N-Etudiant: 22007415 | N-Etudiant: 22007128 |\n" +
                             "+----------------------+----------------------+\n");
     }
 

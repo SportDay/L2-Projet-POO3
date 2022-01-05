@@ -150,7 +150,7 @@ public class GuiSettingsView extends JFrame {
         garg.add(lblInfo);
         lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel lblNetudiant = new JLabel("N-Etudiant: 00000000");
+        JLabel lblNetudiant = new JLabel("N-Etudiant: 22007415");
         lblNetudiant.setForeground(textArroundColor);
         lblNetudiant.setFont(new Font("Arial", Font.PLAIN, 13));
         lblNetudiant.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -170,7 +170,7 @@ public class GuiSettingsView extends JFrame {
         legr.add(lblInfoInfojap);
         lblInfoInfojap.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel lblNetudiant_1 = new JLabel("N-Etudiant: 00000000");
+        JLabel lblNetudiant_1 = new JLabel("N-Etudiant: 22007128");
         lblNetudiant_1.setForeground(textArroundColor);
         lblNetudiant_1.setFont(new Font("Arial", Font.PLAIN, 13));
         lblNetudiant_1.setAlignmentX(Component.CENTER_ALIGNMENT);

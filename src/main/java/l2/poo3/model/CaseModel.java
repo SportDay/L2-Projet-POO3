@@ -16,10 +16,18 @@ public abstract class CaseModel {
 
     protected CaseModel(Case type, Resources nature, boolean thief) {
         this.nature = nature;
-        this.number = new Random(System.nanoTime()*System.currentTimeMillis()).nextInt(11) + 2;
+        this.number = getRandomNumber();
         this.thief = thief;
         this.name = type.toString().charAt(0) + type.toString().substring(1).toLowerCase();
         this.type = type;
+    }
+
+    private int getRandomNumber(){
+        int to_return = new Random(System.nanoTime()*System.currentTimeMillis()).nextInt(11) + 2;
+        while (to_return == 7){
+            to_return = new Random(System.nanoTime()*System.currentTimeMillis()).nextInt(11) + 2;
+        }
+        return to_return;
     }
 
     protected CaseModel(String name) {
