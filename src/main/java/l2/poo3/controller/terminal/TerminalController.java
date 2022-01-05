@@ -90,7 +90,7 @@ public class TerminalController {
         int to_return = -1;
         while (true) {
             if(type.equalsIgnoreCase("pointLimit")){
-                System.out.print("Veuillez choisir le nombre de points nécessaires pour gagner: ");
+                System.out.print("Veuillez choisir le nombre de points necessaires pour gagner: ");
             }else if(type.contains("nbrPlayer")) {
                 System.out.print("Veuillez indiquer le nombre de joueurs (3 ou 4): ");
             }else if(type.contains("xTab")){
@@ -159,8 +159,8 @@ public class TerminalController {
         System.out.println( "+---------------------------------------------+\n" +
                             "|    Projet de Programmation Orientee Objet   |\n" +
                             "|       Sujet: Jeu Les Colons de Catane       |\n" +
-                            "|              Année 2021 - 2022              |\n" +
-                            "|                Développé par                |\n" +
+                            "|              Annee 2021 - 2022              |\n" +
+                            "|                Developpe par                |\n" +
                             "+======================+======================+\n" +
                             "|     Gargaun Illia    |    Legrand Lilian    |\n" +
                             "|        INFO-5        |    INFO-2 INFO-JAP   |\n" +
@@ -535,7 +535,7 @@ public class TerminalController {
             DiceModel dice = new DiceModel();
             int number = dice.throwDice();
             System.out.println();
-            System.out.println("Lancer de dés\nLe résultat est: " + number);
+            System.out.println("Lancer de des\nLe resultat est: " + number);
             System.out.println();
             players[quiJoue].setThrowDice(true);
             if(number == 7) {
@@ -674,7 +674,7 @@ public class TerminalController {
                         break;
                     }
                 } else if (nbrTour > 2) {
-                    System.out.println("D'abord il faut lancer les dés (ld)");
+                    System.out.println("D'abord il faut lancer les des (ld)");
                     break;
                 } else {
                     System.out.println("Reponse incorrecte!");
