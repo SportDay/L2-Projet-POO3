@@ -37,9 +37,9 @@ Pour lancer le programme vous avez plusieurs possibilités :
 
       ![img.png](img.png)
 
-Dans tous cas le programme vous demandera le type d’affichage, vous avez le choix entre l’affichage textuel et l’affichage graphique.
+Dans tous les cas le programme vous demandera le type d’affichage, vous avez le choix entre l’affichage textuel et l’affichage graphique.
 
-Vous pouvez directement lancer un de ces deux affichages en exécutants les commandes suivantes :
+Vous pouvez directement lancer un de ces deux affichages en exécutant les commandes suivantes :
 Pour l’affichage graphique :
 
 1. `java -jar LesColonsDeCataneGroupe48.jar gui`
@@ -67,4 +67,4 @@ Pour l’affichage textuel :
   * [X]  Consulter ses ressources
   * [X]  Echanger des ressources via les ports
   * [X]  Gérer le personnage du voleur en cas de 7 aux dés
-  * [X]  La route la plus longue (Finit +- l'algo a des problemes)
+  * [X]  La route la plus longue (Fini +- l'algo à des problemes)
