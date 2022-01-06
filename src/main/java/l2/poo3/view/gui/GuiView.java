@@ -68,7 +68,7 @@ public class GuiView extends JFrame implements ViewModel {
 
     private final JButton btnLancerDe = new JButton("Lancer De");
     private final JButton btnFinirLeTour = new JButton("Finir le tour");
-    private final JButton btnDevelopement = new JButton("Achat cartes de devlopement");
+    private final JButton btnDevelopement = new JButton("Achat carte de devlopement");
     private final JButton useChevalier = new JButton("Utiliser");
     private final JButton useMonopole = new JButton("Utiliser");
     private final JButton useRoute = new JButton("Utiliser");
@@ -958,7 +958,7 @@ public class GuiView extends JFrame implements ViewModel {
         panel_33.setVisible(false);
         panel_31.add(panel_33);
 
-        JLabel label_35 = new JLabel("La plus grande route appartient a:");
+        JLabel label_35 = new JLabel("La plus grande route appartient à:");
         label_35.setForeground(Color.WHITE);
         label_35.setFont(new Font("Arial", Font.PLAIN, 12));
         panel_33.add(label_35);
@@ -973,7 +973,7 @@ public class GuiView extends JFrame implements ViewModel {
         panel_32.setVisible(false);
         panel_31.add(panel_32);
 
-        JLabel lblNewLabel_4 = new JLabel("La plus grande arm\u00E9e appartient a:");
+        JLabel lblNewLabel_4 = new JLabel("La plus grande arm\u00E9e appartient à:");
         lblNewLabel_4.setForeground(Color.WHITE);
         lblNewLabel_4.setFont(new Font("Arial", Font.PLAIN, 12));
         panel_32.add(lblNewLabel_4);

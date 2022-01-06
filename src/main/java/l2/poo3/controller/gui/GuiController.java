@@ -96,28 +96,28 @@ public class GuiController {
 
         guiView.getBtnLancerDe().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
-                guiView.addInfo("Merci choisir 2 ressources");
+                guiView.addInfo("Merci de choisir 2 ressources");
             }else if(nbrTour > 2) {
                 throwdDice();
                 guiView.getBtnLancerDe().setEnabled(false);
             }else {
-                guiView.addInfo("Vous pouvez la lancer les des pendant les deux premier tour");
+                guiView.addInfo("Vous ne pouvez pas lancer les des pendant les deux premier tour");
             }
         });
 
         guiView.getBtnFinirLeTour().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
-                guiView.addInfo("Merci choisir 2 ressources");
+                guiView.addInfo("Merci de choisir 2 ressources");
             }else if(!players[quiJoue].isThrowDice() && nbrTour > 2) {
                 guiView.addInfo("D'abord il faut lancer les dés");
             }else if(players[quiJoue].getPointDeVic() <= 0){
-                guiView.addInfo("Vous devez en moins contruite une collonie");
+                guiView.addInfo("Vous devez au moins construire une collonie");
             }else{
                 joueurSuivant();
             }
@@ -125,14 +125,14 @@ public class GuiController {
 
         guiView.getBtnDevelopement().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
-                guiView.addInfo("Merci choisir 2 ressources");
+                guiView.addInfo("Merci de choisir 2 ressources");
             }else if(!players[quiJoue].isThrowDice() && nbrTour > 2) {
                 guiView.addInfo("D'abord il faut lancer les dés");
             }else if(nbrTour < 3){
-                guiView.addInfo("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes");
+                guiView.addInfo("Pendant les 2 premiers tours vous ne pouvez que construire des batiments ou des routes");
             }else {
                 acheterCarte();
             }
@@ -141,10 +141,10 @@ public class GuiController {
         guiView.getRoadRadio().addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if(thief){
-                    guiView.addInfo("Merci de deplacer le voleur");
+                    guiView.addInfo("Merci de déplacer le voleur");
                     guiView.getBuildRadio().clearSelection();
                 }else if(choixRes1) {
-                    guiView.addInfo("Merci choisir 2 ressources");
+                    guiView.addInfo("Merci de choisir 2 ressources");
                 }else if(!players[quiJoue].isThrowDice() && nbrTour > 2){
                     guiView.addInfo("D'abord il faut lancer les dés");
                     guiView.getBuildRadio().clearSelection();
@@ -165,10 +165,10 @@ public class GuiController {
         guiView.getColRadio().addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if(thief){
-                    guiView.addInfo("Merci de deplacer le voleur");
+                    guiView.addInfo("Merci de déplacer le voleur");
                     guiView.getBuildRadio().clearSelection();
                 }else if(choixRes1) {
-                    guiView.addInfo("Merci choisir 2 ressources");
+                    guiView.addInfo("Merci de choisir 2 ressources");
                 }else if(!players[quiJoue].isThrowDice() && nbrTour > 2){
                     guiView.addInfo("D'abord il faut lancer les dés");
                     guiView.getBuildRadio().clearSelection();
@@ -188,10 +188,10 @@ public class GuiController {
         guiView.getVilRadio().addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if(thief){
-                    guiView.addInfo("Merci de deplacer le voleur");
+                    guiView.addInfo("Merci de déplacer le voleur");
                     guiView.getBuildRadio().clearSelection();
                 }else if(choixRes1) {
-                    guiView.addInfo("Merci choisir 2 ressources");
+                    guiView.addInfo("Merci de choisir 2 ressources");
                 }else if(!players[quiJoue].isThrowDice() && nbrTour > 2){
                     guiView.addInfo("D'abord il faut lancer les dés");
                     guiView.getBuildRadio().clearSelection();
@@ -210,7 +210,7 @@ public class GuiController {
 
         guiView.getUsePort().addActionListener(e -> {
                 if(thief){
-                    guiView.addInfo("Merci de deplacer le voleur");
+                    guiView.addInfo("Merci de déplacer le voleur");
                     guiView.getBuildRadio().clearSelection();
                 }else if(choixRes1) {
                     guiView.addInfo("Merci choisir 2 ressources");
@@ -228,7 +228,7 @@ public class GuiController {
 
         guiView.getUseChevalier().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
                 guiView.addInfo("Merci choisir 2 ressources");
@@ -244,7 +244,7 @@ public class GuiController {
 
         guiView.getUseMonopole().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
                 guiView.addInfo("Merci choisir 2 ressources");
@@ -260,14 +260,14 @@ public class GuiController {
 
         guiView.getUseInvention().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
                 guiView.addInfo("Merci choisir 2 ressources");
             }else if(!players[quiJoue].isThrowDice() && nbrTour > 2) {
                 guiView.addInfo("D'abord il faut lancer les dés");
             }else if(nbrTour < 3){
-                guiView.addInfo("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes");
+                guiView.addInfo("Pendant les 2 premiers tours vous ne pouvez que construire des batiments ou des routes");
             }else if(players[quiJoue].getCartesDev().get(CartesDev.Invention) > 0) {
                 players[quiJoue].updateCartes(CartesDev.Invention, false);
                 playCartDevInvention();
@@ -276,14 +276,14 @@ public class GuiController {
 
         guiView.getUseRoute().addActionListener(ae -> {
             if(thief){
-                guiView.addInfo("Merci de deplacer le voleur");
+                guiView.addInfo("Merci de déplacer le voleur");
                 guiView.getBuildRadio().clearSelection();
             }else if(choixRes1) {
-                guiView.addInfo("Merci choisir 2 ressources");
+                guiView.addInfo("Merci de choisir 2 ressources");
             }else if(!players[quiJoue].isThrowDice() && nbrTour > 2) {
                 guiView.addInfo("D'abord il faut lancer les dés");
             }else if(nbrTour < 3){
-                guiView.addInfo("Pendant les 2 premiers tours vous pouvez que construire des batiments ou des routes");
+                guiView.addInfo("Pendant les 2 premiers tours vous ne pouvez que construire des batiments ou des routes");
             }else if(players[quiJoue].getCartesDev().get(CartesDev.Route) > 0) {
                 players[quiJoue].updateCartes(CartesDev.Route, false);
                 playCartDevRoute();
@@ -293,7 +293,7 @@ public class GuiController {
 
     private void playCartDevThief(){
         thief = true;
-        guiView.addInfo("Merci de choisir, les nouvelles coordonnes du volleur");
+        guiView.addInfo("Merci de choisir les nouvelles coordonnées du voleur");
         updateAcces("res");
         updateListener();
         players[quiJoue].increaseNbrKnight();
@@ -301,7 +301,7 @@ public class GuiController {
     }
 
     private void playCartDevMonopole(){
-        AskRessourcesView askRessources = new AskRessourcesView(guiView,  "Choisissez le stock la ressource a voler");
+        AskRessourcesView askRessources = new AskRessourcesView(guiView,  "Choisissez le stock de la ressource a voler");
         askRessources.setVisible(true);
         Resources get = askRessources.getRes();
         for(PlayerModel p : players){
@@ -309,7 +309,7 @@ public class GuiController {
                 int nbr = p.getResources().get(get);
                 p.setResources(get, 0);
                 players[quiJoue].setResources(get, players[quiJoue].getResources().get(get) + nbr);
-                guiView.addInfo("Vous avez voler tout le stock de " + get + " aux joueur " + p.getColor());
+                guiView.addInfo("Vous avez volé tout le stock de " + get + " aux joueur " + p.getColor());
             }
         }
         monopole = true;
@@ -320,10 +320,10 @@ public class GuiController {
 
     private void playCartDevInvention(){
         choixRes1 = true;
-        guiView.addInfo("Vous pouvez choisir 2 ressources a obtenir");
-        guiView.addInfo("Choisissez la première ressource a obtenir");
+        guiView.addInfo("Vous pouvez choisir 2 ressources à obtenir");
+        guiView.addInfo("Choisissez la première ressource à obtenir");
 
-        AskRessourcesView askRessources = new AskRessourcesView(guiView,  "Choisissez la première ressource a obtenir");
+        AskRessourcesView askRessources = new AskRessourcesView(guiView,  "Choisissez la première ressource à obtenir");
         askRessources.setVisible(true);
         Resources res = askRessources.getRes();
 
@@ -332,7 +332,7 @@ public class GuiController {
         guiView.addInfo("Choisissez la seconde ressource");
         guiView.updateView();
 
-        askRessources = new AskRessourcesView(guiView,  "Choisissez la seconde ressource a obtenir");
+        askRessources = new AskRessourcesView(guiView,  "Choisissez la seconde ressource à obtenir");
         askRessources.setVisible(true);
         res = askRessources.getRes();
 
@@ -346,7 +346,7 @@ public class GuiController {
     private void playCartDevRoute(){
         players[quiJoue].setResources(Resources.ARGILE, players[quiJoue].getResources().get(Resources.ARGILE)+2);
         players[quiJoue].setResources(Resources.BOIS, players[quiJoue].getResources().get(Resources.BOIS)+2);
-        guiView.addInfo("Vous avez obtenu les ressources necessaire pour construire 2 routes");
+        guiView.addInfo("Vous avez obtenu les ressources nécessaires pour construire 2 routes");
         guiView.updateView();
     }
 
@@ -428,7 +428,7 @@ public class GuiController {
             guiView.addInfo("Vous avez construit une route");
             updateLargestRoadPlayer(x, y, players[quiJoue], players);
         }else {
-            guiView.addInfo("Vous avez pas assez de ressources.");
+            guiView.addInfo("Vous n'avez pas assez de ressources.");
         }
     }
 
@@ -474,7 +474,7 @@ public class GuiController {
                                 players[quiJoue].addNbrVille();
                                 players[quiJoue].setPointDeVic(players[quiJoue].getPointDeVic() + 1);
                             }else {
-                                guiView.addInfo("Vous avez pas asses de ressources");
+                                guiView.addInfo("Vous n'avez pas asses de ressources");
                             }
                         }
                     }
@@ -703,7 +703,7 @@ public class GuiController {
                 players[quiJoue].setResources(Resources.BLE,players[quiJoue].getResources().get(Resources.BLE) - 1);
                 guiView.updateView();
             } else {
-                guiView.addInfo("Vous avez pas assez de ressources");
+                guiView.addInfo("Vous n'avez pas assez de ressources");
             }
         }
     }
@@ -718,24 +718,24 @@ public class GuiController {
             guiView.getDice1().setIcon(new ImageIcon(ClassLoader.getSystemResource(getDiceImagePath(num1))));
             guiView.getDice2().setIcon(new ImageIcon(ClassLoader.getSystemResource(getDiceImagePath(num2))));
 
-            guiView.addLogs("Le joueur " + players[quiJoue].getColor() + " a lancer les des, le resultat est: " + result);
+            guiView.addLogs("Le joueur " + players[quiJoue].getColor() + " a lancer les des, le résultat est: " + result);
             players[quiJoue].setThrowDice(true);
             if(result == 7) {
                 if(players[quiJoue] instanceof Player) {
                     thief = true;
-                    guiView.addInfo("Merci de choisir, les nouvelles coordonnes du volleur");
+                    guiView.addInfo("Merci de choisir, les nouvelles coordonnées du voleur");
                     updateAcces("res");
                     updateListener();
                 }else if(players[quiJoue] instanceof Ai) {
                     thiefAi();
                 }
             }
-            guiView.addLogs("Generation des ressource");
+            guiView.addLogs("Generation des ressources");
             boolean generate = plateaux.generateRessources(result);
             if(generate){
-                guiView.addLogs("Les ressources ont etait generer");
+                guiView.addLogs("Les ressources ont été générées");
             }else {
-                guiView.addLogs("Aucune ressource n'a etait generer");
+                guiView.addLogs("Aucune ressource n'a été generée");
             }
         }
         if(!thief) {
@@ -748,7 +748,7 @@ public class GuiController {
         plateaux.moveThief(x, y);
         Resources res = plateaux.stealOneRessources(x, y, players[quiJoue]);
         if (res != null) {
-            guiView.addInfo("Vous avez voler une ressource: " + res);
+            guiView.addInfo("Vous avez volé une ressource: " + res);
             for (PlayerModel p : players) {
                 p.setThiefPlay(true);
             }
@@ -823,15 +823,15 @@ public class GuiController {
     }
 
     private void nextRoud() {
-        ((javax.swing.border.TitledBorder) guiView.getOtherPanel().getBorder()).setTitle("Tour " + nbrTour + ", Joeur: " + players[quiJoue].getColor());
-        guiView.addLogs("Tour " + nbrTour + ", Joeur: " + players[quiJoue].getColor());
+        ((javax.swing.border.TitledBorder) guiView.getOtherPanel().getBorder()).setTitle("Tour " + nbrTour + ", Joueur: " + players[quiJoue].getColor());
+        guiView.addLogs("Tour " + nbrTour + ", Joueur: " + players[quiJoue].getColor());
         if (endGame()) {
             System.out.println(2);
             PlayerModel tmpWinPlayer = plateaux.tmpWinPlayer(players);
             if (tmpWinPlayer != null) {
                 System.out.println(3);
                 guiView.addLogs("Fin de la partie");
-                guiView.addLogs("La partie a duree " + nbrTour + " tours");
+                guiView.addLogs("La partie a durée " + nbrTour + " tours");
                 guiView.addLogs("Le joueur " + tmpWinPlayer.getColor() + " a obtenu " + tmpWinPlayer.getPointDeVic() + " point de victoire");
                 boolean devCard = false;
                 PlayerModel realWinPlayer = plateaux.realWinPlayer(players);
@@ -860,7 +860,7 @@ public class GuiController {
             if (players[quiJoue] instanceof Ai) {
 
                 guiView.addLogs("\n");
-                guiView.addLogs("AI " + players[quiJoue].getColor() + " a commencer son tour");
+                guiView.addLogs("AI " + players[quiJoue].getColor() + " a commencé son tour");
                 guiView.addLogs("\n");
 
                 if (players[quiJoue].isThiefPlay()) {
@@ -884,7 +884,7 @@ public class GuiController {
                     guiView.getBtnLancerDe().setEnabled(true);
                 }
                 if(monopole && players[quiJoue] != monopolePlayer){
-                    guiView.addInfo("Le jouer: " + monopolePlayer.getColor() + " a voler tout votre stock de " + monopoleRes);
+                    guiView.addInfo("Le joueur: " + monopolePlayer.getColor() + " a volé tout votre stock de " + monopoleRes);
                 }
                 if (players[quiJoue].isThiefPlay()) {
                     if(players[quiJoue].getNbrRessources() > 7){

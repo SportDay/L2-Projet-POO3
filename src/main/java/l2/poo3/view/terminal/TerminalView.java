@@ -180,7 +180,7 @@ public class TerminalView implements ViewModel {
         System.out.println(" - Afficher mes ressources(cr)");
         System.out.println(" - Afficher qui sont rajouter(ar)");
         System.out.println(" - Afficher les commandes(help)");
-        System.out.println(" - Afficher la ressources a obtenir(ao)");
+        System.out.println(" - Afficher la ressource à obtenir(ao)");
         System.out.println();
     }
 
@@ -275,11 +275,11 @@ public class TerminalView implements ViewModel {
         int to_return = -1;
         while (true) {
             if(type.equalsIgnoreCase("id")) {
-                System.out.print("Veuillez indiquer indiquer l'id de la ressource que vous voulez echanger: ");
+                System.out.print("Veuillez indiquer l'id de la ressource que vous voulez echanger: ");
             }else if(type.contains("idBuy")) {
-                System.out.print("Veuillez indiquer indiquer l'id de la ressource que vous voulez obtenir: ");
+                System.out.print("Veuillez indiquer l'id de la ressource que vous voulez obtenir: ");
             }else if(type.contains("remove")){
-                System.out.print("Veuillez indiquer indiquer l'id de la ressource que vous voulez effacer: ");
+                System.out.print("Veuillez indiquer l'id de la ressource que vous voulez effacer: ");
             }
 
             String input = sc.next();
@@ -302,7 +302,7 @@ public class TerminalView implements ViewModel {
 
     private String askString(String type){
         while (true) {
-            System.out.print("Faite votre choix: ");
+            System.out.print("Faites votre choix: ");
             String rep = sc.next().toLowerCase();
             if(type.contains("des")) {
                 if (rep.contains("aj")) {
@@ -349,7 +349,7 @@ public class TerminalView implements ViewModel {
                         return "help";
                     }
             }
-            System.out.println("Reponse incorrecte!");
+            System.out.println("Réponse incorrecte!");
 
         }
     }
@@ -365,7 +365,7 @@ public class TerminalView implements ViewModel {
                     return false;
                 }
             }else {
-                System.out.println("Reponse incorrecte!");
+                System.out.println("Réponse incorrecte!");
             }
         }
     }
@@ -374,12 +374,12 @@ public class TerminalView implements ViewModel {
         Resources to_add = choixRessource(id);
         if(port.getPrix().contains("2:1")){
             if(port.getSellRessource().size() > 2){
-                System.out.println("Vous avait rajoute le bon nombre de ressources");
+                System.out.println("Vous avez rajouté le bon nombre de ressources");
                 return;
             }
         }else if(port.getPrix().contains("3:1")){
             if(port.getSellRessource().size() > 3){
-                System.out.println("Vous avait rajoute le bon nombre de ressources");
+                System.out.println("Vous avez rajouté le bon nombre de ressources");
                 return;
             }
         }
@@ -388,9 +388,9 @@ public class TerminalView implements ViewModel {
             p.setResources(to_add,p.getResources().get(to_add) - 1);
 
 
-            System.out.println("Vous avez avez rajouter " + to_add);
+            System.out.println("Vous avez rajouter " + to_add);
         }else {
-            System.out.println("Vous avez pas asses de cette ressource merci de choisir une autre");
+            System.out.println("Vous n'avez pas assez de cette ressource, merci d'en choisir une autre");
         }
     }
 
@@ -404,7 +404,7 @@ public class TerminalView implements ViewModel {
             port.getSellRessource().remove(to_add);
             p.setResources(to_add,p.getResources().get(to_add) + 1);
 
-            System.out.println("Vous avez avez enlever une " + to_add);
+            System.out.println("Vous avez enlevé une " + to_add);
         }else {
             System.out.println("Cette ressource n'est pas dans la liste");
         }
@@ -435,7 +435,7 @@ public class TerminalView implements ViewModel {
             }
             p.setResources(port.getBuy(),p.getResources().get(port.getBuy()) + 1);
 
-            System.out.println("Vous avait obtenu: " + port.getBuy());
+            System.out.println("Vous avez obtenu: " + port.getBuy());
             if(port.getPrix().contains("3:1")){
                 port.setBuy(null);
             }
@@ -447,7 +447,7 @@ public class TerminalView implements ViewModel {
     public void deleteRessources(PlayerModel player){
         if(player.getNbrRessources() > 7 && player instanceof Player) {
             removeRessource = new LinkedList<>();
-            System.out.println("Le voleur a etait deplacer.\n" + "Vous devez vous debarasser de " + (player.getNbrRessources()-7) + " ressources de votre choix.");
+            System.out.println("Le voleur a été deplacé.\n" + "Vous devez vous debarasser de " + (player.getNbrRessources()-7) + " ressources de votre choix.");
             boolean run = true;
             afficheRessource(player, true);
 
@@ -515,15 +515,15 @@ public class TerminalView implements ViewModel {
     private void deleteAdd(int id, Player player){
         Resources to_add = choixRessource(id);
         if (player.getNbrRessources() <= 7) {
-            System.out.println("Vous avait rajoute le bon nombre de ressources");
+            System.out.println("Vous avaez rajouté le bon nombre de ressources");
             return;
         }
         if(player.getResources().get(to_add) >= 1) {
             removeRessource.add(to_add);
             player.setResources(to_add,player.getResources().get(to_add) - 1);
-            System.out.println("Vous avez avez rajouter " + to_add);
+            System.out.println("Vous avez rajouter " + to_add);
         }else {
-            System.out.println("Vous avez pas asses de cette ressource merci de choisir une autre");
+            System.out.println("Vous n'avez pas assez de cette ressource, merci d'en choisir une autre");
         }
     }
 
@@ -536,7 +536,7 @@ public class TerminalView implements ViewModel {
         if(removeRessource.contains(to_add)) {
             removeRessource.remove(to_add);
             player.setResources(to_add,player.getResources().get(to_add) + 1);
-            System.out.println("Vous avez avez enlever une " + to_add);
+            System.out.println("Vous avez enlever une " + to_add);
         }else {
             System.out.println("Cette ressource n'est pas dans la liste");
         }
@@ -556,7 +556,7 @@ public class TerminalView implements ViewModel {
 
         if(reponse) {
             if(removeRessource.size() >= (player.getNbrRessources()-7)) {
-                System.out.println("Vous avez supprimer les ressources");
+                System.out.println("Vous avez supprimé les ressources");
                 return true;
             }else {
                 return false;
